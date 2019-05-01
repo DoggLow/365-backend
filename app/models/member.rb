@@ -40,6 +40,7 @@ class Member < ActiveRecord::Base
   validates :sn, presence: true
   validates :display_name, uniqueness: true, allow_blank: true
   validates :email, email: true, uniqueness: true, allow_nil: true
+  validates :ref_id, uniqueness: true, allow_nil: true
 
   before_create :build_default_id_document
   after_create  :touch_accounts
@@ -108,6 +109,7 @@ class Member < ActiveRecord::Base
                       activated: false)
       member.add_auth(auth_hash)
       member.send_activation if auth_hash['provider'] == 'identity'
+      member.set_referrers(auth_hash['ref_id']) if auth_hash['ref_id']
       member
     end
   end
@@ -152,6 +154,32 @@ class Member < ActiveRecord::Base
 
   def initial?
     name? and !name.empty?
+  end
+
+  def get_ref_id
+    if self.ref_id.blank?
+      begin
+        self.ref_id = ROTP::Base32.random_base32(8).upcase
+      end while Member.where(:ref_id => self.ref_id).any?
+
+      self.save!
+    end
+    self.ref_id
+  end
+
+  def set_referrers(ref_id)
+    referrer = Member.find_by_ref_id(ref_id)
+    return if referrer.blank?
+
+    self.referrer_id = referrer.id
+    self.save!
+
+    set_referrer_ids
+  end
+
+  def set_referrer_ids
+    referrer_ids = self.recur_referrers.map &:id
+    self.update(referrer_ids: referrer_ids)
   end
 
   # Same function as 'referrers', but used recursive with only referrer_id.
@@ -354,6 +382,7 @@ class Member < ActiveRecord::Base
   def referral_info
     all_rewards, downlines = ref_downlines
     {
+        referral_id: get_ref_id,
         all_commissions: all_ref_commissions,
         all_rewards: all_rewards,
         uplines: ref_uplines,

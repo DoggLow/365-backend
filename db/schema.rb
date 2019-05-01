@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190310020500) do
+ActiveRecord::Schema.define(version: 20190311001005) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -279,6 +279,7 @@ ActiveRecord::Schema.define(version: 20190310020500) do
     t.string   "nickname"
     t.integer  "referrer_id"
     t.string   "referrer_ids", default: "--- []\n"
+    t.string   "ref_id"
   end
 
   create_table "oauth_access_grants", force: true do |t|
@@ -462,10 +463,10 @@ ActiveRecord::Schema.define(version: 20190310020500) do
   add_index "read_marks", ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id", using: :btree
 
   create_table "referrals", force: true do |t|
-    t.integer "member_id",                                                   null: false
-    t.integer "currency",                                                    null: false
-    t.decimal "amount",       precision: 32, scale: 16, default: 0.0,        null: false
-    t.decimal "total",        precision: 32, scale: 16, default: 0.0,        null: false
+    t.integer "member_id",                                         null: false
+    t.integer "currency",                                          null: false
+    t.decimal "amount",    precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal "total",     precision: 32, scale: 16, default: 0.0, null: false
     t.integer "trade_id"
     t.integer "state"
   end

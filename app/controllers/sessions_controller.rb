@@ -72,6 +72,8 @@ class SessionsController < ApplicationController
 
   def auth_hash
     @auth_hash ||= env["omniauth.auth"]
+    @auth_hash['ref_id'] = params[:refId] if params[:refId]
+    @auth_hash
   end
 
 
