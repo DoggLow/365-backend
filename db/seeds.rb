@@ -1,4 +1,4 @@
-ADMIN_EMAIL = 'admin@rabbit-cc.com'
+ADMIN_EMAIL = 'admin@crypto.365-exchange.com'
 ADMIN_PASSWORD = 'Pass@word8'
 
 admin_identity = Identity.find_or_create_by(email: ADMIN_EMAIL)
@@ -13,14 +13,14 @@ admin_member.save!
 if Rails.env == 'development'
   NORMAL_PASSWORD = 'Pass@word8'
 
-  foo = Identity.create(email: 'foo@rabbit-cc.com', password: NORMAL_PASSWORD, password_confirmation: NORMAL_PASSWORD, is_active: true)
+  foo = Identity.create(email: 'foo@crypto.365-exchange.com', password: NORMAL_PASSWORD, password_confirmation: NORMAL_PASSWORD, is_active: true)
   foo_member = Member.create(email: foo.email)
   foo_member.authentications.build(provider: 'identity', uid: foo.id)
   foo_member.tag_list.add 'vip'
   foo_member.tag_list.add 'hero'
   foo_member.save
 
-  bar = Identity.create(email: 'bar@rabbit-cc.com', password: NORMAL_PASSWORD, password_confirmation: NORMAL_PASSWORD, is_active: true)
+  bar = Identity.create(email: 'bar@crypto.365-exchange.com', password: NORMAL_PASSWORD, password_confirmation: NORMAL_PASSWORD, is_active: true)
   bar_member = Member.create(email: bar.email)
   bar_member.authentications.build(provider: 'identity', uid: bar.id)
   bar_member.tag_list.add 'vip'

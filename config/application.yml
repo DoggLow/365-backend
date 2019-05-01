@@ -3,11 +3,11 @@ defaults: &defaults
   # sites hosts
   # session expire seconds
   # admin role account
-  URL_HOST: rabbit-cc.com:3000
-  URL_UI: rabbit-cc.com
+  URL_HOST: crypto.365-exchange.com:3000
+  URL_UI: crypto.365-exchange.com
   URL_SCHEMA: https
   SESSION_EXPIRE: '60'
-  ADMIN: 'admin@rabbit-cc.com'
+  ADMIN: 'admin@crypto.365-exchange.com'
   TIMEZONE: 'UTC'
 
   REDIS_URL: redis://127.0.0.1:6379
@@ -16,16 +16,16 @@ defaults: &defaults
   # system notify mail settings
   # --------------------------------------------------------------
   SMTP_PORT: '587'
-  SMTP_DOMAIN: rabbit-cc.com
-  SMTP_ADDRESS: mail.smtp2go.com
-  SMTP_USERNAME: exchange-coin@hs-sup.com
-  SMTP_PASSWORD: 3ysze8Vf95sV
+  SMTP_DOMAIN: crypto-smtp@365-exchange.com
+  SMTP_ADDRESS: mail.365-exchange.com
+  SMTP_USERNAME: crypto-smtp@365-exchange.com
+  SMTP_PASSWORD: bHF34#55jgExDpt
   SMTP_AUTHENTICATION: plain # could be plain, login or cram_md5
 
-  SUPPORT_MAIL: support@rabbit-cc.com
-  SYSTEM_MAIL_FROM: system@rabbit-cc.com
-  SYSTEM_MAIL_TO: group@rabbit-cc.com
-  OPERATE_MAIL_TO: support@rabbit-cc.com
+  SUPPORT_MAIL: support@crypto.365-exchange.com
+  SYSTEM_MAIL_FROM: system@crypto.365-exchange.com
+  SYSTEM_MAIL_TO: group@crypto.365-exchange.com
+  OPERATE_MAIL_TO: support@crypto.365-exchange.com
 
   # WebSocket Streaming API settings
   # --------------------------------------------------------------

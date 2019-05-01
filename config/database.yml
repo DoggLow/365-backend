@@ -1,7 +1,7 @@
 development: &defaults
   adapter: mysql2
   encoding: utf8
-  database: ngo_development
+  database: m365_development
   username: root
   password: admin
   pool: 10
@@ -9,8 +9,8 @@ development: &defaults
 
 test:
   <<: *defaults
-  database: ngo_test
+  database: m365_test
 
 production:
   <<: *defaults
-  database: ngo_production
+  database: m365_production

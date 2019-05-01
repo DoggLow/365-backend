@@ -8,7 +8,7 @@ set :repository, ''
 set :user, 'deploy'
 set :deploy_to, '/home/deploy/exchange'
 set :branch, 'master'
-set :domain, 'rabbit-cc.com'
+set :domain, 'crypto.365-exchange.com'
 
 set :shared_paths, [
   'config/database.yml',
