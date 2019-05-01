@@ -7,13 +7,13 @@ namespace :replay do
     data = File.exist?(path) ? JSON.load(File.open(path)) : []
 
     puts "begin replaying at #{Time.now}"
-    players = Member.find_all_by_email(['foo@rabbit-cc.com','bar@rabbit-cc.com']).collect do |m|
+    players = Member.find_all_by_email(['foo@crypto.365-exchange.com','bar@crypto.365-exchange.com']).collect do |m|
       previous = data.find{|hash| hash['id'] == m.id }
       array = previous ? previous['balance_array'] : []
       {id: m.id, balance_array: replay(m, array)}
     end
 
-    students = Member.find_all_by_email(['foo@rabbit-cc.com','bar@rabbit-cc.com']).collect do |m|
+    students = Member.find_all_by_email(['foo@crypto.365-exchange.com','bar@crypto.365-exchange.com']).collect do |m|
       previous = data.find{|hash| hash['id'] == m.id }
       array = previous ? previous['balance_array'] : []
       {id: m.id, balance_array: replay_student(m, array)}

@@ -13,9 +13,9 @@ BACKUP_CONFIG=config_$DATE.tar.gz
 
 MYSQL_USER=root
 MYSQL_PASSWORD=admin
-DB_NAME=rabbit-cc_production
+DB_NAME=m365_production
 
-BUCKET=rabbit-cc
+BUCKET=m365
 S3_KEY=$BUCKET/backups/
 
 # DB backup

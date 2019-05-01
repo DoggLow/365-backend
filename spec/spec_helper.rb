@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
-ENV["ADMIN"] ||= 'admin@rabbit-cc.com'
+ENV["ADMIN"] ||= 'admin@crypto.365-exchange.com'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'

@@ -697,12 +697,12 @@ zh-CN:
     affiliates:
       index:
         title: 联盟计划
-        description: 您的加盟计划已经启用。可以通过添加您的代销商标签到任何 rabbit-cc.com 的URL.
+        description: 您的加盟计划已经启用。可以通过添加您的代销商标签到任何 crypto.365-exchange.com 的URL.
         program_flows:
           title: Affiliate program flows
-          flow1: Please set up an affiliate banner for Rabbit on your blog and website.
-          flow2: Someone will create a new account of Rabbit through the link of affiliate banner on your blog or website.
-          flow3: We will give you an affiliate fee as a referral fee from Rabbit.
+          flow1: Please set up an affiliate banner for 365 Exchange on your blog and website.
+          flow2: Someone will create a new account of 365 Exchange through the link of affiliate banner on your blog or website.
+          flow3: We will give you an affiliate fee as a referral fee from 365 Exchange.
         url:
           title: Affiliate URL
           your: Your Affiliate URL
@@ -1803,47 +1803,47 @@ zh-CN:
       truncate: "..."
   mailer:
     dear_user: 您好,
-    signature: rabbit-cc.com团队
+    signature: crypto.365-exchange.com团队
     please_contact: 如果此次登录不是您本人操作，请马上<a href="mailto:%{contact_mail}">联系我们</a>。
     footer: 此邮件由系统自动发出，请勿直接回复。 有问题请<a href="mailto:%{contact_mail}">联系我们</a>。
   comment_mailer:
     admin_notification:
-      subject: "[Rabbit] 用户回复了服务单"
+      subject: "[365 Exchange] 用户回复了服务单"
       notification_content: 用户 %{email} 回复了服务单，详情请查看链接：
     user_notification:
-      subject: "[Rabbit] 您的服务单有了新的回复"
+      subject: "[365 Exchange] 您的服务单有了新的回复"
       notification_content: '您的服务单有一条新的回复, 请在下方链接查看详情：'
   deposit_mailer:
     accepted:
-      subject: "[Rabbit] 您的充值已经到账"
+      subject: "[365 Exchange] 您的充值已经到账"
       content: 您的 %{currency} 已经到账.
   member_mailer:
     notify_signin:
-      subject: "[Rabbit] 您刚刚成功登录"
+      subject: "[365 Exchange] 您刚刚成功登录"
       just_signed_in: 您刚刚成功登录了。
     google_auth_activated:
-      subject: "[Rabbit] 绑定谷歌两步验证"
+      subject: "[365 Exchange] 绑定谷歌两步验证"
       google_auth_activated: 您已绑定谷歌两步验证。
     google_auth_deactivated:
-      subject: "[Rabbit] 重置谷歌两步验证"
+      subject: "[365 Exchange] 重置谷歌两步验证"
       google_auth_deactivated: 您已重置谷歌两步验证。
     sms_auth_activated:
-      subject: "[Rabbit] 绑定短信两步验证"
+      subject: "[365 Exchange] 绑定短信两步验证"
       sms_auth_activated: 您已绑定短信两步验证。
     sms_auth_deactivated:
-      subject: "[Rabbit] 重置短信两步验证"
+      subject: "[365 Exchange] 重置短信两步验证"
       sms_auth_deactivated: 您已重置短信两步验证。
     reset_password_done:
-      subject: "[Rabbit] 密码修改成功"
+      subject: "[365 Exchange] 密码修改成功"
       successful: 您已成功修改密码。请妥善保管~
     phone_number_verified:
-      subject: "[Rabbit] 您已成功绑定手机"
+      subject: "[365 Exchange] 您已成功绑定手机"
       verified: '您已成功绑定手机，号码为：%{phone_number}。'
     notify_cancel_orders:
-      subject: "[Rabbit] 您的订单已取消"
+      subject: "[365 Exchange] 您的订单已取消"
       orders_canceled: 您的订单已取消。 因为他们使用借来的资产，他们的持续时间已过期。
     notify_disabled_from_lending:
-      subject: "[Rabbit] 您的帐户已被停用"
+      subject: "[365 Exchange] 您的帐户已被停用"
       member_disabled: 您的帐户已被停用。 因为借款金额不足。
   system_mailer:
     daily_stats:
@@ -1856,39 +1856,39 @@ zh-CN:
       trades_change_total: 交易数变动总计
   ticket_mailer:
     admin_notification:
-      subject: "[Rabbit] 用户新建了服务单"
+      subject: "[365 Exchange] 用户新建了服务单"
       admin_notification_content: 用户 %{email} 新建了服务单，详情请查看链接：
     author_notification:
-      subject: "[Rabbit] 您的服务单提交成功"
+      subject: "[365 Exchange] 您的服务单提交成功"
       thanks_for_submit_ticket: 感谢您的反馈。我们会尽快处理，并第一时间告知您相关进展。
   token_mailer:
     activation:
-      subject: "[Rabbit] 帐号激活"
-      click_to_verify: '感谢您注册 Rabbit，赶快点击下面的链接验证您的E-mail吧：'
+      subject: "[365 Exchange] 帐号激活"
+      click_to_verify: '感谢您注册 365 Exchange，赶快点击下面的链接验证您的E-mail吧：'
       unable_to_click: 如果链接无法点击，请完整拷贝到浏览器地址栏里直接访问。
       link_expire: 链接30分钟之内有效。
     reset_password:
-      subject: "[Rabbit] 请重置您的密码"
+      subject: "[365 Exchange] 请重置您的密码"
       hi: 您好
       follow_the_link: '请使用下面的连接，在30分钟之内尝试重置您的登录密码：'
   withdraw_mailer:
     submitted:
-      subject: "[Rabbit] 您的提现状态更新"
+      subject: "[365 Exchange] 您的提现状态更新"
       content: 您的%{currency}提现请求已经被成功提交，我们会尽快处理您的提现请求。谢谢您的耐心等待，如果您有任何问题，请及时与我们联系。
     processing:
-      subject: "[Rabbit] 您的提现状态更新"
+      subject: "[365 Exchange] 您的提现状态更新"
       content: 您的%{currency}提现请求正在处理中，谢谢您的耐心等待，如果您有任何问题，请及时与我们联系。
     done:
-      subject: "[Rabbit] 您的提现状态更新"
+      subject: "[365 Exchange] 您的提现状态更新"
       content: 您的%{currency}提现请求已经处理完毕，请查询您的账户。如果您有任何问题，请及时与我们联系。
     withdraw_state:
-      subject: "[Rabbit] 您的提现状态更新"
+      subject: "[365 Exchange] 您的提现状态更新"
       your_state: '您的提现状态：'
 
   'true': true
   'false': false
   slogan: Cryptocurrency Exchange
-  brand: Rabbit
+  brand: 365 Exchange
   tags:
     vip: VIP
     hero: 超级用户
@@ -1902,9 +1902,9 @@ zh-CN:
   gon:
     ask: 卖出
     bid: 买入
-    brand: Rabbit
+    brand: 365 Exchange
     notification:
-      title: Rabbit
+      title: 365 Exchange
       enabled: 实时更新已开启。
       new_trade: "您的%{kind}委托 #%{id} 以 %{price} %{quote_unit} 价格成交，%{kind} %{volume} %{base_unit}。"
   back: 返回
@@ -1927,12 +1927,12 @@ zh-CN:
     withdraw_done: '%{email} 您好，您于%{time}进行了（%{currency}）提现操作，金额为%{amount}。最新余额为：%{balance}。（若非本人操作，请立即联系客服！）'
   landing:
     welcome:
-      title: Welcome to Rabbit!
+      title: Welcome to 365 Exchange!
       subtitle: We are a peer to peer cryptocurrency exchange platform.
     vision:
       title: Our vision
-      desc1: ”Rabbit is a project aims to provide both easy access for the public to buy cryptocurrencies, and an easy, safe and reliable exchange between cryptocurrencies. The project promises to deliver that by establishing a peer-to-peer decentralized network for cryptocurrencies exchange”
-      desc2: ”Using the Rabbit, you can exchange altcoin directly with no central organization involved. Rabbit allows members to buy and sell cryptocurrencies directly to and from each other.”
+      desc1: ”365 Exchange is a project aims to provide both easy access for the public to buy cryptocurrencies, and an easy, safe and reliable exchange between cryptocurrencies. The project promises to deliver that by establishing a peer-to-peer decentralized network for cryptocurrencies exchange”
+      desc2: ”Using the 365 Exchange, you can exchange altcoin directly with no central organization involved. 365 Exchange allows members to buy and sell cryptocurrencies directly to and from each other.”
     count:
       currency: Cryptocurrencies Exchanged
       country: Countries Supported
@@ -2162,9 +2162,9 @@ zh-CN:
     application:
       close: 关闭
     meta:
-      page_title: Rabbit
-      page_description: Rabbit - Cryptocurrency Exchange
-      page_keywords: rabbit-cc.com,Exchange,Cryptocurrency,Rabbit
+      page_title: 365 Exchange
+      page_description: 365 Exchange - Cryptocurrency Exchange
+      page_keywords: crypto.365-exchange.com,Exchange,Cryptocurrency,365 Exchange
   members:
     edit:
       name: 为了保障资金安全，请填写您的真实姓名等信息。

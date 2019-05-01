@@ -6,7 +6,7 @@ describe MemberMailer do
     let(:mail) { MemberMailer.notify_signin(member.id) }
 
     it "renders the headers" do
-      mail.subject.should eq("[Rabbit] You have just signed in")
+      mail.subject.should eq("[365 Exchange] You have just signed in")
       mail.to.should eq([member.email])
       mail.from.should eq([ENV['SYSTEM_MAIL_FROM']])
     end
