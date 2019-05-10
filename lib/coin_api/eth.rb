@@ -213,7 +213,7 @@ module CoinAPI
     end
 
     def earliest_block
-      6_462_400 # start blocknumber : 6th, Oct
+      7_733_385 # start blocknumber : 10th, May, 19
     end
   end
 end
