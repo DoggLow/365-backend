@@ -164,17 +164,15 @@
   source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
-- id: btcusdt
+- id: usdtbtc
   code: 30
-  name: BTC/USDT
-  base_unit: btc
-  quote_unit: usdt
+  name: USDT/BTC
+  base_unit: usdt
+  quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: eth, fixed: 8}
+  ask: {fee: 0, currency: usdt, fixed: 8}
   sort_order: 1
-  source: binance
-  source_limit: {min_volume: 0.001, min_total: 0.001}
   #visible: false     # default to true
 
 - id: ethusdt
@@ -315,8 +313,6 @@
   bid: {fee: 0, currency: usdt, fixed: 8}
   ask: {fee: 0, currency: xem, fixed: 8}
   sort_order: 1
-  source: binance
-  source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
 - id: gasusdt
@@ -328,6 +324,4 @@
   bid: {fee: 0, currency: usdt, fixed: 8}
   ask: {fee: 0, currency: gas, fixed: 8}
   sort_order: 1
-  source: binance
-  source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
