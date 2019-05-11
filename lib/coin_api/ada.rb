@@ -95,8 +95,9 @@ module CoinAPI
       ssl_options = {
           verify: true,
           verify_mode: OpenSSL::SSL::VERIFY_NONE,
-          certificate: OpenSSL::X509::Certificate.new(File.read(currency.cert)),
-          private_key: OpenSSL::PKey::RSA.new(File.read(currency.p_key))
+          ca_file: currency.ca_cert,
+          client_cert: OpenSSL::X509::Certificate.new(File.read(currency.cert)),
+          client_key: OpenSSL::PKey::RSA.new(File.read(currency.p_key))
       }
 
       Faraday.new @json_rpc_endpoint, :ssl => ssl_options do |con|
@@ -196,6 +197,7 @@ module CoinAPI
             operation: 'create',
             name: 'payment',
             spendingPassword: currency.spending_password,
+            backupPhrase: currency.backup_phrase,
             assuranceLevel: 'strict'
         }
         response = json_rpc('post', wallet_path, post_body)

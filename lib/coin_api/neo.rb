@@ -95,7 +95,7 @@ module CoinAPI
                            else
                              latest_block_number
                            end
-Rails.logger.info "current_#{currency.code}_block_number: #{current_block}"
+
       while current_block <= limit_block_number
         begin
           block = json_rpc(:getblock, [current_block, 1]).fetch('result')
