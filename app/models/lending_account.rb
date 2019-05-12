@@ -96,11 +96,16 @@ class LendingAccount < ActiveRecord::Base
 
   def estimate_balance(quote_unit)
     base_unit = currency_obj.code
-    price = if base_unit == quote_unit
-              1
-            else
-              Global["#{base_unit}#{quote_unit}"].ticker[:last]
-            end
+    if base_unit == quote_unit
+      price = 1
+    else
+      mkt_id = "#{base_unit}#{quote_unit}"
+      if Market.find(mkt_id).blank?
+        price = 0
+      else
+        price = Global["#{base_unit}#{quote_unit}"].ticker[:last]
+      end
+    end
 
     (self.balance + self.locked) * price
   end
