@@ -2,10 +2,7 @@ class BinanceAPI
   class <<self
 
     def client
-      api_key = "LIrVAqK27BDrgZQ30MhKcH6f4RiJ5U2Q1krravy4aDT7lHqFwor7tgMh5UsgQ70U"
-      secret_key = "NzXrJn4xa3JzfAnGy8JUCDXNe4lOsNFQxI9aTHA01fuliUfspuy2PnHgFFTvXRnE"
-
-      Binance::Client::REST.new api_key: api_key, secret_key: secret_key
+      Binance::Client::REST.new api_key: ENV["BINANCE_API_KEY"], secret_key: ENV["BINANCE_SEC_KEY"]
     end
 
     def create_order(order)

@@ -43,6 +43,13 @@ defaults: &defaults
   TWILIO_SID: YOUR_TWILIO_SID
   TWILIO_TOKEN: YOUR_TWILIO_TOKEN
 
+  # Binance setting
+  # --------------------------------------------------------------
+  # https://github.com/twilio/twilio-ruby
+  #
+  BINANCE_API_KEY: 'LIrVAqK27BDrgZQ30MhKcH6f4RiJ5U2Q1krravy4aDT7lHqFwor7tgMh5UsgQ70U'
+  BINANCE_SEC_KEY: 'NzXrJn4xa3JzfAnGy8JUCDXNe4lOsNFQxI9aTHA01fuliUfspuy2PnHgFFTvXRnE'
+
   # margin trading and loan setting
   # --------------------------------------------------------------
   #
