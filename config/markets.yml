@@ -164,6 +164,17 @@
   source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
+- id: tsfbtc
+  code: 14
+  name: TSF/BTC
+  base_unit: tsf
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: tsf, fixed: 8}
+  sort_order: 1
+  visible: false     # default to true
+
 - id: usdtbtc
   code: 30
   name: USDT/BTC
@@ -325,3 +336,14 @@
   ask: {fee: 0, currency: gas, fixed: 8}
   sort_order: 1
   #visible: false     # default to true
+
+- id: tsfusdt
+  code: 43
+  name: TSF/USDT
+  base_unit: tsf
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: tsf, fixed: 8}
+  sort_order: 1
+  visible: false     # default to true

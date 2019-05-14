@@ -3,7 +3,7 @@ defaults: &defaults
   # sites hosts
   # session expire seconds
   # admin role account
-  URL_HOST: crypto.365-exchange.com:3000
+  URL_HOST: crypto.365-exchange.com:8443
   URL_UI: crypto.365-exchange.com
   URL_SCHEMA: https
   SESSION_EXPIRE: '60'
@@ -16,16 +16,16 @@ defaults: &defaults
   # system notify mail settings
   # --------------------------------------------------------------
   SMTP_PORT: '587'
-  SMTP_DOMAIN: crypto-smtp@365-exchange.com
+  SMTP_DOMAIN: 365-exchange.com
   SMTP_ADDRESS: mail.365-exchange.com
   SMTP_USERNAME: crypto-smtp@365-exchange.com
   SMTP_PASSWORD: bHF34#55jgExDpt
   SMTP_AUTHENTICATION: plain # could be plain, login or cram_md5
 
-  SUPPORT_MAIL: support@crypto.365-exchange.com
-  SYSTEM_MAIL_FROM: system@crypto.365-exchange.com
-  SYSTEM_MAIL_TO: group@crypto.365-exchange.com
-  OPERATE_MAIL_TO: support@crypto.365-exchange.com
+  SUPPORT_MAIL: support@365-exchange.com
+  SYSTEM_MAIL_FROM: system@365-exchange.com
+  SYSTEM_MAIL_TO: group@365-exchange.com
+  OPERATE_MAIL_TO: support@365-exchange.com
 
   # WebSocket Streaming API settings
   # --------------------------------------------------------------
@@ -47,8 +47,8 @@ defaults: &defaults
   # --------------------------------------------------------------
   # https://github.com/twilio/twilio-ruby
   #
-  BINANCE_API_KEY: 'LIrVAqK27BDrgZQ30MhKcH6f4RiJ5U2Q1krravy4aDT7lHqFwor7tgMh5UsgQ70U'
-  BINANCE_SEC_KEY: 'NzXrJn4xa3JzfAnGy8JUCDXNe4lOsNFQxI9aTHA01fuliUfspuy2PnHgFFTvXRnE'
+  BINANCE_API_KEY: 'F8fnOuMpb4KPWJ3zOXO39wMv79iH8APJsFsxa7qIENP1roHQnvOJqaI48FVzGLnV'
+  BINANCE_SEC_KEY: '54G2s9dRmojWI7EypSPennMeQAQzHcrlQdUKMEvF3YzF5RsVId4uM7jc33pdg5P5'
 
   # margin trading and loan setting
   # --------------------------------------------------------------
