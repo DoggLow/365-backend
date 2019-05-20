@@ -75,8 +75,20 @@
   source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
-- id: dashbtc
+- id: bsvbtc
   code: 7
+  name: BSV/BTC
+  base_unit: bsv
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: bsv, fixed: 8}
+  ask: {fee: 0, currency: dash, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: dashbtc
+  code: 8
   name: DASH/BTC
   base_unit: dash
   quote_unit: btc
@@ -89,7 +101,7 @@
   #visible: false     # default to true
 
 - id: xmrbtc
-  code: 8
+  code: 9
   name: XMR/BTC
   base_unit: xmr
   quote_unit: btc
@@ -102,7 +114,7 @@
   #visible: false     # default to true
 
 - id: neobtc
-  code: 9
+  code: 10
   name: NEO/BTC
   base_unit: neo
   quote_unit: btc
@@ -115,7 +127,7 @@
   #visible: false     # default to true
 
 - id: etcbtc
-  code: 10
+  code: 11
   name: ETC/BTC
   base_unit: etc
   quote_unit: btc
@@ -128,7 +140,7 @@
   #visible: false     # default to true
 
 - id: xembtc
-  code: 11
+  code: 12
   name: XEM/BTC
   base_unit: xem
   quote_unit: btc
@@ -140,8 +152,72 @@
   source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
+- id: dogebtc
+  code: 13
+  name: DOGE/BTC
+  base_unit: doge
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: doge, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: batbtc
+  code: 14
+  name: BAT/BTC
+  base_unit: bat
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: bat, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: omgbtc
+  code: 15
+  name: OMG/BTC
+  base_unit: omg
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: omg, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: btgbtc
+  code: 16
+  name: BTG/BTC
+  base_unit: btg
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: btg, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: repbtc
+  code: 17
+  name: REP/BTC
+  base_unit: rep
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: rep, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
 - id: tusdbtc
-  code: 12
+  code: 18
   name: TUSD/BTC
   base_unit: tusd
   quote_unit: btc
@@ -149,10 +225,122 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: tusd, fixed: 8}
   sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: linkbtc
+  code: 19
+  name: LINK/BTC
+  base_unit: link
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: link, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: zrxbtc
+  code: 20
+  name: ZRX/BTC
+  base_unit: zrx
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: zrx, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: bcdbtc
+  code: 21
+  name: BCD/BTC
+  base_unit: bcd
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: bcd, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: crobtc
+  code: 22
+  name: CRO/BTC
+  base_unit: cro
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: cro, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: kcsbtc
+  code: 23
+  name: kcs/BTC
+  base_unit: kcs
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: kcs, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: htbtc
+  code: 24
+  name: HT/BTC
+  base_unit: ht
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: ht, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: usdcbtc
+  code: 25
+  name: USDC/BTC
+  base_unit: usdc
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: usdc, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: bixbtc
+  code: 26
+  name: BIX/BTC
+  base_unit: bix
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: bix, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
+  #visible: false     # default to true
+
+- id: usdsbtc
+  code: 27
+  name: USDS/BTC
+  base_unit: usds
+  quote_unit: btc
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: usds, fixed: 8}
+  sort_order: 1
+  margin: {initial: 40, maintenance: 20}
   #visible: false     # default to true
 
 - id: gasbtc
-  code: 13
+  code: 28
   name: GAS/BTC
   base_unit: gas
   quote_unit: btc
@@ -165,7 +353,7 @@
   #visible: false     # default to true
 
 - id: tsfbtc
-  code: 14
+  code: 29
   name: TSF/BTC
   base_unit: tsf
   quote_unit: btc
@@ -234,7 +422,6 @@
   bid: {fee: 0, currency: usdt, fixed: 8}
   ask: {fee: 0, currency: bch, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
   #visible: false     # default to true
 
 - id: bnbusdt
@@ -263,8 +450,19 @@
   source_limit: {min_volume: 0.01, min_total: 0.001}
   #visible: false     # default to true
 
-- id: dashusdt
+- id: bsvusdt
   code: 37
+  name: BSV/USDT
+  base_unit: bsv
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: bsv, fixed: 8}
+  ask: {fee: 0, currency: dash, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: dashusdt
+  code: 38
   name: DASH/USDT
   base_unit: dash
   quote_unit: usdt
@@ -277,7 +475,7 @@
   #visible: false     # default to true
 
 - id: xmrusdt
-  code: 38
+  code: 39
   name: XMR/USDT
   base_unit: xmr
   quote_unit: usdt
@@ -290,7 +488,7 @@
   #visible: false     # default to true
 
 - id: neousdt
-  code: 39
+  code: 40
   name: NEO/USDT
   base_unit: neo
   quote_unit: usdt
@@ -303,7 +501,7 @@
   #visible: false     # default to true
 
 - id: etcusdt
-  code: 40
+  code: 41
   name: ETC/USDT
   base_unit: etc
   quote_unit: usdt
@@ -316,7 +514,7 @@
   #visible: false     # default to true
 
 - id: xemusdt
-  code: 41
+  code: 42
   name: XEM/USDT
   base_unit: xem
   quote_unit: usdt
@@ -326,8 +524,181 @@
   sort_order: 1
   #visible: false     # default to true
 
+- id: dogeusdt
+  code: 43
+  name: DOGE/USDT
+  base_unit: doge
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: doge, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: batusdt
+  code: 44
+  name: BAT/USDT
+  base_unit: bat
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: bat, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: omgusdt
+  code: 45
+  name: OMG/USDT
+  base_unit: omg
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: omg, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: btgusdt
+  code: 46
+  name: BTG/USDT
+  base_unit: btg
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: btg, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: repusdt
+  code: 47
+  name: REP/USDT
+  base_unit: rep
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: rep, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: tusdusdt
+  code: 48
+  name: TUSD/USDT
+  base_unit: tusd
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: tusd, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: linkusdt
+  code: 49
+  name: LINK/USDT
+  base_unit: link
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: link, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: zrxusdt
+  code: 50
+  name: ZRX/USDT
+  base_unit: zrx
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: zrx, fixed: 8}
+  sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.01, min_total: 0.001}
+  #visible: false     # default to true
+
+- id: bcdusdt
+  code: 51
+  name: BCD/USDT
+  base_unit: bcd
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: bcd, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: crousdt
+  code: 52
+  name: CRO/USDT
+  base_unit: cro
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: cro, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: kcsusdt
+  code: 53
+  name: kcs/USDT
+  base_unit: kcs
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: kcs, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: htusdt
+  code: 54
+  name: HT/USDT
+  base_unit: ht
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: ht, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: usdcusdt
+  code: 55
+  name: USDC/USDT
+  base_unit: usdc
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: usdc, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: bixusdt
+  code: 56
+  name: BIX/USDT
+  base_unit: bix
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: bix, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
+- id: usdsusdt
+  code: 57
+  name: USDS/USDT
+  base_unit: usds
+  quote_unit: usdt
+  #price_group_fixed: 1 # aggregate price levels in orderbook
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: usds, fixed: 8}
+  sort_order: 1
+  #visible: false     # default to true
+
 - id: gasusdt
-  code: 42
+  code: 58
   name: GAS/USDT
   base_unit: gas
   quote_unit: usdt
@@ -338,7 +709,7 @@
   #visible: false     # default to true
 
 - id: tsfusdt
-  code: 43
+  code: 59
   name: TSF/USDT
   base_unit: tsf
   quote_unit: usdt

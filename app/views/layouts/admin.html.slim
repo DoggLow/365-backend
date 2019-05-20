@@ -13,9 +13,9 @@ html lang="en"
           li class = check_active('dashboard')
             = link_to t('header.dashboard'), main_app.admin_dashboard_path
 
-          - if can? :manage, Document
-            li class = check_active(Document)
-              = link_to t(".menus.items.operating.documents"), admin_documents_path
+          / - if can? :manage, Document
+          /   li class = check_active(Document)
+          /     = link_to t(".menus.items.operating.documents"), admin_documents_path
 
           - if can? :manage, IdDocument
             li class = check_active('id_documents')
