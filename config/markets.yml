@@ -281,7 +281,7 @@
 
 - id: kcsbtc
   code: 23
-  name: kcs/BTC
+  name: KCS/BTC
   base_unit: kcs
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
@@ -363,15 +363,17 @@
   sort_order: 1
   visible: false     # default to true
 
-- id: usdtbtc
+- id: btcusdt
   code: 30
-  name: USDT/BTC
-  base_unit: usdt
-  quote_unit: btc
+  name: BTC/USDT
+  base_unit: btc
+  quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: usdt, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: btc, fixed: 8}
   sort_order: 1
+  source: binance
+  source_limit: {min_volume: 0.001, min_total: 0.001}
   #visible: false     # default to true
 
 - id: ethusdt
@@ -644,7 +646,7 @@
 
 - id: kcsusdt
   code: 53
-  name: kcs/USDT
+  name: KCS/USDT
   base_unit: kcs
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
