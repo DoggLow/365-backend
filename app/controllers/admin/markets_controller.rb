@@ -4,7 +4,7 @@ module Admin
 
     def index
       # add records to price table from markets
-      Market.all.each do |market|
+      Market.all_with_invisible.each do |market|
         Price.find_or_create_by(market_id: market.id.to_sym)
       end
 

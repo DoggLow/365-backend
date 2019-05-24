@@ -98,16 +98,24 @@ class LendingAccount < ActiveRecord::Base
     base_unit = currency_obj.code
     if base_unit == quote_unit
       price = 1
+    elsif base_unit == 'usdt'
+      mkt_id = "#{quote_unit}#{base_unit}"
+      price = 0
+      if Market.find(mkt_id).present?
+        price = Global[mkt_id].ticker[:last]
+      end
+      if price != 0
+        price = 1 / price
+      end
     else
       mkt_id = "#{base_unit}#{quote_unit}"
       if Market.find(mkt_id).blank?
         price = 0
       else
-        price = Global["#{base_unit}#{quote_unit}"].ticker[:last]
+        price = Global[mkt_id].ticker[:last]
       end
     end
 
     (self.balance + self.locked) * price
   end
-
 end
