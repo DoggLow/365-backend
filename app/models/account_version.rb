@@ -15,6 +15,7 @@ class AccountVersion < ActiveRecord::Base
     Account::ORDER_SUBMIT => 600,
     Account::ORDER_CANCEL => 610,
     Account::ORDER_FULLFILLED => 620,
+    Account::ORDER_FAIL => 660,
     Account::WITHDRAW_LOCK => 800,
     Account::WITHDRAW_UNLOCK => 810,
     Account::DEPOSIT => 1000,

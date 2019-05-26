@@ -4,7 +4,7 @@ class Order < ActiveRecord::Base
   enumerize :bid, in: Currency.enumerize
   enumerize :ask, in: Currency.enumerize
   enumerize :currency, in: Market.enumerize, scope: true
-  enumerize :state, in: {:wait => 100, :done => 200, :cancel => 0}, scope: true
+  enumerize :state, in: {:wait => 100, :done => 200, :cancel => 0, :fail => -100}, scope: true
 
   ORD_TYPES = %w(market limit)
   enumerize :ord_type, in: ORD_TYPES, scope: true
@@ -24,6 +24,7 @@ class Order < ActiveRecord::Base
   WAIT = 'wait'
   DONE = 'done'
   CANCEL = 'cancel'
+  FAIL = 'fail'
 
   ATTRIBUTES = %w(id at market kind price state state_text volume origin_volume)
 

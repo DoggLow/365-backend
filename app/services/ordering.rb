@@ -21,8 +21,7 @@ class Ordering
             order.save!
           end
         else
-          order.destroy
-          raise InvalidOrderError
+          do_fail! order
         end
       else # if order.market.is_inner?
         AMQPQueue.enqueue(:matching, action: 'submit', order: order.to_matching_attributes)
@@ -96,6 +95,18 @@ class Ordering
     else
       raise CancelOrderError, "Only active order can be cancelled. id: #{order.id}, state: #{order.state}"
     end
+  end
+
+  def do_fail!(order)
+    order = Order.find(order.id).lock!
+
+    if order.state == Order::WAIT
+      order.state = Order::FAIL
+      account = order.hold_account
+      account.unlock_funds(order.locked, reason: Account::ORDER_FAIL, ref: order)
+      order.save!
+    end
+    raise InvalidOrderError, "Order failed. id: #{order.id}, state: #{order.state}"
   end
 
 end
