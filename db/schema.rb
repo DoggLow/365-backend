@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190311001005) do
+ActiveRecord::Schema.define(version: 20190411011530) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -463,17 +463,19 @@ ActiveRecord::Schema.define(version: 20190311001005) do
   add_index "read_marks", ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id", using: :btree
 
   create_table "referrals", force: true do |t|
-    t.integer "member_id",                                         null: false
-    t.integer "currency",                                          null: false
-    t.decimal "amount",    precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal "total",     precision: 32, scale: 16, default: 0.0, null: false
-    t.integer "trade_id"
+    t.integer "member_id",                                               null: false
+    t.integer "currency",                                                null: false
+    t.decimal "amount",          precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal "total",           precision: 32, scale: 16, default: 0.0, null: false
     t.integer "state"
+    t.integer "modifiable_id"
+    t.string  "modifiable_type"
   end
 
   add_index "referrals", ["currency", "state"], name: "index_referrals_on_currency_and_state", using: :btree
   add_index "referrals", ["member_id", "state"], name: "index_referrals_on_member_id_and_state", using: :btree
   add_index "referrals", ["member_id"], name: "index_referrals_on_member_id", using: :btree
+  add_index "referrals", ["modifiable_id", "modifiable_type"], name: "index_referrals_on_modifiable_id_and_modifiable_type", using: :btree
   add_index "referrals", ["state"], name: "index_referrals_on_state", using: :btree
 
   create_table "running_accounts", force: true do |t|

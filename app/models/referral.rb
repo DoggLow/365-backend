@@ -8,15 +8,17 @@ class Referral < ActiveRecord::Base
   PENDING = 'pending'
   PAID = 'paid'
 
+  belongs_to :modifiable, polymorphic: true
   belongs_to :member
 
-  scope :paid, -> { with_state(:paid) }
-  scope :pending, -> { with_state(:pending) }
-  scope :paid_sum, -> (currency) { paid.with_currency(currency).sum(:total) }
-  scope :amount_sum, -> (currency) { paid.with_currency(currency).sum(:amount) }
+  scope :paid, -> {with_state(:paid)}
+  scope :pending, -> {with_state(:pending)}
+  scope :paid_sum, -> (currency) {paid.with_currency(currency).sum(:total)}
+  scope :amount_sum, -> (currency) {paid.with_currency(currency).sum(:amount)}
 
   def calculate
     return unless state == Referral::PENDING
+    return unless modifiable_type == Trade.name
 
     total = 0.0
     member.referrer_ids.each do |referrer_id|

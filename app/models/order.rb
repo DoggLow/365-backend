@@ -190,7 +190,8 @@ class Order < ActiveRecord::Base
         member: member,
         currency: currency,
         amount: amount,
-        trade_id: trade_id,
+        modifiable_id: trade_id,
+        modifiable_type: Trade.name,
         state: Referral::PENDING
     )
   end
