@@ -10,8 +10,8 @@ module Private
       Currency.all.each do |currency|
         code = currency.code
         main_balance = current_user.get_account(code).balance
-        margin_balance = current_user.get_margin_account(code).balance
-        lending_balance = current_user.get_lending_account(code).balance
+        margin_balance = currency.coin? ? current_user.get_margin_account(code).balance : 0
+        lending_balance = currency.coin? ? current_user.get_lending_account(code).balance : 0
         total = main_balance + margin_balance + lending_balance
         summaries << {currency: currency, main: main_balance, margin: margin_balance, lending: lending_balance, total: total}
       end

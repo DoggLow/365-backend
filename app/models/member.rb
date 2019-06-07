@@ -28,12 +28,12 @@ class Member < ActiveRecord::Base
   has_many :referees, class_name: 'Member', foreign_key: :referrer_id
   serialize :referrer_ids, Array
 
-  scope :enabled, -> { where(disabled: false) }
+  scope :enabled, -> {where(disabled: false)}
 
   delegate :activated?, to: :two_factors, prefix: true, allow_nil: true
-  delegate :name,       to: :id_document, allow_nil: true
-  delegate :full_name,  to: :id_document, allow_nil: true
-  delegate :verified?,  to: :id_document, prefix: true, allow_nil: true
+  delegate :name, to: :id_document, allow_nil: true
+  delegate :full_name, to: :id_document, allow_nil: true
+  delegate :verified?, to: :id_document, prefix: true, allow_nil: true
 
   before_validation :sanitize, :generate_sn
 
@@ -43,9 +43,9 @@ class Member < ActiveRecord::Base
   validates :ref_id, uniqueness: true, allow_nil: true
 
   before_create :build_default_id_document
-  after_create  :touch_accounts
-  after_create  :touch_margin_accounts
-  after_create  :touch_lending_accounts
+  after_create :touch_accounts
+  after_create :touch_margin_accounts
+  after_create :touch_lending_accounts
   after_update :resend_activation
 
   class << self
@@ -234,6 +234,7 @@ class Member < ActiveRecord::Base
 
     account
   end
+
   alias :get_main_account :get_account
   alias :ac :get_account
 
@@ -267,14 +268,14 @@ class Member < ActiveRecord::Base
   end
 
   def touch_margin_accounts
-    less = Currency.codes - self.accounts.map(&:currency).map(&:to_sym)
+    less = Currency.coin_codes - self.margin_accounts.map(&:currency).map(&:to_sym)
     less.each do |code|
       self.margin_accounts.create(currency: code, balance: 0, locked: 0)
     end
   end
 
   def touch_lending_accounts
-    less = Currency.codes - self.accounts.map(&:currency).map(&:to_sym)
+    less = Currency.coin_codes - self.lending_accounts.map(&:currency).map(&:to_sym)
     less.each do |code|
       self.lending_accounts.create(currency: code, balance: 0, locked: 0)
     end
@@ -314,13 +315,13 @@ class Member < ActiveRecord::Base
                      end
 
     {
-      total_margin: total_margin,
-      unrealized_pnl: unrealized_pnl,
-      unrealized_lending_fee: -unrealized_lending_fee,
-      net_value: net_value,
-      total_borrowed: total_borrowed,
-      current_margin: current_margin,
-      quote_unit: quote_unit
+        total_margin: total_margin,
+        unrealized_pnl: unrealized_pnl,
+        unrealized_lending_fee: -unrealized_lending_fee,
+        net_value: net_value,
+        total_borrowed: total_borrowed,
+        current_margin: current_margin,
+        quote_unit: quote_unit
     }
   end
 
@@ -330,7 +331,7 @@ class Member < ActiveRecord::Base
   end
 
   def force_liquidation
-    positions.open.each { |position| position.complete_close }
+    positions.open.each {|position| position.complete_close}
   end
 
   def all_ref_commissions
@@ -473,11 +474,11 @@ class Member < ActiveRecord::Base
 
   def as_json(options = {})
     super(options).merge({
-      "name" => self.name,
-      "app_activated" => self.app_two_factor.activated?,
-      "sms_activated" => self.sms_two_factor.activated?,
-      "memo" => self.id
-    })
+                             "name" => self.name,
+                             "app_activated" => self.app_two_factor.activated?,
+                             "sms_activated" => self.sms_two_factor.activated?,
+                             "memo" => self.id
+                         })
   end
 
   private

@@ -5,6 +5,7 @@ class Currency < ActiveYamlBase
   field :visible, default: true
 
   self.singleton_class.send :alias_method, :all_with_invisible, :all
+
   def self.all
     all_with_invisible.select &:visible
   end
@@ -15,6 +16,10 @@ class Currency < ActiveYamlBase
 
   def self.codes
     @codes ||= all.map &:code
+  end
+
+  def self.coin_codes
+    @coin_codes ||= coins.map &:code
   end
 
   def self.ids
@@ -121,12 +126,12 @@ class Currency < ActiveYamlBase
     hot = coinable ? self.balance : nil
 
     {
-      name: self.code.upcase,
-      sum: sum,
-      balance: balance,
-      locked: locked,
-      coinable: coinable,
-      hot: hot
+        name: self.code.upcase,
+        sum: sum,
+        balance: balance,
+        locked: locked,
+        coinable: coinable,
+        hot: hot
     }
   end
 end
