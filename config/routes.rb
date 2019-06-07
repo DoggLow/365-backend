@@ -140,6 +140,13 @@ Exchange::Application.routes.draw do
     resources :tickets, only: [:index, :new, :create, :show, :destroy] do
       resources :comments, only: [:create]
     end
+
+    resources :purchases, only: [:index, :create, :prepare, :options] do
+      collection do
+        post  :options
+        post  :prepare
+      end
+    end
   end
 
   draw :admin

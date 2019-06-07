@@ -36,4 +36,16 @@ class Referral < ActiveRecord::Base
 
     self.update!(total: total, state: Referral::PAID)
   end
+
+
+  def calculate_from_purchase(commission, ref)
+    return unless state == Referral::PENDING
+    return unless modifiable_type == Purchase.name
+
+    referrer_account = member.referrer.get_account(currency)
+    referrer_account.lock!.plus_funds commission, reason: Account::PURCHASE, ref: ref
+
+    self.update!(total: commission, state: Referral::PAID)
+    TSFMailer.affiliate(ref, commission).deliver
+  end
 end

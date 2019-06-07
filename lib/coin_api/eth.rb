@@ -84,6 +84,14 @@ module CoinAPI
       }
     end
 
+    def gas_price
+      Rails.cache.fetch "latest_#{currency.code}_gas_price".to_sym, expires_in: 5.seconds do
+        convert_from_base_unit(json_rpc(:eth_gasPrice).fetch('result').hex)
+      end
+    rescue StandardError => e
+      0
+    end
+
     protected
 
     def connection

@@ -1839,12 +1839,29 @@ zh-CN:
     phone_number_verified:
       subject: "[365 Exchange] 您已成功绑定手机"
       verified: '您已成功绑定手机，号码为：%{phone_number}。'
-    notify_cancel_orders:
-      subject: "[365 Exchange] 您的订单已取消"
-      orders_canceled: 您的订单已取消。 因为他们使用借来的资产，他们的持续时间已过期。
-    notify_disabled_from_lending:
-      subject: "[365 Exchange] 您的帐户已被停用"
-      member_disabled: 您的帐户已被停用。 因为借款金额不足。
+  tsf_mailer:
+    purchase:
+      subject: "[365 Exchange] TSF IEO purchase completed"
+      content: The purchase of TSF is completed. Please check your account.
+      time: 'Time: %{time}'
+      operation: TSF Purchase
+      tsf: 'TSF: %{tsf} TSF'
+      eth: 'ETH: %{eth} ETH'
+      gas: 'GAS: %{gas} ETH'
+    affiliate:
+      subject: "[365 Exchange] TSF IEO Affiliate"
+      content: The affiliate of TSF IEO is occured. Please check your account.
+      time: 'Time: %{time}'
+      operation: TSF Purchase Affiliate
+      amount: 'Affiliate: %{amount} TSFP'
+    convert:
+      subject: "[365 Exchange] TSFP to ETH / TSF"
+      content: The request of TSFP conversion is completed. We will check and approve your request within 3 to 5 days.
+      time: 'Time: %{time}'
+      operation: 'TSFP to: %{amount}'
+      conversion: 'Conversion: %{amount} TSF to 1 %{}'
+      amount: 'TSFP: %{amount} TSFP'
+      fee: 'Fees: %{fee} TSFP'
   system_mailer:
     daily_stats:
       member_stats: 新增用户

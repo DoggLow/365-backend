@@ -452,6 +452,26 @@ ActiveRecord::Schema.define(version: 20190411011530) do
     t.string   "tag"
   end
 
+  create_table "purchase_options", force: true do |t|
+    t.integer "lot_unit",                               default: 500,  null: false
+    t.decimal "tsf_usd",       precision: 32, scale: 2, default: 0.15, null: false
+    t.decimal "affiliate_fee", precision: 5,  scale: 2, default: 20.0, null: false
+  end
+
+  create_table "purchases", force: true do |t|
+    t.integer  "member_id",                                          null: false
+    t.integer  "currency",                                           null: false
+    t.integer  "unit",                                 default: 0,   null: false
+    t.integer  "amount",                               default: 0,   null: false
+    t.decimal  "price",      precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "total",      precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchases", ["member_id"], name: "index_purchases_on_member_id", using: :btree
+
   create_table "read_marks", force: true do |t|
     t.integer  "readable_id"
     t.integer  "member_id",                null: false

@@ -107,6 +107,8 @@ class LendingAccount < ActiveRecord::Base
       if price != 0
         price = 1 / price
       end
+    elsif base_unit.include? 'tsf'
+      price = 0
     else
       mkt_id = "#{base_unit}#{quote_unit}"
       if Market.find(mkt_id).blank?

@@ -19,6 +19,16 @@ class Price < ActiveRecord::Base
       end
     end
 
+    def latest_price_3rd_party(fromSymbol, toSymbol)
+      from = fromSymbol.upcase
+      to = toSymbol.upcase
+      Rails.cache.fetch "latest_#{from}#{to}_price".to_sym, expires_in: 1.minute do
+        response = Faraday.get "https://min-api.cryptocompare.com/data/price?fsym=#{from}&tsyms=#{to}"
+        JSON.parse(response.body)[to].round(2)
+      end
+    rescue StandardError => e
+      0
+    end
   end
 
   def market_name

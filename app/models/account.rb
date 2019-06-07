@@ -17,6 +17,7 @@ class Account < ActiveRecord::Base
   WITHDRAW = :withdraw
   CLAIM_GAS = :claim_gas
   REFERRAL = :referral
+  PURCHASE = :purchase
   ZERO = 0.to_d
 
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5}
@@ -222,6 +223,8 @@ class Account < ActiveRecord::Base
       if price != 0
         price = 1 / price
       end
+    elsif base_unit.include? 'tsf'
+      price = 0
     else
       mkt_id = "#{base_unit}#{quote_unit}"
       if Market.find(mkt_id).blank?

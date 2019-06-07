@@ -1773,6 +1773,29 @@ en:
     phone_number_verified:
       subject: "[365 Exchange] Your phone number verified"
       verified: 'Your phone number verified: %{phone_number}'
+  tsf_mailer:
+    purchase:
+      subject: "[365 Exchange] TSF IEO purchase completed"
+      content: The purchase of TSF is completed. Please check your account.
+      time: 'Time: %{time}'
+      operation: TSF Purchase
+      tsf: 'TSF: %{tsf} TSF'
+      eth: 'ETH: %{eth} ETH'
+      gas: 'GAS: %{gas} ETH'
+    affiliate:
+      subject: "[365 Exchange] TSF IEO Affiliate"
+      content: The affiliate of TSF IEO is occured. Please check your account.
+      time: 'Time: %{time}'
+      operation: TSF Purchase Affiliate
+      amount: 'Affiliate: %{amount} TSFP'
+    convert:
+      subject: "[365 Exchange] TSFP to ETH / TSF"
+      content: The request of TSFP conversion is completed. We will check and approve your request within 3 to 5 days.
+      time: 'Time: %{time}'
+      operation: 'TSFP to: %{amount}'
+      conversion: 'Conversion: %{amount} TSF to 1 %{}'
+      amount: 'TSFP: %{amount} TSFP'
+      fee: 'Fees: %{fee} TSFP'
   system_mailer:
     daily_stats:
       member_stats: Member Stats

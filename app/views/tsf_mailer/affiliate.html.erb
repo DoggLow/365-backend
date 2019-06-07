@@ -1,0 +1,11 @@
+<p>
+  <%= t('.content') %>
+</p>
+
+<p>
+  <%= t(".time", time: @purchase.created_at) %>
+  <br/>
+  <%= t('.operation') %>
+  <br/>
+  <%= t(".amount", amount: @amount) %>
+</p>
