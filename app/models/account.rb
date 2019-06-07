@@ -53,7 +53,7 @@ class Account < ActiveRecord::Base
   end
 
   def touch_address
-    payment_addresses.create(currency: self.currency) unless (currency_obj.erc20? || currency_obj.neo_gas_or_nep5?)
+    payment_addresses.create(currency: self.currency) unless currency_obj.erc20?
   end
 
   def self.after(*names)
