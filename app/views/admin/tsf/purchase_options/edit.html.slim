@@ -1,0 +1,8 @@
+.row
+  .col-xs-12
+    = simple_vertical_form_for @purchase_option, :url => admin_tsf_purchase_option_path do |f|
+      = f.input :lot_unit, label: "LOT Unit (TSF)"
+      = f.input :tsf_usd
+      = f.input :affiliate_fee, label: "Affiliate Fee (%)"
+
+      = f.button :wrapped, t('actions.submit'), cancel: admin_tsf_purchase_options_path

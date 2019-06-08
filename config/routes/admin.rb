@@ -36,6 +36,10 @@ namespace :admin do
     resource :history, :controller => 'history', :only => :show
   end
 
+  namespace :tsf do
+    resources :purchase_options
+  end
+
   namespace :statistic do
     resource :members, :only => :show
     resource :orders, :only => :show
