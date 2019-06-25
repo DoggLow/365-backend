@@ -81,8 +81,8 @@
   base_unit: bsv
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: bsv, fixed: 8}
-  ask: {fee: 0, currency: dash, fixed: 8}
+  bid: {fee: 0, currency: btc, fixed: 8}
+  ask: {fee: 0, currency: bsv, fixed: 8}
   sort_order: 1
   margin: true
   #visible: false     # default to true
@@ -161,7 +161,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: doge, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: batbtc
@@ -225,7 +225,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: tusd, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: linkbtc
@@ -276,7 +276,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: cro, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: kcsbtc
@@ -288,7 +288,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: kcs, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: htbtc
@@ -300,7 +300,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: ht, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: usdcbtc
@@ -312,7 +312,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: usdc, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: bixbtc
@@ -324,7 +324,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: bix, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: usdsbtc
@@ -336,7 +336,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: usds, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: gasbtc
@@ -458,8 +458,8 @@
   base_unit: bsv
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: bsv, fixed: 8}
-  ask: {fee: 0, currency: dash, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 8}
+  ask: {fee: 0, currency: bsv, fixed: 8}
   sort_order: 1
   #visible: false     # default to true
 

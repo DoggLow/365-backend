@@ -8,7 +8,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: BTC
-  rpc: http://rpcuser:rpcpassword@127.0.0.1:8332
+  rpc: http://m365btcrpc:h8fraz4EQDhxd3y9d3Ytbtc@172.31.32.169:8342
   info_url: https://coinmarketcap.com/currencies/bitcoin
   blockchain: https://blockchain.com/btc/tx/#{txid}
   address_url: https://blockchain.com/btc/address/#{address}
@@ -26,7 +26,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: ETH
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.46.110:8555
   info_url: https://coinmarketcap.com/currencies/ethereum
   blockchain: https://etherscan.io/tx/#{txid}
   address_url: https://etherscan.io/address/#{address}
@@ -44,7 +44,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: XRP
-  rpc: https://s.altnet.rippletest.net:51234
+  rpc: http://172.31.32.243:5015
   info_url: https://coinmarketcap.com/currencies/ripple
   blockchain: https://bithomp.com/explorer/#{txid}
   address_url: https://bithomp.com/explorer/#{address}
@@ -62,7 +62,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: BTC
-  rpc: http://rpcuser:rpcpassword@127.0.0.1:9332
+  rpc: http://m365ltcrpc:h8fraz4EQDhxd3y9d3Ytltc@172.31.42.46:9342
   info_url: https://coinmarketcap.com/currencies/litecoin
   blockchain: http://explorer.litecoin.net/tx/#{txid}
   address_url: http://explorer.litecoin.net/address/#{address}
@@ -80,7 +80,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: BTC
-  rpc: http://rpcuser:rpcpassword@127.0.0.1:8332
+  rpc: http://m365bchrpc:h8fraz4EQDhxd3y9d3Ytbch@172.31.38.127:8342
   info_url: https://coinmarketcap.com/currencies/bitcoin-cash
   blockchain: https://explorer.bitcoin.com/bch/tx/#{txid}
   address_url: https://explorer.bitcoin.com/bch/address/#{address}
@@ -99,7 +99,7 @@
   max_confirm: 3
   erc20_contract_address: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52'
   api_client: ERC20
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.46.110:8555
   info_url: https://coinmarketcap.com/currencies/binance-coin
   blockchain: https://etherscan.io/tx/#{txid}
   address_url: https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52?a={address}
@@ -117,16 +117,29 @@
   min_confirm: 1
   max_confirm: 3
   api_client: ADA
-  rpc: https://127.0.0.1:8090
+  rpc: https://172.31.44.41:8100
   info_url: https://coinmarketcap.com/currencies/cardano
   blockchain: https://cardanoexplorer.com/tx/#{txid}
   address_url: https://cardanoexplorer.com/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
   withdraw: {fee: 0, min_amount: 0, quick_max: 0}
-  cert: '/home/deploy/.ssl_certification/.ada/server.cert'
-  p_key: '/home/deploy/.ssl_certification/.ada/server.key'
+  ca_cert: '/home/deploy/.ssl/.ada/ca.crt'
+  cert: '/home/deploy/.ssl/.ada/client.pem'
+  p_key: '/home/deploy/.ssl/.ada/client.key'
   spending_password: AF2DE2E90DB9083AEC9ADC34FF2EDFC3F2346AB2DEF234D5ECEE34AC231CD23A
+  backup_phrase:
+    - couple
+    - snow
+    - step
+    - physical
+    - parrot
+    - child
+    - robust
+    - bid
+    - buzz
+    - bottom
+    - tunnel
 
 - id: 9
   name: Tether USD
@@ -139,11 +152,29 @@
   max_confirm: 3
   erc20_contract_address: '0xdac17f958d2ee523a2206206994597c13d831ec7'
   api_client: ERC20
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.46.110:8555
   info_url: https://coinmarketcap.com/currencies/tether
   blockchain: https://etherscan.io/tx/#{txid}
   address_url: https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7?a={address}
   case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 10
+  name: Bitcoin SV
+  code: bsv
+  symbol: "₿"
+  type: coin
+  precision: 8
+  base_factor: 100_000_000
+  min_confirm: 1
+  max_confirm: 3
+  api_client: BTC
+  rpc: http://m365bsvrpc:h8fraz4EQDhxd3y9d3Ytbsv@172.31.36.1:8342
+  info_url: https://coinmarketcap.com/currencies/bitcoin-sv
+  blockchain: https://blockchair.com/bitcoin-sv/transaction/#{txid}
+  address_url: https://blockchair.com/bitcoin-sv/address/#{address}
+  case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
   withdraw: {fee: 0, min_amount: 0, quick_max: 0}
 
@@ -157,7 +188,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: BTC
-  rpc: http://rpcuser:rpcpassword@127.0.0.1:9998
+  rpc: http://m365dashrpc:h8fraz4EQDhxd3y9d3Ytdash@172.31.42.46:10008
   info_url: https://coinmarketcap.com/currencies/dash
   blockchain: https://explorer.dash.org/tx/#{txid}
   address_url: https://explorer.dash.org/address/#{address}
@@ -175,7 +206,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: XMR
-  rpc: http://rpcuser:rpcpassword@127.0.0.1:28082
+  rpc: http://m365xmrrpc:h8fraz4EQDhxd3y9d3Ytxmr@172.31.47.249:18092
   info_url: https://coinmarketcap.com/currencies/monero
   blockchain: https://moneroblocks.info/tx/#{txid}
   address_url: https://moneroblocks.info/#{address}
@@ -194,7 +225,7 @@
   max_confirm: 3
   api_client: NEO
   asset_id: '0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b'
-  rpc: http://127.0.0.1:20332
+  rpc: http://172.31.43.17:10342
   info_url: https://coinmarketcap.com/currencies/neo
   blockchain: https://neoscan.io/transaction/#{txid}
   address_url: https://neoscan.io/address/#{address}
@@ -212,7 +243,7 @@
   min_confirm: 1
   max_confirm: 3
   api_client: ETH
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.37.12:8555
   info_url: https://coinmarketcap.com/currencies/ethereum-classic
   blockchain: http://etherhub.io/tx/#{txid}
   address_url: http://etherhub.io/addr/#{address}
@@ -230,13 +261,106 @@
   min_confirm: 1
   max_confirm: 3
   api_client: XEM
-  rpc: http://127.0.0.1:7890
+  rpc: http://172.31.40.119:7900
   info_url: https://coinmarketcap.com/currencies/nem
   blockchain: http://chain.nem.ninja/#/transfer/#{txid}
   address_url: http://chain.nem.ninja/#/account/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0.000005, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.000005, min_amount: 0.0050, quick_max: 0}
+
+- id: 16
+  name: Dogecoin
+  code: doge
+  symbol: "Ð"
+  type: coin
+  precision: 8
+  base_factor: 100_000_000
+  min_confirm: 1
+  max_confirm: 3
+  api_client: BTC
+  rpc: http://m365dogerpc:h8fraz4EQDhxd3y9d3Ytdoge@172.31.44.107:22565
+  info_url: https://coinmarketcap.com/currencies/dogecoin
+  blockchain: https://dogechain.info/tx/#{txid}
+  address_url: https://dogechain.info/address/#{address}
+  case_sensitive: true
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 17
+  name: Basic Attention Token
+  code: bat
+  symbol: "BAT"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/basic-attention-token
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x0d8775f648430679a709e98d2b0cb6250d2887ef?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 18
+  name: OmiseGO
+  code: omg
+  symbol: "OMG"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/omisego
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xd26114cd6EE289AccF82350c8d8487fedB8A0C07?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 19
+  name: Bitcoin Gold
+  code: btg
+  symbol: "BTG"
+  type: coin
+  precision: 8
+  base_factor: 100_000_000
+  min_confirm: 1
+  max_confirm: 3
+  api_client: BTC
+  rpc: http://m365btgrpc:h8fraz4EQDhxd3y9d3Ytbtg@172.31.43.175:8342
+  info_url: https://coinmarketcap.com/currencies/bitcoin-gold
+  blockchain: https://explorer.bitcoingold.org/insight/tx/#{txid}
+  address_url: https://explorer.bitcoingold.org/insight/address/#{address}
+  case_sensitive: true
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 20
+  name: Augur
+  code: rep
+  symbol: "REP"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0x1985365e9f78359a9B6AD760e32412f4a445E862'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/augur
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x1985365e9f78359a9B6AD760e32412f4a445E862?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
 
 - id: 21
   name: TrueUSD
@@ -249,10 +373,180 @@
   max_confirm: 3
   erc20_contract_address: '0x0000000000085d4780B73119b644AE5ecd22b376'
   api_client: ERC20
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.46.110:8555
   info_url: https://coinmarketcap.com/currencies/trueusd
   blockchain: https://etherscan.io/tx/#{txid}
   address_url: https://etherscan.io/token/0x0000000000085d4780B73119b644AE5ecd22b376?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 22
+  name: Chainlink
+  code: link
+  symbol: "LINK"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0x514910771af9ca656af840dff83e8264ecf986ca'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/chainlink
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x514910771af9ca656af840dff83e8264ecf986ca?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 23
+  name: 0X
+  code: zrx
+  symbol: "ZRX"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xe41d2489571d322189246dafa5ebde1f4699f498'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/0x
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xe41d2489571d322189246dafa5ebde1f4699f498?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 24
+  name: Bitcoin Diamond
+  code: bcd
+  symbol: "BCD"
+  type: coin
+  precision: 8
+  base_factor: 100_000_000
+  min_confirm: 1
+  max_confirm: 3
+  api_client: BTC
+  rpc: http://m365bcdrpc:h8fraz4EQDhxd3y9d3Ytbcd@172.31.34.192:8342
+  info_url: https://coinmarketcap.com/currencies/bitcoin-diamond
+  blockchain: http://explorer.btcd.io/#/TX?TX=#{txid}
+  address_url: http://explorer.btcd.io/#/address?address=#{address}
+  case_sensitive: true
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 25
+  name: Crpto.com Chain Token
+  code: cro
+  symbol: "CRO"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/crypto-com-chain
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 26
+  name: KuCoin Shares
+  code: kcs
+  symbol: "KCS"
+  type: coin
+  precision: 6
+  base_factor: 1_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0x039b5649a59967e3e936d7471f9c3700100ee1ab'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/kucoin-shares
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x039b5649a59967e3e936d7471f9c3700100ee1ab?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 27
+  name: Huobi Token
+  code: ht
+  symbol: "HT"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/huobi-token
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x6f259637dcd74c767781e37bc6133cd6a68aa161?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 28
+  name: USD Coin
+  code: usdc
+  symbol: "USDC"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/usd-coin
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 29
+  name: Bibox Token
+  code: bix
+  symbol: "BIX"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/bibox-token
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069?a={address}
+  case_sensitive: false
+  deposit: {fee: 0, min_amount: 0}
+  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 30
+  name: StableUSD
+  code: usds
+  symbol: "USDS"
+  type: coin
+  precision: 8
+  base_factor: 1_000_000_000_000_000_000
+  min_confirm: 1
+  max_confirm: 3
+  erc20_contract_address: '0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/stableusd
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
   withdraw: {fee: 0, min_amount: 0, quick_max: 0}
@@ -268,7 +562,7 @@
   max_confirm: 3
   api_client: NEO
   asset_id: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
-  rpc: http://127.0.0.1:20332
+  rpc: http://172.31.43.17:10342
   info_url: https://coinmarketcap.com/currencies/neo
   blockchain: https://neoscan.io/transaction/#{txid}
   address_url: https://neoscan.io/address/#{address}
@@ -287,7 +581,7 @@
   max_confirm: 3
   erc20_contract_address: '0x5fc05c6089102f94b77df8d57e65dd122d08311a'
   api_client: ERC20
-  rpc: http://127.0.0.1:8545
+  rpc: http://172.31.46.110:8555
   info_url: https://etherscan.io/token/0x5fc05c6089102f94b77df8d57e65dd122d08311a
   blockchain: https://etherscan.io/tx/#{txid}
   address_url: https://etherscan.io/token/0x5fc05c6089102f94b77df8d57e65dd122d08311a?a={address}

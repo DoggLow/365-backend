@@ -1,8 +1,8 @@
 .panel.panel-primary
   .panel-heading: span = t('admin_header.purchase_options')
-    = table_for(@purchase_options, class: 'table table-condensed table-hover') do |t|
-      - t.column :lot_unit, "LOT Unit (TSF)"
-      - t.column :tsf_usd, "TSF/USD Price"
-      - t.column :affiliate_fee, "Affiliate Fee (%)"
-      - t.column ''do |x|
-        = link_to t('actions.edit'), edit_admin_tsf_purchase_option_path(x)
+  = table_for(@purchase_options, class: 'table table-condensed table-hover') do |t|
+    - t.column :lot_unit, "LOT Unit (TSF)"
+    - t.column :tsf_usd, "TSF/USD Price"
+    - t.column :affiliate_fee, "Affiliate Fee (%)"
+    - t.column ''do |x|
+      = link_to t('actions.edit'), edit_admin_tsf_purchase_option_path(x)
