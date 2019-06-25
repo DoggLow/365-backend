@@ -230,7 +230,7 @@ class Member < ActiveRecord::Base
   def calculate_trade_volume(trade_unit, trade_list)
     trade_amount = Hash.new {|h, k| h[k] = 0}
     trade_list.each do |trade|
-      quote_unit = trade.currency.bid["currency"]
+      quote_unit = trade.market.bid["currency"]
       trade_amount[quote_unit] += trade.funds
     end
     total_volume = 0
@@ -241,6 +241,7 @@ class Member < ActiveRecord::Base
         total_volume += Global.estimate(key, trade_unit, value)
       end
     end
+    total_volume
   end
 
   def calculate_level
