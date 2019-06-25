@@ -1,4 +1,5 @@
 class Member < ActiveRecord::Base
+  extend Enumerize
   acts_as_taggable
   acts_as_reader
 
@@ -22,6 +23,7 @@ class Member < ActiveRecord::Base
   has_many :purchases
 
   has_one :id_document
+  enumerize :level, in: Level.enumerize
 
   has_many :authentications, dependent: :destroy
 
@@ -223,6 +225,60 @@ class Member < ActiveRecord::Base
   def get_tier(member_id)
     tier = referrer_ids.index(member_id)
     tier.nil? ? -1 : tier + 1
+  end
+
+  def calculate_trade_volume(trade_unit, trade_list)
+    trade_amount = Hash.new {|h, k| h[k] = 0}
+    trade_list.each do |trade|
+      quote_unit = trade.currency.bid["currency"]
+      trade_amount[quote_unit] += trade.funds
+    end
+    total_volume = 0
+    trade_amount.each do |key, value|
+      if key == trade_unit
+        total_volume += value
+      else
+        total_volume += Global.estimate(key, trade_unit, value)
+      end
+    end
+  end
+
+  def calculate_level
+    total_trade_volume = calculate_trade_volume(level_obj.trade['currency'], trades.d30)
+
+    level = 0
+    Level.all.each do |level_config|
+      unless (total_trade_volume >= level_config.trade['amount']) && (fee_account.balance >= level_config.holding['amount'])
+        level = level_config.id - 1
+        break
+      end
+    end
+
+    self.level = level
+    self.save!
+  end
+
+  def level_obj
+    Level.find level
+  end
+
+  def get_trade_fee(currency, amount, is_maker)
+    fee_config = is_maker ? level_obj.maker : level_obj.taker
+
+    if commission_status
+      fee = amount * fee_config['holding'] / 100
+      fee_estimation = Global.estimate(currency, level_obj.holding['currency'], fee)
+      if fee_estimation != 0 && fee_account.balance > fee_estimation
+        return [0, fee_estimation]
+      end
+    end
+
+    fee = amount * fee_config['normal'] / 100
+    [fee, 0]
+  end
+
+  def fee_account
+    get_account(level_obj.holding['currency'])
   end
 
   def get_account(currency)

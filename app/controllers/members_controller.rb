@@ -1,23 +1,36 @@
 class MembersController < ApplicationController
-  before_filter :auth_member!
-  before_filter :auth_no_initial!
+  layout false
 
-  def edit
-    @member = current_user
+    skip_before_action :verify_authenticity_token
+  before_filter :auth_member!
+
+  def show
+    data = {
+        email: current_user.email,
+        activation_status: current_user.activated?,
+        verification_status: current_user.id_document_verified?,
+        sms_status: current_user.sms_two_factor.activated?,
+        tfa_status: current_user.app_two_factor.activated?,
+        is_admin: current_user.admin?,
+        commission_status: current_user.commission_status,
+        level: current_user.level_obj.key,
+        logins: current_user.signup_histories.last(10)
+    }
+
+    render json: data.to_json, status: :ok
   end
 
   def update
-    @member = current_user
-
-    if @member.update_attributes(member_params)
-      redirect_to forum_path
+    if current_user.update_attributes member_params
+      render_json(MemberUpdateSuccess.new)
     else
-      render :edit
+      render_json(MemberUpdateError.new)
     end
   end
 
   private
+
   def member_params
-    params.required(:member).permit(:display_name)
+    params.required(:member).permit(:commission_status)
   end
 end

@@ -1,0 +1,7 @@
+.row
+  .col-xs-12
+    = simple_vertical_form_for @setting, :url => admin_setting_path do |f|
+      = f.input :initial_margin, label: "Initial Margin (%)"
+      = f.input :maintenance_margin, label: "Maintenance Margin (%)"
+
+      = f.button :wrapped, t('actions.submit'), cancel: admin_settings_path

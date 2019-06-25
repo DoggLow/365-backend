@@ -1,0 +1,62 @@
+- id: 0
+  key: 'General'
+  trade: {currency: btc, amount: 0}
+  holding: {currency: skb, amount: 0}
+  maker: {normal: 0.2, holding: 0.15} # fee for maker, unit: %
+  taker: {normal: 0.2, holding: 0.15} # fee for taker, unit: %
+
+- id: 1
+  key: 'VIP 1'
+  trade: {currency: btc, amount: 100}
+  holding: {currency: skb, amount: 50}
+  maker: {normal: 0.18, holding: 0.135} # fee for maker, unit: %
+  taker: {normal: 0.2, holding: 0.15} # fee for taker, unit: %
+
+- id: 2
+  key: 'VIP 2'
+  trade: {currency: btc, amount: 500}
+  holding: {currency: skb, amount: 200}
+  maker: {normal: 0.16, holding: 0.12} # fee for maker, unit: %
+  taker: {normal: 0.2, holding: 0.15} # fee for taker, unit: %
+
+- id: 3
+  key: 'VIP 3'
+  trade: {currency: btc, amount: 4500}
+  holding: {currency: skb, amount: 1000}
+  maker: {normal: 0.14, holding: 0.105} # fee for maker, unit: %
+  taker: {normal: 0.18, holding: 0.135} # fee for taker, unit: %
+
+- id: 4
+  key: 'VIP 4'
+  trade: {currency: btc, amount: 10000}
+  holding: {currency: skb, amount: 2000}
+  maker: {normal: 0.12, holding: 0.09} # fee for maker, unit: %
+  taker: {normal: 0.16, holding: 0.12} # fee for taker, unit: %
+
+- id: 5
+  key: 'VIP 5'
+  trade: {currency: btc, amount: 20000}
+  holding: {currency: skb, amount: 3500}
+  maker: {normal: 0.10, holding: 0.075} # fee for maker, unit: %
+  taker: {normal: 0.14, holding: 0.105} # fee for taker, unit: %
+
+- id: 6
+  key: 'VIP 6'
+  trade: {currency: btc, amount: 40000}
+  holding: {currency: skb, amount: 6000}
+  maker: {normal: 0.08, holding: 0.06} # fee for maker, unit: %
+  taker: {normal: 0.12, holding: 0.09} # fee for taker, unit: %
+
+- id: 7
+  key: 'VIP 7'
+  trade: {currency: btc, amount: 80000}
+  holding: {currency: skb, amount: 9000}
+  maker: {normal: 0.06, holding: 0.045} # fee for maker, unit: %
+  taker: {normal: 0.1, holding: 0.075} # fee for taker, unit: %
+
+- id: 8
+  key: 'VIP 8'
+  trade: {currency: btc, amount: 150000}
+  holding: {currency: skb, amount: 11000}
+  maker: {normal: 0.04, holding: 0.03} # fee for maker, unit: %
+  taker: {normal: 0.08, holding: 0.06} # fee for taker, unit: %

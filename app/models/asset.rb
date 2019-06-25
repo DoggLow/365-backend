@@ -11,5 +11,11 @@ end
 class Asset::IdDocumentFile < Asset
 end
 
-class Asset::IdBillFile < Asset
+class Asset::IdBillFrontFile < Asset
+end
+
+class Asset::IdBillBackFile < Asset
+end
+
+class Asset::IdSelfieFile < Asset
 end

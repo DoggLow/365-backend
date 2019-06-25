@@ -17,6 +17,11 @@
         span = link_to @id_document.member.email, admin_member_path(@id_document.member)
     .row
       .col-xs-6.text-right
+        label = t('.gender')
+      .col-xs-18
+        span = @id_document.gender
+    .row
+      .col-xs-6.text-right
         label = t('.birth_day')
       .col-xs-18
         span = @id_document.birth_date
@@ -30,6 +35,11 @@
         label = t('.city')
       .col-xs-18
         span = @id_document.city
+    .row
+      .col-xs-6.text-right
+        label = t('.state')
+      .col-xs-18
+        span = @id_document.state
     .row
       .col-xs-6.text-right
         label = t('.country')
@@ -64,7 +74,17 @@
       .col-xs-6.text-right
         label = t('.id_bill_file')
       .col-xs-18
-        = admin_asset_tag @id_document.id_bill_file
+        = admin_asset_tag @id_document.id_bill_file1
+    .row
+      .col-xs-6.text-right
+        label = t('.id_bill_file')
+      .col-xs-18
+        = admin_asset_tag @id_document.id_bill_file2
+    .row
+      .col-xs-6.text-right
+        label = t('.id_selfie_file')
+      .col-xs-18
+        = admin_asset_tag @id_document.id_selfie_file
     .row
       .col-xs-6.text-right
         label = t('.created_at')

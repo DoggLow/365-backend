@@ -98,7 +98,7 @@ class Market < ActiveYamlBase
   end
 
   def is_margin?
-    margin.present?
+    margin.present? && margin
   end
 
   def scope?(account_or_currency)
@@ -131,7 +131,7 @@ class Market < ActiveYamlBase
         visible: visible,
         is_margin: is_margin?
     }
-    data[:margin] = margin unless margin.blank?
+    data[:margin] = {initial: Setting.get('initial_margin'), maintenance: Setting.get('maintenance_margin')} if is_margin?
     data
   end
 

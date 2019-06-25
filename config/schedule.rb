@@ -23,6 +23,10 @@ every '0 0 15 * *' do
   rake 'referral:calculate'
 end
 
+every 1.day, :at => '0:00 am' do
+  rake 'member:cal_level'
+end
+
 every 5.minutes do
   rake 'solvency:liability_proof'
 end

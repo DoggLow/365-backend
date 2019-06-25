@@ -9,6 +9,31 @@ class Global
         Daemons::Rails::Monitoring.statuses
       end
     end
+
+    def estimate(base_unit, quote_unit, amount)
+      if base_unit == quote_unit
+        price = 1
+      else
+        mkt_id = "#{base_unit}#{quote_unit}"
+        if Market.find_by_id(mkt_id).present?
+          price = Global[mkt_id].ticker[:last]
+        else
+          mkt_id = "#{quote_unit}#{base_unit}"
+          if Market.find_by_id(mkt_id).present?
+            price = Global[mkt_id].ticker[:last]
+            if price != 0
+              price = 1 / price
+            end
+          else
+            price = Global["#{quote_unit}btc"].ticker[:last]
+            if price != 0
+              price = Global["#{base_unit}btc"].ticker[:last] / price
+            end
+          end
+        end
+      end
+      amount * price
+    end
   end
 
   def initialize(currency)
@@ -25,8 +50,8 @@ class Global
     end
   end
 
-  def key(key, interval=5)
-    seconds  = Time.now.to_i
+  def key(key, interval = 5)
+    seconds = Time.now.to_i
     time_key = seconds - (seconds % interval)
     "exchange:#{@currency}:#{key}:#{time_key}"
   end
@@ -44,18 +69,18 @@ class Global
   end
 
   def ticker
-    ticker           = Rails.cache.read("exchange:#{currency}:ticker") || default_ticker
+    ticker = Rails.cache.read("exchange:#{currency}:ticker") || default_ticker
     open = Rails.cache.read("exchange:#{currency}:ticker:open") || ticker[:last]
-    best_buy_price   = bids.first && bids.first[0] || ZERO
-    best_sell_price  = asks.first && asks.first[0] || ZERO
+    best_buy_price = bids.first && bids.first[0] || ZERO
+    best_sell_price = asks.first && asks.first[0] || ZERO
 
     ticker.merge({
-      open: open,
-      volume: h24_volume,
-      sell: best_sell_price,
-      buy: best_buy_price,
-      at: at
-    })
+                     open: open,
+                     volume: h24_volume,
+                     sell: best_sell_price,
+                     buy: best_buy_price,
+                     at: at
+                 })
   end
 
   def h24_volume

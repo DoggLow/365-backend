@@ -46,7 +46,7 @@
   bid: {fee: 0, currency: btc, fixed: 8}
   ask: {fee: 0, currency: bch, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: bnbbtc
@@ -84,7 +84,7 @@
   bid: {fee: 0, currency: bsv, fixed: 8}
   ask: {fee: 0, currency: dash, fixed: 8}
   sort_order: 1
-  margin: {initial: 40, maintenance: 20}
+  margin: true
   #visible: false     # default to true
 
 - id: dashbtc

@@ -3,6 +3,7 @@ namespace :admin do
 
   resources :documents
   resources :id_documents,     only: [:index, :show, :update]
+  resources :settings
   resources :markets, only: [:index]
   resources :tickets, only: [:index, :show] do
     member do

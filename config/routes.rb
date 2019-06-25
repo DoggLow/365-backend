@@ -21,7 +21,7 @@ Exchange::Application.routes.draw do
   get '/auth/failure' => 'sessions#failure', :as => :failure
   match '/auth/:provider/callback' => 'sessions#create', via: [:get, :post]
 
-  resource :member, :only => [:edit, :update]
+  resource :member, :only => [:show, :update]
   resource :identity, :only => [:edit, :update]
 
   get '/currencies' => 'currencies#index', as: :currency_list
@@ -55,7 +55,6 @@ Exchange::Application.routes.draw do
   scope module: :private do
     resource  :id_document, only: [:edit, :update]
 
-    resources :settings, only: [:index]
     resources :api_tokens
 
     resources :fund_sources, only: [:index, :create, :update, :destroy]

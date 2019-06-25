@@ -16,7 +16,7 @@ end
 while($running) do
   Member.enabled.all.each do |member|
     current_margin = member.sync_margin_info('btc')
-    if current_margin < ENV['MARGIN_MAINTENANCE'].to_d
+    if current_margin < Setting.get('maintenance_margin')
       member.force_liquidation
     end
 

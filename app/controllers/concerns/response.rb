@@ -50,6 +50,12 @@ module Concerns
       end
     end
 
+    class MemberUpdateSuccess < Result
+      def initialize
+        super code: 2011, text: 'Member update success', status: :ok
+      end
+    end
+
     class TFAVerified < Result
       def initialize
         super code: 2012, text: 'Two-factor authentication success', status: :ok
@@ -89,6 +95,12 @@ module Concerns
     class IdentityUpdateError < Result
       def initialize(text)
         super code: 4001, text: text, status: :bad_request
+      end
+    end
+
+    class MemberUpdateError < Result
+      def initialize
+        super code: 4002, text: "Member update Failed", status: :bad_request
       end
     end
 

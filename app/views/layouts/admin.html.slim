@@ -31,6 +31,10 @@ html lang="en"
               li class = check_active(PaymentAddress)
                 = link_to t(".menus.items.operating.payment_addresses"), admin_assets_accounts_path
 
+          - if can? :manage, Setting
+            li class = check_active('settings')
+              = link_to 'Settings', admin_settings_path
+
           - if can? :menu, Deposit
             li.dropdown class = check_active('deposits')
               = link_to 'javascript:;', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do

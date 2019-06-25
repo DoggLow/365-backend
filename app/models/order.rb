@@ -18,7 +18,7 @@ class Order < ActiveRecord::Base
   validates_numericality_of :origin_volume, :greater_than => 0
 
   validates_numericality_of :price, greater_than: 0, allow_nil: false,
-    if: "ord_type == 'limit'"
+                            if: "ord_type == 'limit'"
   validate :market_order_validations, if: "ord_type == 'market'"
 
   WAIT = 'wait'
@@ -35,18 +35,14 @@ class Order < ActiveRecord::Base
 
   has_many :active_loans
 
-  scope :done, -> { with_state(:done) }
-  scope :active, -> { with_state(:wait) }
-  scope :position, -> { group("price").pluck(:price, 'sum(volume)') }
-  scope :best_price, ->(currency) { where(ord_type: 'limit').active.with_currency(currency).matching_rule.position }
-  scope :h24, -> { where("created_at > ?", 24.hours.ago) }
+  scope :done, -> {with_state(:done)}
+  scope :active, -> {with_state(:wait)}
+  scope :position, -> {group("price").pluck(:price, 'sum(volume)')}
+  scope :best_price, ->(currency) {where(ord_type: 'limit').active.with_currency(currency).matching_rule.position}
+  scope :h24, -> {where("created_at > ?", 24.hours.ago)}
 
   def funds_used
     origin_locked - locked
-  end
-
-  def fee
-    config[kind.to_sym]["fee"]
   end
 
   def config
@@ -57,23 +53,26 @@ class Order < ActiveRecord::Base
     raise "Cannot strike on cancelled or done order. id: #{id}, state: #{state}" unless state == Order::WAIT
 
     real_sub, add = get_account_changes trade
-    real_fee      = add * fee
-    real_add      = add - real_fee
+    real_fee, real_fee_estimation = member.get_trade_fee(expect_account.currency, add, member_id == trade.maker)
+    real_add = add - real_fee
 
     if self.trigger_order_id.blank? && self.source != 'Position'
       # normal order
-      hold_account.unlock_and_sub_funds real_sub, locked: real_sub,  reason: Account::STRIKE_SUB, ref: trade
+      hold_account.unlock_and_sub_funds real_sub, locked: real_sub, reason: Account::STRIKE_SUB, ref: trade
       expect_account.plus_funds real_add, fee: real_fee, reason: Account::STRIKE_ADD, ref: trade
+      if real_fee_estimation != 0
+        member.fee_account.sub_funds real_fee_estimation, fee: 0, reason: Account::STRIKE_ADD, ref: trade
+      end
     else
       # margin order
-      hold_margin_account.unlock_and_sub_borrowed real_sub, locked: real_sub,  reason: MarginAccount::STRIKE_SUB, ref: trade
-      expect_margin_account.plus_borrowed real_add-real_fee, reason: MarginAccount::STRIKE_ADD, ref: trade
+      hold_margin_account.unlock_and_sub_borrowed real_sub, locked: real_sub, reason: MarginAccount::STRIKE_SUB, ref: trade
+      expect_margin_account.plus_borrowed real_add - real_fee, reason: MarginAccount::STRIKE_ADD, ref: trade
     end
 
-    self.volume         -= trade.volume
-    self.locked         -= real_sub
+    self.volume -= trade.volume
+    self.locked -= real_sub
     self.funds_received += add
-    self.trades_count   += 1
+    self.trades_count += 1
 
     if volume.zero?
       self.state = Order::DONE
@@ -86,9 +85,8 @@ class Order < ActiveRecord::Base
       else
         # margin order
         hold_margin_account.unlock_borrowed locked,
-                                  reason: MarginAccount::ORDER_FULLFILLED, ref: trade unless locked.zero?
+                                            reason: MarginAccount::ORDER_FULLFILLED, ref: trade unless locked.zero?
       end
-
     elsif ord_type == 'market' && locked.zero?
       # partially filled market order has run out its locked fund
       self.state = Order::CANCEL
@@ -123,11 +121,11 @@ class Order < ActiveRecord::Base
 
   def for_notify
     {
-        id:     id,
+        id: id,
         market: market,
-        kind:   kind,
-        at:     at,
-        price:  price,
+        kind: kind,
+        at: at,
+        price: price,
         volume: volume,
         origin_volume: origin_volume,
         ord_type: ord_type,
@@ -136,14 +134,14 @@ class Order < ActiveRecord::Base
   end
 
   def to_matching_attributes
-    { id: id,
-      market: market,
-      type: type[-3, 3].downcase.to_sym,
-      ord_type: ord_type,
-      volume: volume,
-      price: price,
-      locked: locked,
-      timestamp: created_at.to_i }
+    {id: id,
+     market: market,
+     type: type[-3, 3].downcase.to_sym,
+     ord_type: ord_type,
+     volume: volume,
+     price: price,
+     locked: locked,
+     timestamp: created_at.to_i}
   end
 
   def fix_number_precision
@@ -162,12 +160,13 @@ class Order < ActiveRecord::Base
   end
 
   FUSE = '0.9'.to_d
+
   def estimate_required_funds(price_levels)
     required_funds = Account::ZERO
     expected_volume = volume
 
     start_from, _ = price_levels.first
-    filled_at     = start_from
+    filled_at = start_from
 
     until expected_volume.zero? || price_levels.empty?
       level_price, level_volume = price_levels.shift
@@ -179,7 +178,7 @@ class Order < ActiveRecord::Base
     end
 
     raise "Market is not deep enough" unless expected_volume.zero?
-    raise "Volume too large" if (filled_at-start_from).abs/start_from > FUSE
+    raise "Volume too large" if (filled_at - start_from).abs / start_from > FUSE
 
     required_funds
   end

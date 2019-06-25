@@ -15,7 +15,8 @@ class Trade < ActiveRecord::Base
 
   validates_presence_of :price, :volume, :funds
 
-  scope :h24, -> { where("created_at > ?", 24.hours.ago) }
+  scope :h24, -> {where("created_at > ?", 24.hours.ago)}
+  scope :d30, -> {where("created_at > ?", 30.days.ago)}
 
   attr_accessor :side
 
@@ -24,7 +25,7 @@ class Trade < ActiveRecord::Base
   class << self
     def latest_price(currency)
       with_currency(currency).order(:id).reverse_order
-        .limit(1).first.try(:price) || "0.0".to_d
+          .limit(1).first.try(:price) || "0.0".to_d
     end
 
     def filter(market, timestamp, from, to, limit, order)
@@ -36,7 +37,7 @@ class Trade < ActiveRecord::Base
       trades
     end
 
-    def for_member(currency, member, options={})
+    def for_member(currency, member, options = {})
       trades = filter(currency, options[:time_to], options[:from], options[:to], options[:limit], options[:order]).where("ask_member_id = ? or bid_member_id = ?", member.id, member.id)
       trades.each do |trade|
         trade.side = trade.ask_member_id == member.id ? 'ask' : 'bid'
@@ -44,11 +45,19 @@ class Trade < ActiveRecord::Base
     end
   end
 
+  def maker
+    ask.created_at < bid.created_at ? ask_member_id : bid_member_id
+  end
+
+  def taker
+    ask.created_at > bid.created_at ? ask_member_id : bid_member_id
+  end
+
   def for_history
     {
-        id:     id,
-        at:     created_at.to_i,
-        price:  price.to_s  || ZERO,
+        id: id,
+        at: created_at.to_i,
+        price: price.to_s || ZERO,
         volume: volume.to_s || ZERO,
         ask_member_id: ask_member_id,
         bid_member_id: bid_member_id,
@@ -56,24 +65,24 @@ class Trade < ActiveRecord::Base
     }
   end
 
-  def for_notify(kind=nil)
+  def for_notify(kind = nil)
     {
-      id:     id,
-      kind:   kind || side,
-      at:     created_at.to_i,
-      price:  price.to_s  || ZERO,
-      volume: volume.to_s || ZERO,
-      market: currency
+        id: id,
+        kind: kind || side,
+        at: created_at.to_i,
+        price: price.to_s || ZERO,
+        volume: volume.to_s || ZERO,
+        market: currency
     }
   end
 
   def for_global
     {
-      tid:    id,
-      type:   trend == 'down' ? 'sell' : 'buy',
-      date:   created_at.to_i,
-      price:  price.to_s || ZERO,
-      amount: volume.to_s || ZERO
+        tid: id,
+        type: trend == 'down' ? 'sell' : 'buy',
+        date: created_at.to_i,
+        price: price.to_s || ZERO,
+        amount: volume.to_s || ZERO
     }
   end
 end
