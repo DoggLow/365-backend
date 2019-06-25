@@ -1,4 +1,59 @@
+require 'csv'
 namespace :migration do
+  desc "Import user data from csv"
+  task import_members_csv: :environment do
+
+    puts "Import data from CSV."
+    csv_text = File.read('/home/deploy/exchange/config/t_member.csv')
+    CSV.parse(csv_text, :headers => true).each do |row|
+      puts row
+
+      new_identity = Identity.find_or_create_by(email: row['mem_mail'])
+      new_identity.password = new_identity.password_confirmation = row['mem_pw']
+      new_identity.is_active = true
+      new_identity.save!
+
+      new_member = Member.find_or_create_by(email: new_identity.email)
+      new_member.authentications.find_or_create_by(provider: 'identity', uid: new_identity.id)
+      new_member.update_attributes(display_name: row['mem_cd'], country_code: row['mem_tel_code'], phone_number: row['mem_tel'],
+                                  referrer_id: row['mem_cd_introducer'], nickname: row['mem_id'])
+      new_member.save!
+
+      new_id_doc = new_member.id_document || new_member.create_id_document
+      new_id_doc.update_attributes(name: row['mem_name'], birth_date: row['mem_birth'], gender: row['mem_sex_cd'],
+                                  address: row['mem_addr3'], city: row['mem_addr2'], state: row['mem_addr'], country: row['mem_country_cd'],
+                                  zipcode: row['mem_zip'])
+      new_id_doc.save!
+
+      kyc_status = row['mem_kyc_status'].to_i
+      if kyc_status == 1
+        new_id_doc.approve!
+      elsif kyc_status == 8
+        new_id_doc.submit!
+      end
+
+      if row['mem_tfa_key'].present?
+        two_factor = new_member.app_two_factor
+        two_factor.update_attributes(otp_secret: row['mem_tfa_key'])
+        two_factor.save!
+        two_factor.active!
+      end
+    end
+
+    puts "Set referrer id from imported data."
+    Member.all.each do |member|
+      next if member.referrer_id.blank?
+      referrer = Member.find_by_display_name(member.referrer_id)
+      next if referrer.blank?
+
+      member.update_attributes(referrer_id: referrer.id)
+      member.save!
+    end
+
+    puts "Set referrer id tree from referrer id."
+    Rake::Task["referral:gen_referrer_ids"].invoke
+  end
+
   desc "set member activation from identity"
   task set_member_activation: :environment do
     Identity.all.each do |i|

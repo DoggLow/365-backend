@@ -5,8 +5,8 @@ class Identity < OmniAuth::Identity::Models::ActiveRecord
   MAX_LOGIN_ATTEMPTS = 5
 
   validates :email, presence: true, uniqueness: true, email: true
-  validates :password, presence: true, length: { minimum: 6, maximum: 64 }
-  validates :password_confirmation, presence: true, length: { minimum: 6, maximum: 64 }
+  validates :password, presence: true, length: { minimum: 1, maximum: 64 }
+  validates :password_confirmation, presence: true, length: { minimum: 1, maximum: 64 }
 
   before_validation :sanitize
 
