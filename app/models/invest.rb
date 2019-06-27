@@ -15,6 +15,8 @@ class Invest < ActiveRecord::Base
   validates_numericality_of :unit, :count, greater_than: 0.0
   validates_numericality_of :profit, :paid_profit, greater_than_or_equal_to: 0.0
 
+  scope :processing, -> { where(aasm_state: :processing) }
+
   aasm :whiny_transitions => false do
     state :pending,  initial: true, after_commit: :lock_funds
     state :processing

@@ -20,6 +20,13 @@ namespace :coin do
     end
   end
 
+  desc "Add new lending_accounts for new currency to already existing Members"
+  task pay_profit_invests: :environment do
+    Invest.processing.each do |invest|
+      invest.check!
+    end
+  end
+
   desc "Claim neo gas and divide into per member."
   task claim_neo_gas: :environment do
     total = Account.locked_sum('neo') + Account.balance_sum('neo')

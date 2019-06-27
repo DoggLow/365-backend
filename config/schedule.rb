@@ -27,6 +27,10 @@ every 1.day, :at => '0:00 am' do
   rake 'member:cal_level'
 end
 
+every '0 2 1 * *' do
+  rake 'coin:pay_profit_invests'
+end
+
 every 5.minutes do
   rake 'solvency:liability_proof'
 end

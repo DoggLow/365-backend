@@ -588,3 +588,11 @@
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
   withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+
+- id: 33
+  name: 'TSF Point'
+  code: tsfp
+  symbol: "TSFP"
+  type: point
+  precision: 8
+  base_factor: 100_000_000
