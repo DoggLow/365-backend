@@ -140,6 +140,8 @@ Exchange::Application.routes.draw do
       resources :comments, only: [:create]
     end
 
+    resources :invests, only: [:index, :create]
+
     resources :purchases, only: [:index, :create, :prepare, :options] do
       collection do
         post  :options

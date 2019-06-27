@@ -18,6 +18,9 @@ class Account < ActiveRecord::Base
   CLAIM_GAS = :claim_gas
   REFERRAL = :referral
   PURCHASE = :purchase
+  INVEST_LOCK = :invest_lock
+  INVEST_UNLOCK = :invest_unlock
+  INVEST_PROFIT = :invest_profit
   ZERO = 0.to_d
 
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5}

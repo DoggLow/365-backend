@@ -21,7 +21,10 @@ class AccountVersion < ActiveRecord::Base
     Account::DEPOSIT => 1000,
     Account::WITHDRAW => 2000,
     Account::REFERRAL => 700,
-    Account::PURCHASE => 3000}
+    Account::PURCHASE => 3000,
+    Account::INVEST_LOCK => 3100,
+    Account::INVEST_UNLOCK => 3110,
+    Account::INVEST_PROFIT => 3120}
   enumerize :reason, in: REASON_CODES, scope: true
 
   belongs_to :account

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190421020510) do
+ActiveRecord::Schema.define(version: 20190424001015) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -228,6 +228,20 @@ ActiveRecord::Schema.define(version: 20190421020510) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "invests", force: true do |t|
+    t.integer  "member_id",                                           null: false
+    t.integer  "currency",                                            null: false
+    t.integer  "unit",                                  default: 0,   null: false
+    t.integer  "count",                                 default: 0,   null: false
+    t.decimal  "profit",      precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "paid_profit", precision: 32, scale: 16, default: 0.0, null: false
+    t.string   "aasm_state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invests", ["member_id"], name: "index_invests_on_member_id", using: :btree
 
   create_table "k_lines", force: true do |t|
     t.integer  "market"
