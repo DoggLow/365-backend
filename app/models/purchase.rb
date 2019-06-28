@@ -41,13 +41,13 @@ class Purchase < ActiveRecord::Base
     )
 
     # calculate
-    ref_amount = amount * unit * PurchaseOption.get(affiliate_fee) / 100
+    ref_amount = amount * unit * PurchaseOption.get('affiliate_fee') / 100
     referral.calculate_from_purchase(ref_amount, self)
   end
 
   def calc_price
     self.price = Price.latest_price_3rd_party(currency, 'USD')
-    self.total = (amount.to_i * unit * PurchaseOption.get(tsf_usd) / price).round(8)
+    self.total = (amount.to_i * unit * PurchaseOption.get('tsf_usd') / price).round(8)
     self.fee = CoinAPI[currency].gas_price.round(8) * 21000
   end
 
