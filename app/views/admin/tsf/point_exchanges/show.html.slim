@@ -1,0 +1,24 @@
+.row
+  .col-xs-12
+    .panel.panel-primary
+      .panel-heading
+        span = t('.point_exchange', sn: @point_exchange.id)
+      .panel-body
+        = description_for :point_exchange do
+          = item_for @point_exchange, :id
+          = item_for @point_exchange, :created_at
+          = item_for @point_exchange, :aasm_state_text
+          hr.split
+          = item_for @point_exchange.member, :name
+          = item_for @point_exchange, :amount
+          hr.split
+          ul.list-inline.pull-right
+            - if @point_exchange.may_reject?
+              li
+                = link_to 'Reject', admin_tsf_point_exchange_path(@point_exchange.id), class: 'btn btn-danger', method: 'DELETE', confirm: 'Confirm reject?'
+            - if @point_exchange.may_accept?
+              li
+                = link_to 'Accept', admin_tsf_point_exchange_path(@point_exchange.id), class: 'btn btn-primary', method: 'PATCH'
+
+  .col-xs-12
+    = render partial: 'shared/admin/member', locals: {member: @point_exchange.member}

@@ -1,0 +1,12 @@
+= table_for(point_exchanges, class: 'table table-condensed table-hover', model: PointExchange) do |t|
+  - t.column :id, class: 'col-xs-2'
+  - t.column :created_at, class: 'col-xs-4'
+  - t.column :member, class: 'col-xs-6' do |x|
+    = link_to x.member.name, url_for([:admin, x.member]), target: '_blank'
+  - t.column :amount, class: 'col-xs-4' do |x|
+    code.text-info = "#{x.amount} TSFP"
+  - t.column :currency, class: 'col-xs-5' do |x|
+    = x.currency_obj.name
+  - t.column :state_and_action, class: 'col-xs-3' do |x|
+    span = "#{x.aasm_state_text} / "
+    = link_to t("actions.view"), admin_tsf_point_exchange_path(x.id), target: '_blank'

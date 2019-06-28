@@ -37,7 +37,7 @@ class PointExchange < ActiveRecord::Base
 
     event :accept do
       transitions from: :submitted, to: :done
-      before [:set_txid, :unlock_and_sub_funds]
+      before [:unlock_and_sub_funds, :plus_funds]
     end
   end
 

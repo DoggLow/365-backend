@@ -1,0 +1,11 @@
+- unless @pending_point_exchanges.empty?
+  .panel.panel-primary
+    .panel-heading: span = t('.one')
+      = render partial: 'table', locals: {point_exchanges: @pending_point_exchanges}
+- unless @other_point_exchanges.empty?
+  .panel.panel-success
+    .panel-heading: span = t('.all')
+      = render partial: 'table', locals: {point_exchanges: @other_point_exchanges}
+
+- if @other_point_exchanges.empty? and @pending_point_exchanges.empty?
+  h3.text-info.text-center = t('.empty')
