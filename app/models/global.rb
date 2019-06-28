@@ -11,6 +11,18 @@ class Global
     end
 
     def estimate(base_unit, quote_unit, amount)
+      if Market.find_by_id("#{base_unit}#{quote_unit}").present? || Market.find_by_id("#{quote_unit}#{base_unit}").present?
+        price = get_latest_price(base_unit, quote_unit)
+      else
+        price = get_latest_price(quote_unit, 'btc')
+        if price != 0
+          price = get_latest_price(base_unit, 'btc') / price
+        end
+      end
+      amount * price
+    end
+
+    def get_latest_price(base_unit, quote_unit)
       if base_unit == quote_unit
         price = 1
       else
@@ -25,14 +37,11 @@ class Global
               price = 1 / price
             end
           else
-            price = Global["#{quote_unit}btc"].ticker[:last]
-            if price != 0
-              price = Global["#{base_unit}btc"].ticker[:last] / price
-            end
+            price = 0
           end
         end
       end
-      amount * price
+      price
     end
   end
 
