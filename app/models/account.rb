@@ -21,6 +21,9 @@ class Account < ActiveRecord::Base
   INVEST_LOCK = :invest_lock
   INVEST_UNLOCK = :invest_unlock
   INVEST_PROFIT = :invest_profit
+  POINT_EXCHANGE_LOCK = :point_exchange_lock
+  POINT_EXCHANGE_UNLOCK = :point_exchange_unlock
+  POINT_EXCHANGE = :point_exchange
   ZERO = 0.to_d
 
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5}

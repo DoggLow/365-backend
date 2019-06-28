@@ -1854,12 +1854,20 @@ zh-CN:
       time: 'Time: %{time}'
       operation: TSF Purchase Affiliate
       amount: 'Affiliate: %{amount} TSFP'
-    convert:
+    point_exchange_submitted:
       subject: "[365 Exchange] TSFP to ETH / TSF"
-      content: The request of TSFP conversion is completed. We will check and approve your request within 3 to 5 days.
+      content: The request of TSFP conversion is submitted. We will check and approve your request within 3 to 5 days.
       time: 'Time: %{time}'
-      operation: 'TSFP to: %{amount}'
-      conversion: 'Conversion: %{amount} TSF to 1 %{}'
+      operation: 'TSFP to: %{currency}'
+      price: 'Conversion: %{price} TSF to 1 %{currency}'
+      amount: 'TSFP: %{amount} TSFP'
+      fee: 'Fees: %{fee} TSFP'
+    point_exchange_done:
+      subject: "[365 Exchange] TSFP to ETH / TSF"
+      content: The request of TSFP conversion is completed. Please check your account.
+      time: 'Time: %{time}'
+      operation: 'TSFP to: %{currency}'
+      price: 'Conversion: %{price} TSF to 1 %{currency}'
       amount: 'TSFP: %{amount} TSFP'
       fee: 'Fees: %{fee} TSFP'
   system_mailer:

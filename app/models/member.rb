@@ -22,6 +22,7 @@ class Member < ActiveRecord::Base
   has_many :signup_histories
   has_many :purchases
   has_many :invests
+  has_many :point_exchanges
 
   has_one :id_document
   enumerize :level, in: Level.enumerize

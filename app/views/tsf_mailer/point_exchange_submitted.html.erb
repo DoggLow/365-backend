@@ -1,0 +1,15 @@
+<p>
+  <%= t('.content') %>
+</p>
+
+<p>
+  <%= t(".time", time: @point_exchange.created_at) %>
+  <br/>
+  <%= t('.operation', currency: @point_exchange.currency) %>
+  <br/>
+  <%= t(".price", price: @point_exchange.price, currency: @point_exchange.currency) %>
+  <br/>
+  <%= t(".amount", amount: @point_exchange.amount) %>
+  <br/>
+  <%= t(".fee", fee: @point_exchange.fee) %>
+</p>

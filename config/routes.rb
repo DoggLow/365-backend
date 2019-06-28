@@ -141,6 +141,7 @@ Exchange::Application.routes.draw do
     end
 
     resources :invests, only: [:index, :create]
+    resources :point_exchanges, only: [:index, :create]
 
     resources :purchases, only: [:index, :create, :prepare, :options] do
       collection do
