@@ -20,7 +20,7 @@ class Invest < ActiveRecord::Base
   scope :processing, -> { where(aasm_state: :processing) }
 
   aasm :whiny_transitions => false do
-    state :pending,  initial: true, after_commit: :lock_funds
+    state :pending, initial: true, before_enter: :lock_funds
     state :processing
     state :done, after_commit: :complete_invest
 
@@ -32,12 +32,21 @@ class Invest < ActiveRecord::Base
     end
   end
 
+  def for_notify
+    {
+        id: id,
+        created_at: created_at.to_i,
+        unit: unit,
+        count: count,
+        currency: currency
+    }
+  end
 
   private
 
   def lock_funds
     hold_account.lock!
-    account.lock_funds unit * count, reason: Account::INVEST_LOCK, ref: self
+    hold_account.lock_funds unit * count, reason: Account::INVEST_LOCK, ref: self
   end
 
   def unlock_funds

@@ -6,7 +6,7 @@ module Private
     before_action :two_factor_activated!
 
     def index
-      render json: current_user.invests
+      render json: current_user.invests.map(&:for_notify)
     end
 
     def create
@@ -14,12 +14,12 @@ module Private
 
       if two_factor_auth_verified?
         if @invest.save
-          render json: @invest, status: :ok
+          render nothing: true
         else
           render text: @invest.errors.full_messages.join(', '), status: 403
         end
       else
-        render text: I18n.t('private.invests.create.two_factors_error'), status: 403
+        render text: I18n.t('private.withdraws.create.two_factors_error'), status: 403
       end
     end
 
