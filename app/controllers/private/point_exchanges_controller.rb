@@ -6,7 +6,7 @@ module Private
     before_action :two_factor_activated!
 
     def index
-      render json: current_user.invests
+      render json: current_user.point_exchanges.map(&:for_notify)
     end
 
     def create
@@ -15,12 +15,12 @@ module Private
       if two_factor_auth_verified?
         if @point_exchange.save
           @point_exchange.submit!
-          render json: @point_exchange, status: :ok
+          render nothing: true
         else
           render text: @point_exchange.errors.full_messages.join(', '), status: 403
         end
       else
-        render text: I18n.t('private.point_exchanges.create.two_factors_error'), status: 403
+        render text: I18n.t('private.withdraws.create.two_factors_error'), status: 403
       end
     end
 

@@ -41,6 +41,17 @@ class PointExchange < ActiveRecord::Base
     end
   end
 
+  def for_notify
+    {
+        id: id,
+        created_at: created_at.to_i,
+        amount: amount,
+        fee: fee,
+        currency: currency,
+        state: aasm_state
+    }
+  end
+
   private
 
   def lock_funds
@@ -66,21 +77,21 @@ class PointExchange < ActiveRecord::Base
   def send_email
     case aasm_state
     when 'submitted'
-      TSFMailer.point_exchange_submitted(self.id).deliver
+      TSFMailer.point_exchange_submitted(self).deliver
     when 'done'
-      TSFMailer.point_exchange_done(self.id).deliver
+      TSFMailer.point_exchange_done(self).deliver
     end
   end
 
   def calc_price
     if currency == 'tsf'
-      coin_price = PurchaseOption.get(tsf_usd)
+      coin_price = PurchaseOption.get('tsf_usd')
     else
       coin_price = Price.latest_price_3rd_party(currency, 'USD')
     end
 
-    self.fee = amount.to_d * PurchaseOption.get(tsfp_fee) / 100
-    self.price = coin_price == 0 ? 0 : (coin_price / PurchaseOption.get(tsfp_usd)).round(8)
+    self.fee = amount.to_d * PurchaseOption.get('tsfp_fee') / 100
+    self.price = coin_price == 0 ? 0 : (PurchaseOption.get('tsfp_usd') / coin_price).round(8)
     self.total = (amount.to_d - self.fee) * self.price
   end
 

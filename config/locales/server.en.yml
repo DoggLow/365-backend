@@ -1793,7 +1793,7 @@ en:
       content: The request of TSFP conversion is submitted. We will check and approve your request within 3 to 5 days.
       time: 'Time: %{time}'
       operation: 'TSFP to: %{currency}'
-      price: 'Conversion: %{price} TSF to 1 %{currency}'
+      price: 'Conversion: %{price} TSFP to 1 %{currency}'
       amount: 'TSFP: %{amount} TSFP'
       fee: 'Fees: %{fee} TSFP'
     point_exchange_done:
@@ -1801,7 +1801,7 @@ en:
       content: The request of TSFP conversion is completed. Please check your account.
       time: 'Time: %{time}'
       operation: 'TSFP to: %{currency}'
-      price: 'Conversion: %{price} TSF to 1 %{currency}'
+      price: 'Conversion: %{price} TSFP to 1 %{currency}'
       amount: 'TSFP: %{amount} TSFP'
       fee: 'Fees: %{fee} TSFP'
   system_mailer:

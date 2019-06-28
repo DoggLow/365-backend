@@ -5,9 +5,9 @@
 <p>
   <%= t(".time", time: @point_exchange.created_at) %>
   <br/>
-  <%= t('.operation', currency: @point_exchange.currency) %>
+  <%= t('.operation', currency: @point_exchange.currency.upcase) %>
   <br/>
-  <%= t(".price", price: @point_exchange.price, currency: @point_exchange.currency) %>
+  <%= t(".price", price: @point_exchange.price == 0 ? 0 : 1 / @point_exchange.price, currency: @point_exchange.currency.upcase) %>
   <br/>
   <%= t(".amount", amount: @point_exchange.amount) %>
   <br/>
