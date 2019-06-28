@@ -4,5 +4,7 @@
       = f.input :lot_unit, label: "LOT Unit (TSF)"
       = f.input :tsf_usd
       = f.input :affiliate_fee, label: "Affiliate Fee (%)"
+      = f.input :tsfp_usd
+      = f.input :tsfp_fee, label: "TSFP Exchange Fee (%)"
 
       = f.button :wrapped, t('actions.submit'), cancel: admin_tsf_purchase_options_path

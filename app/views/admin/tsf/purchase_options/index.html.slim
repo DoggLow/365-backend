@@ -4,5 +4,7 @@
     - t.column :lot_unit, "LOT Unit (TSF)"
     - t.column :tsf_usd, "TSF/USD Price"
     - t.column :affiliate_fee, "Affiliate Fee (%)"
+    - t.column :tsfp_usd, "TSFP/USD Price"
+    - t.column :tsfp_fee, "TSFP Exchange Fee (%)"
     - t.column ''do |x|
       = link_to t('actions.edit'), edit_admin_tsf_purchase_option_path(x)

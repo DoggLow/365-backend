@@ -6,8 +6,7 @@ class Purchase < ActiveRecord::Base
   validates_numericality_of :fee, greater_than_or_equal_to: 0.0
 
   validate :validate_data, on: :create
-
-  before_validation :calc_price
+  before_validation :calc_price, on: :create
   after_create :strike
 
   belongs_to :member
@@ -42,14 +41,14 @@ class Purchase < ActiveRecord::Base
     )
 
     # calculate
-    ref_amount = amount * unit * PurchaseOption.affiliate_fee
+    ref_amount = amount * unit * PurchaseOption.get(affiliate_fee) / 100
     referral.calculate_from_purchase(ref_amount, self)
   end
 
   def calc_price
     self.price = Price.latest_price_3rd_party(currency, 'USD')
-    self.total = (amount.to_i * unit * PurchaseOption.tsf_price / price).round(8)
-    self.fee = 1 #CoinAPI[currency].gas_price.round(8) * 21000
+    self.total = (amount.to_i * unit * PurchaseOption.get(tsf_usd) / price).round(8)
+    self.fee = CoinAPI[currency].gas_price.round(8) * 21000
   end
 
   def validate_data

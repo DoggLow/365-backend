@@ -15,6 +15,8 @@ class Invest < ActiveRecord::Base
   validates_numericality_of :unit, :count, greater_than: 0.0
   validates_numericality_of :profit, :paid_profit, greater_than_or_equal_to: 0.0
 
+  validate :validate_data, on: :create
+
   scope :processing, -> { where(aasm_state: :processing) }
 
   aasm :whiny_transitions => false do
@@ -41,6 +43,17 @@ class Invest < ActiveRecord::Base
   def unlock_funds
     hold_account.lock!
     hold_account.unlock_funds unit * count, reason: Account::INVEST_UNLOCK, ref: self
+  end
+
+  def validate_data
+    if hold_account.blank?
+      errors.add 'account', 'invalid'
+    else
+      balance = hold_account.balance
+      if balance < unit * count
+        errors.add 'balance', 'insufficient'
+      end
+    end
   end
 
   def hold_account

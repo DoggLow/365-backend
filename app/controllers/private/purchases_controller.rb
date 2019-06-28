@@ -18,7 +18,7 @@ module Private
 
     def prepare
       new_purchase_params = purchase_params
-      new_purchase_params[:unit] = PurchaseOption.lot_unit
+      new_purchase_params[:unit] = PurchaseOption.get(lot_unit)
 
       new_purchase = current_user.purchases.new new_purchase_params
       if new_purchase.valid?
@@ -31,7 +31,7 @@ module Private
     def options
       currency = params[:currency]
       price = Price.latest_price_3rd_party(currency, 'USD')
-      render json: {price: price, tsf_price: PurchaseOption.tsf_price, lot_unit: PurchaseOption.lot_unit}.to_json
+      render json: {price: price, tsf_price: PurchaseOption.get(tsf_usd), lot_unit: PurchaseOption.get(lot_unit)}.to_json
     end
 
     private
