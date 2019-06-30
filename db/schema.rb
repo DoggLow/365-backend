@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190425001000) do
+ActiveRecord::Schema.define(version: 20190426170008) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -294,10 +294,10 @@ ActiveRecord::Schema.define(version: 20190425001000) do
     t.boolean  "api_disabled",                default: false
     t.string   "nickname"
     t.integer  "referrer_id"
-    t.string   "referrer_ids",                default: "--- []\n"
+    t.text "referrer_ids"
     t.string   "ref_id"
-    t.integer  "level",             limit: 1, default: 0,          null: false
-    t.boolean  "commission_status",           default: false,      null: false
+    t.integer "level", limit: 1, default: 0, null: false
+    t.boolean "commission_status", default: false, null: false
   end
 
   create_table "oauth_access_grants", force: true do |t|
