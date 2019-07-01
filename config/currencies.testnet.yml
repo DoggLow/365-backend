@@ -14,7 +14,7 @@
   address_url: https://blockchain.com/btc/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.0005, min_amount: 0.002, quick_max: 0}
 
 - id: 2
   name: Ethereum
@@ -32,7 +32,7 @@
   address_url: https://etherscan.io/address/#{address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.01, min_amount: 0.02, quick_max: 0}
 
 - id: 3
   name: XRP
@@ -50,7 +50,7 @@
   address_url: https://bithomp.com/explorer/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.25, min_amount: 22, quick_max: 0}
 
 - id: 4
   name: Litecoin
@@ -68,7 +68,7 @@
   address_url: http://explorer.litecoin.net/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.002, quick_max: 0}
 
 - id: 5
   name: Bitcoin Cash
@@ -86,7 +86,7 @@
   address_url: https://explorer.bitcoin.com/bch/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.002, quick_max: 0}
 
 - id: 7
   name: Binance Coin
@@ -105,7 +105,7 @@
   address_url: https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.1, quick_max: 0}
 
 - id: 8
   name: Cardano
@@ -123,7 +123,7 @@
   address_url: https://cardanoexplorer.com/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 1, min_amount: 4, quick_max: 0}
   ca_cert: '/home/deploy/.ssl/.ada/ca.crt'
   cert: '/home/deploy/.ssl/.ada/client.pem'
   p_key: '/home/deploy/.ssl/.ada/client.key'
@@ -158,7 +158,7 @@
   address_url: https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 6.6, min_amount: 13.2, quick_max: 0}
 
 - id: 10
   name: Bitcoin SV
@@ -176,7 +176,7 @@
   address_url: https://blockchair.com/bitcoin-sv/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.1, quick_max: 0}
 
 - id: 11
   name: Dash
@@ -194,7 +194,7 @@
   address_url: https://explorer.dash.org/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.002, min_amount: 0.004, quick_max: 0}
 
 - id: 12
   name: Monero
@@ -212,7 +212,7 @@
   address_url: https://moneroblocks.info/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.0001, min_amount: 0.01, quick_max: 0}
 
 - id: 13
   name: NEO
@@ -231,7 +231,7 @@
   address_url: https://neoscan.io/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0, min_amount: 1, quick_max: 0}
 
 - id: 14
   name: Ethereum Classic
@@ -249,7 +249,7 @@
   address_url: http://etherhub.io/addr/#{address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.01, min_amount: 0.02, quick_max: 0}
 
 - id: 15
   name: NEM
@@ -267,7 +267,7 @@
   address_url: http://chain.nem.ninja/#/account/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0.000005, min_amount: 0.0050, quick_max: 0}
+  withdraw: {fee: 4, min_amount: 8, quick_max: 0}
 
 - id: 16
   name: Dogecoin
@@ -285,7 +285,7 @@
   address_url: https://dogechain.info/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 20, min_amount: 1000, quick_max: 0}
 
 - id: 17
   name: Basic Attention Token
@@ -304,7 +304,7 @@
   address_url: https://etherscan.io/token/0x0d8775f648430679a709e98d2b0cb6250d2887ef?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 6, min_amount: 12, quick_max: 0}
 
 - id: 18
   name: OmiseGO
@@ -323,7 +323,7 @@
   address_url: https://etherscan.io/token/0xd26114cd6EE289AccF82350c8d8487fedB8A0C07?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.71, min_amount: 1.42, quick_max: 0}
 
 - id: 19
   name: Bitcoin Gold
@@ -341,7 +341,7 @@
   address_url: https://explorer.bitcoingold.org/insight/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.002, quick_max: 0}
 
 - id: 20
   name: Augur
@@ -360,7 +360,7 @@
   address_url: https://etherscan.io/token/0x1985365e9f78359a9B6AD760e32412f4a445E862?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.2, min_amount: 0.4, quick_max: 0}
 
 - id: 21
   name: TrueUSD
@@ -379,7 +379,7 @@
   address_url: https://etherscan.io/token/0x0000000000085d4780B73119b644AE5ecd22b376?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 1.74, min_amount: 3.48, quick_max: 0}
 
 - id: 22
   name: Chainlink
@@ -398,7 +398,7 @@
   address_url: https://etherscan.io/token/0x514910771af9ca656af840dff83e8264ecf986ca?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.6, min_amount: 1.2, quick_max: 0}
 
 - id: 23
   name: 0X
@@ -417,7 +417,7 @@
   address_url: https://etherscan.io/token/0xe41d2489571d322189246dafa5ebde1f4699f498?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 5.9, min_amount: 11.8, quick_max: 0}
 
 - id: 24
   name: Bitcoin Diamond
@@ -435,7 +435,7 @@
   address_url: http://explorer.btcd.io/#/address?address=#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.01, min_amount: 0.02, quick_max: 0}
 
 - id: 25
   name: Crpto.com Chain Token
@@ -454,7 +454,7 @@
   address_url: https://etherscan.io/token/0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 45, min_amount: 90, quick_max: 0}
 
 - id: 26
   name: KuCoin Shares
@@ -473,7 +473,7 @@
   address_url: https://etherscan.io/token/0x039b5649a59967e3e936d7471f9c3700100ee1ab?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.001, min_amount: 0.002, quick_max: 0}
 
 - id: 27
   name: Huobi Token
@@ -492,7 +492,7 @@
   address_url: https://etherscan.io/token/0x6f259637dcd74c767781e37bc6133cd6a68aa161?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.5, min_amount: 10, quick_max: 0}
 
 - id: 28
   name: USD Coin
@@ -511,7 +511,7 @@
   address_url: https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 1.75, min_amount: 3.5, quick_max: 0}
 
 - id: 29
   name: Bibox Token
@@ -530,7 +530,7 @@
   address_url: https://etherscan.io/token/0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 2, min_amount: 4, quick_max: 0}
 
 - id: 30
   name: StableUSD
@@ -549,7 +549,7 @@
   address_url: https://etherscan.io/token/0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0.64, min_amount: 1.28, quick_max: 0}
 
 - id: 31
   name: GAS
@@ -568,7 +568,7 @@
   address_url: https://neoscan.io/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0, quick_max: 0}
+  withdraw: {fee: 0, min_amount: 0.001, quick_max: 0}
 
 - id: 32
   name: M365 Coin
