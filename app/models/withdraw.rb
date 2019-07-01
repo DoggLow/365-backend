@@ -39,6 +39,7 @@ class Withdraw < ActiveRecord::Base
   validates :sum, presence: true, numericality: {greater_than: 0}, on: :create
   validates :txid, uniqueness: true, allow_nil: true, on: :update
 
+  validate :check_min_amount, on: :create
   validate :ensure_account_balance, on: :create
 
   scope :completed, -> { where aasm_state: COMPLETED_STATES }
@@ -200,9 +201,15 @@ class Withdraw < ActiveRecord::Base
     end
   end
 
+  def check_min_amount
+    if self.sum < (currency_obj.withdraw['min_amount'] || 0)
+      errors.add :base, -> {"Amount should be larger than minimum limit."}
+    end
+  end
+
   def calc_fee
     self.sum ||= 0.0
-    self.fee = sum * currency_obj.withdraw['fee'] || 0
+    self.fee = currency_obj.withdraw['fee'] || 0
     self.amount = sum - fee
   end
 
