@@ -18,6 +18,10 @@ class Invest < ActiveRecord::Base
   validate :validate_data, on: :create
 
   scope :processing, -> { where(aasm_state: :processing) }
+  scope :with_year_and_month, ->(date_str) {
+    date = Date.strptime(date_str, '%Y-%m')
+    where(created_at: date...date.next_month)
+  }
 
   aasm :whiny_transitions => false do
     state :pending, initial: true, before_enter: :lock_funds

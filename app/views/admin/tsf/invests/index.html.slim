@@ -1,0 +1,38 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      span = 'Manage Profits'
+    .panel-body
+      = form_tag admin_tsf_invests_path, method: :get do |f|
+        .col-xs-2.text-right = label_tag 'Created at'
+        .col-xs-4 = month_field_tag :date, @created_at
+        .col-xs-2.text-right = label_tag 'Unit'
+        .col-xs-4 = select_tag :unit, options_for_select(@units)
+        .col-xs-4.col-xs-offset-1 = submit_tag 'Search'
+        br
+        br
+        .col-xs-2.text-right = label_tag 'Profit'
+        .col-xs-4 = number_field_tag :total_profit, @total_profit
+        .col-xs-1.text-left = label_tag 'usd', 'USD'
+        .col-xs-4 = number_field_tag :percent, @percent
+        .col-xs-1.text-left = label_tag '%'
+        .col-xs-4.col-xs-offset-1 = submit_tag 'Check'
+        br
+        br
+        .col-xs-2.text-right = label_tag 'All profits:'
+        .col-xs-4 = label_tag :total, "#{(@total || 0)} TSFP"
+        .col-xs-2.text-right = label_tag 'All sets:'
+        .col-xs-2 = label_tag :count, @count
+        .col-xs-3.text-right = label_tag 'Profit per set:'
+        .col-xs-4 = label_tag :profit, "#{(@profit || 0)} TSFP"
+        .col-xs-3.col-xs-offset-1 = submit_tag 'Confirm', data: {confirm: 'Are you sure to confirm to pay?'}
+
+.row
+  .panel.panel-primary
+    .panel-heading: span = 'Invests'
+      = table_for(@invests, class: 'table table-condensed table-hover') do |t|
+        - t.column :created_at, class: 'col-xs-6'
+        - t.column :member, class: 'col-xs-6' do |p|
+          = p.member.name
+        - t.column :unit, class: 'col-xs-6'
+        - t.column :count, class: 'col-xs-6'

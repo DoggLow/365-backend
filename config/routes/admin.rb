@@ -39,6 +39,7 @@ namespace :admin do
 
   namespace :tsf do
     resources :purchase_options
+    resources :invests, only: [:index]
     resources :point_exchanges
   end
 
