@@ -72,7 +72,7 @@
 
 - id: 5
   name: Bitcoin Cash
-  code: bch
+  code: bchabc
   symbol: "₿"
   type: coin
   precision: 8
@@ -161,22 +161,23 @@
   withdraw: {fee: 6.6, min_amount: 13.2, quick_max: 0}
 
 - id: 10
-  name: Bitcoin SV
-  code: bsv
-  symbol: "₿"
+  name: Paxos Standard
+  code: pax
+  symbol: "PAX"
   type: coin
   precision: 8
-  base_factor: 100_000_000
+  base_factor: 1_000_000_000_000_000_000
   min_confirm: 1
   max_confirm: 3
-  api_client: BTC
-  rpc: http://m365bsvrpc:h8fraz4EQDhxd3y9d3Ytbsv@172.31.36.1:8342
-  info_url: https://coinmarketcap.com/currencies/bitcoin-sv
-  blockchain: https://blockchair.com/bitcoin-sv/transaction/#{txid}
-  address_url: https://blockchair.com/bitcoin-sv/address/#{address}
-  case_sensitive: true
+  erc20_contract_address: '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/paxos-standard-token
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x8e870d67f660d95d5be530380d0ec0bd388289e1?a={address}
+  case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0.001, min_amount: 0.1, quick_max: 0}
+  withdraw: {fee: 1.8, min_amount: 3.6, quick_max: 0}
 
 - id: 11
   name: Dash
@@ -270,22 +271,23 @@
   withdraw: {fee: 4, min_amount: 8, quick_max: 0}
 
 - id: 16
-  name: Dogecoin
-  code: doge
-  symbol: "Ð"
+  name: GAS
+  code: gas
+  symbol: "GAS"
   type: coin
   precision: 8
   base_factor: 100_000_000
   min_confirm: 1
   max_confirm: 3
-  api_client: BTC
-  rpc: http://m365dogerpc:h8fraz4EQDhxd3y9d3Ytdoge@172.31.44.107:22565
-  info_url: https://coinmarketcap.com/currencies/dogecoin
-  blockchain: https://dogechain.info/tx/#{txid}
-  address_url: https://dogechain.info/address/#{address}
+  api_client: NEO
+  asset_id: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+  rpc: http://172.31.43.17:10342
+  info_url: https://coinmarketcap.com/currencies/neo
+  blockchain: https://neoscan.io/transaction/#{txid}
+  address_url: https://neoscan.io/address/#{address}
   case_sensitive: true
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 20, min_amount: 1000, quick_max: 0}
+  withdraw: {fee: 0, min_amount: 0.001, quick_max: 0}
 
 - id: 17
   name: Basic Attention Token
@@ -438,61 +440,61 @@
   withdraw: {fee: 0.01, min_amount: 0.02, quick_max: 0}
 
 - id: 25
-  name: Crpto.com Chain Token
-  code: cro
-  symbol: "CRO"
+  name: Dent
+  code: dent
+  symbol: "DENT"
   type: coin
   precision: 8
-  base_factor: 1_000_000_000_000_000_000
+  base_factor: 100_000_000
   min_confirm: 1
   max_confirm: 3
-  erc20_contract_address: '0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b'
+  erc20_contract_address: '0x3597bfd533a99c9aa083587b074434e61eb0a258'
   api_client: ERC20
   rpc: http://172.31.46.110:8555
-  info_url: https://coinmarketcap.com/currencies/crypto-com-chain
+  info_url: https://coinmarketcap.com/currencies/dent
   blockchain: https://etherscan.io/tx/#{txid}
-  address_url: https://etherscan.io/token/0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b?a={address}
+  address_url: https://etherscan.io/token/0x3597bfd533a99c9aa083587b074434e61eb0a258?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 45, min_amount: 90, quick_max: 0}
+  withdraw: {fee: 1200, min_amount: 2400, quick_max: 0}
 
 - id: 26
-  name: KuCoin Shares
-  code: kcs
-  symbol: "KCS"
+  name: Crypto.com
+  code: mco
+  symbol: "MCO"
   type: coin
-  precision: 6
-  base_factor: 1_000_000
+  precision: 8
+  base_factor: 100_000_000
   min_confirm: 1
   max_confirm: 3
-  erc20_contract_address: '0x039b5649a59967e3e936d7471f9c3700100ee1ab'
+  erc20_contract_address: '0xb63b606ac810a52cca15e44bb630fd42d8d1d83d'
   api_client: ERC20
   rpc: http://172.31.46.110:8555
-  info_url: https://coinmarketcap.com/currencies/kucoin-shares
+  info_url: https://coinmarketcap.com/currencies/crypto-com
   blockchain: https://etherscan.io/tx/#{txid}
-  address_url: https://etherscan.io/token/0x039b5649a59967e3e936d7471f9c3700100ee1ab?a={address}
+  address_url: https://etherscan.io/token/0xb63b606ac810a52cca15e44bb630fd42d8d1d83d?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0.001, min_amount: 0.002, quick_max: 0}
+  withdraw: {fee: 0.31, min_amount: 0.62, quick_max: 0}
 
 - id: 27
-  name: Huobi Token
-  code: ht
-  symbol: "HT"
+  name: StatusNetwork
+  code: snt
+  symbol: "SNT"
   type: coin
   precision: 8
   base_factor: 1_000_000_000_000_000_000
   min_confirm: 1
   max_confirm: 3
-  erc20_contract_address: '0x6f259637dcd74c767781e37bc6133cd6a68aa161'
+  erc20_contract_address: '0x744d70fdbe2ba4cf95131626614a1763df805b9e'
   api_client: ERC20
   rpc: http://172.31.46.110:8555
-  info_url: https://coinmarketcap.com/currencies/huobi-token
+  info_url: https://coinmarketcap.com/currencies/status
   blockchain: https://etherscan.io/tx/#{txid}
-  address_url: https://etherscan.io/token/0x6f259637dcd74c767781e37bc6133cd6a68aa161?a={address}
+  address_url: https://etherscan.io/token/0x744d70fdbe2ba4cf95131626614a1763df805b9e?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0.5, min_amount: 10, quick_max: 0}
+  withdraw: {fee: 65, min_amount: 130, quick_max: 0}
 
 - id: 28
   name: USD Coin
@@ -514,23 +516,23 @@
   withdraw: {fee: 1.75, min_amount: 3.5, quick_max: 0}
 
 - id: 29
-  name: Bibox Token
-  code: bix
-  symbol: "BIX"
+  name: DGD
+  code: dgd
+  symbol: "DGD"
   type: coin
   precision: 8
-  base_factor: 1_000_000_000_000_000_000
+  base_factor: 1_000_000_000
   min_confirm: 1
   max_confirm: 3
-  erc20_contract_address: '0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069'
+  erc20_contract_address: '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a'
   api_client: ERC20
   rpc: http://172.31.46.110:8555
-  info_url: https://coinmarketcap.com/currencies/bibox-token
+  info_url: https://coinmarketcap.com/currencies/digixdao
   blockchain: https://etherscan.io/tx/#{txid}
-  address_url: https://etherscan.io/token/0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069?a={address}
+  address_url: https://etherscan.io/token/0xe0b7927c4af23765cb51314a0e0521a9645f0e2a?a={address}
   case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 2, min_amount: 4, quick_max: 0}
+  withdraw: {fee: 0.07, min_amount: 0.14, quick_max: 0}
 
 - id: 30
   name: StableUSD
@@ -552,23 +554,23 @@
   withdraw: {fee: 0.64, min_amount: 1.28, quick_max: 0}
 
 - id: 31
-  name: GAS
-  code: gas
-  symbol: "GAS"
+  name: Decentraland
+  code: mana
+  symbol: "MANA"
   type: coin
   precision: 8
-  base_factor: 100_000_000
+  base_factor: 1_000_000_000_000_000_000
   min_confirm: 1
   max_confirm: 3
-  api_client: NEO
-  asset_id: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
-  rpc: http://172.31.43.17:10342
-  info_url: https://coinmarketcap.com/currencies/neo
-  blockchain: https://neoscan.io/transaction/#{txid}
-  address_url: https://neoscan.io/address/#{address}
-  case_sensitive: true
+  erc20_contract_address: '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
+  api_client: ERC20
+  rpc: http://172.31.46.110:8555
+  info_url: https://coinmarketcap.com/currencies/decentraland
+  blockchain: https://etherscan.io/tx/#{txid}
+  address_url: https://etherscan.io/token/0x0f5d2fb29fb7d3cfee444a200298f468908cc942?a={address}
+  case_sensitive: false
   deposit: {fee: 0, min_amount: 0}
-  withdraw: {fee: 0, min_amount: 0.001, quick_max: 0}
+  withdraw: {fee: 36, min_amount: 72, quick_max: 0}
 
 - id: 32
   name: M365 Coin
