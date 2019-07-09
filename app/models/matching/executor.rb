@@ -67,16 +67,7 @@ module Matching
     end
 
     def publish_trade
-      AMQPQueue.publish(
-        :trade,
-        @trade.as_json,
-        { headers: {
-            market: @market.id,
-            ask_member_id: @ask.member_id,
-            bid_member_id: @bid.member_id
-          }
-        }
-      )
+      AMQPQueue.publish(:trade, @trade.for_notify, {headers: {trade: 'new'}})
     end
 
   end

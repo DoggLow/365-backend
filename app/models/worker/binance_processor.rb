@@ -7,9 +7,6 @@ module Worker
       @binance_api_client  = Binance::Client::REST.new
 
       init_market_data
-      fetch_trades
-      # fetch_my_trades
-
       Thread.new do
         loop do
           fetch_depth
@@ -27,16 +24,16 @@ module Worker
       data  = payload['data']
 
       case event
-        when 'depth_update'
-          market_id = data.fetch('market')
-          bids = data.fetch('bids')
-          asks = data.fetch('asks')
+      when 'depth_update'
+        market_id = data.fetch('market')
+        bids = data.fetch('bids')
+        asks = data.fetch('asks')
 
-          update_depth(market_id, bids, asks)
-        when 'trade'
-          process_trades(data)
-        else
-          raise ArgumentError, "Unknown event: #{event}"
+        update_depth(market_id, bids, asks)
+      when 'trade'
+        process_trade(data)
+      else
+        raise ArgumentError, "Unknown event: #{event}"
       end
     rescue
       Rails.logger.error "Failed to process payload: #{$!}"
@@ -79,11 +76,13 @@ module Worker
       bids.each do |order|
         @bid_depth[market_id][order[0]] = order[1]
         @bid_depth[market_id].delete_if{|k, v| v.to_f == 0}
+        broadcast_order(market_id, 'bid', order[0], order[1])
       end
 
       asks.each do |order|
         @ask_depth[market_id][order[0]] = order[1]
         @ask_depth[market_id].delete_if{|k, v| v.to_f == 0}
+        broadcast_order(market_id, 'ask', order[0], order[1])
       end
     end
 
@@ -102,65 +101,27 @@ module Worker
       Rails.logger.error $!.backtrace.join("\n")
     end
 
-    def fetch_trades
-      Market.from_binance.each do |market|
-        data = @binance_api_client.trades symbol: market.id.upcase, limit: FRESH_TRADES
-        data.each do |item|
-          id = item.fetch('id')
-          price = item.fetch('price').to_f
-          volume = item.fetch('qty').to_f
-          created_at = Time.at(item.fetch('time')/1000)
-
-          trade = Trade.new(id: id, price: price, volume: volume, funds: price*volume,
-                                currency: market.id.to_sym, created_at: created_at)
-          @trades[market.id].unshift(trade.for_global)
-        end
-        Rails.cache.write "exchange:#{market.id}:trades", @trades[market.id]
-        Rails.cache.write "exchange:#{market.id}:ticker_last", @trades[market.id].last.try(:price) || ::Trade::ZERO
-      end
-    rescue
-      Rails.logger.error "Failed to get trades: #{$!}"
-      Rails.logger.error $!.backtrace.join("\n")
+    def broadcast_order(market, type, price, volume)
+      data = {action: 'none', order: {type: type, volume: volume, price: price, market: market}}
+      AMQPQueue.enqueue(:slave_book, data, {persistent: false})
     end
 
-    def process_trades(data)
+    def process_trade(data)
       market_id = data.fetch('s').downcase
       id = data.fetch('t')
       price = data.fetch('p').to_f
       volume = data.fetch('q').to_f
       created_at = Time.at(data.fetch('T')/1000)
-      bid_id = data.fetch('b')
-      ask_id = data.fetch('a')
 
-      # check_trade and create trade and match order
-
-      trade_params = {price: price, volume: volume, funds: price*volume, currency: market_id.to_sym, created_at: created_at}
-
-      bid = Order.find_by(binance_id: bid_id)
-      ask = Order.find_by(binance_id: ask_id)
-
-      if bid.nil? && ask.nil?
-        trade = Trade.new(trade_params)
-      else
-        trade_params[:ask_id] = ask.id unless ask.nil?
-        trade_params[:ask_member_id] = ask.member_id unless ask.nil?
-        trade_params[:bid_id] = bid.id unless ask.nil?
-        trade_params[:bid_member_id] = bid.member_id unless bid.nil?
-
-        trade = Trade.create!(trade_params)
-        trade.binance_id = id unless id.nil?
-        trade.save!
-
-        bid.strike trade unless bid.nil?
-        ask.strike trade unless ask.nil?
-      end
-
+      trade_params = {id: id, price: price, volume: volume, funds: price * volume, currency: market_id.to_sym, created_at: created_at}
+      trade = Trade.new(trade_params)
       trades = @trades[market_id]
       trades.unshift(trade.for_global)
       trades.pop if trades.size > FRESH_TRADES
 
       Rails.cache.write "exchange:#{market_id}:trades", trades
       Rails.cache.write "exchange:#{market_id}:ticker_last", price
+      AMQPQueue.publish(:trade, trade.for_notify, {headers: {trade: 'new'}})
     end
 
   end

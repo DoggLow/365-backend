@@ -44,6 +44,12 @@ module Concerns
       end
     end
 
+    class ActivationMailSent < Result
+      def initialize
+        super code: 2009, text: 'Activation  mail sent successfully.', status: :ok
+      end
+    end
+
     class GoogleAuthSuccess < Result
       def initialize(text)
         super code: 2010, text: text, status: :ok
@@ -119,6 +125,12 @@ module Concerns
     class ResetPasswordFailure < Result
       def initialize(reason)
         super code: 4005, text: reason, status: :bad_request
+      end
+    end
+
+    class ActivationMailSendFailure < Result
+      def initialize(reason = 'send-email-failed')
+        super code: 4009, text: reason, status: :bad_request
       end
     end
 

@@ -13,16 +13,9 @@ module Private
     end
 
     def show
-      @market        = current_market
-
-      @bids = @market.bids.present? ? @market.bids.first(40) : []
-      @asks = @market.asks.present? ? @market.asks.last(40) : []
-      @trades = @market.trades.present? ? @market.trades.first(40) : []
-
+      @market = current_market
       set_member_data if current_user
-      # gon.jbuilder
-
-      data = {asks: @asks, bids: @bids, trades: @trades}
+      data = {}
       if @member
         data[:my_trades] = @trades_done.map(&:for_notify)
         data[:my_orders] = @orders_wait.map(&:for_notify)

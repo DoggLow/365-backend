@@ -2,6 +2,7 @@ class Withdraw < ActiveRecord::Base
   STATES = [:submitting, :submitted, :rejected, :pending, :suspect, :processing,
             :done, :canceled, :almost_done, :failed]
   COMPLETED_STATES = [:done, :rejected, :canceled, :almost_done, :failed]
+  DONE_STATES = [:pending, :processing, :almost_done, :done]
 
   extend Enumerize
 
@@ -44,6 +45,9 @@ class Withdraw < ActiveRecord::Base
 
   scope :completed, -> { where aasm_state: COMPLETED_STATES }
   scope :not_completed, -> { where.not aasm_state: COMPLETED_STATES }
+  scope :done, -> {where aasm_state: DONE_STATES}
+
+  scope :h24, -> {where("created_at > ?", 24.hours.ago)}
 
   alias_attribute :withdraw_id, :sn
   alias_attribute :full_name, :member_name

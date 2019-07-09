@@ -8,6 +8,34 @@ Dir.chdir(root)
 
 require File.join(root, "config", "environment")
 
+def get_interval(string)
+  case string
+  when '5m'
+    return 5
+  when '15m'
+    return 15
+  when '30m'
+    return 30
+  when '1h'
+    return 60
+  when '2h'
+    return 120
+  when '4h'
+    return 240
+  when '6h'
+    return 360
+  when '12h'
+    return 720
+  when '1d'
+    return 1440
+  when '3d'
+    return 4320
+  when '1w'
+    return 10080
+  else
+    return 1
+  end
+end
 
 def process_depth(data)
   # first_updated = data.fetch('U')
@@ -31,7 +59,7 @@ def process_ticker(data)
   market_id = data.fetch('s').downcase
   low = data.fetch('l').to_f
   high = data.fetch('h').to_f
-  # open = data.fetch('o').to_f
+  open = data.fetch('o').to_f
   volume = data.fetch('q').to_f
   # timestamp = data.fetch('E')
 
@@ -43,9 +71,10 @@ def process_ticker(data)
       last: last || ::Trade::ZERO
   }
   Rails.cache.write "exchange:#{market_id}:ticker", ticker
+  Rails.cache.write "exchange:#{market_id}:ticker:open", open
 
-  seconds  = Time.now.to_i
-  time_key = seconds - (seconds % 5)
+  # seconds  = Time.now.to_i
+  # time_key = seconds - (seconds % 5)
   # Rails.cache.write "exchange:#{market_id}:h24_volume:#{time_key}", volume, expires_in: 24.hours
   Rails.cache.write "exchange:#{market_id}:h24_volume:latest", volume, expires_in: 24.hours
 
@@ -56,24 +85,24 @@ end
 def process_kline(data)
   market_id = data.fetch('s').downcase
   k = data.fetch('k')
-  start_at = Time.at(k.fetch('t') / 1000)
+  start = k.fetch('t') / 1000
+  interval = k.fetch('i')
   open = k.fetch('o').to_f
   close = k.fetch('c').to_f
   high = k.fetch('h').to_f
   low = k.fetch('l').to_f
-  volume = k.fetch('q').to_f
+  volume = k.fetch('q').to_f.round(4)
 
-  market = Market.find market_id
-
-  ActiveRecord::Base.transaction do
-    kline = KLine.find_or_create_by(market: market.code, start_at: start_at)
-    kline.open = open
-    kline.close = close
-    kline.high = high
-    kline.low = low
-    kline.volume = volume
-    kline.save!
+  key = "exchange:#{market_id}:k:#{get_interval(interval)}"
+  point_json = @r.lindex(key, -1)
+  if point_json.present?
+    point = JSON.parse point_json
+    if point[0] == start
+      @r.rpop key
+    end
   end
+  point = [start, open, high, low, close, volume]
+  @r.rpush key, point.to_json
 end
 
 def process_trade(data)
@@ -98,6 +127,7 @@ def process_message(message_data)
 end
 
 socket_client = Binance::Client::WebSocket.new
+@r ||= KlineDB.redis
 
 EM.run do
 
@@ -113,7 +143,9 @@ EM.run do
   Market.from_binance.each do |market|
     socket_client.trade symbol: market.id.upcase, methods: methods
     socket_client.diff_depth symbol: market.id.upcase, methods: methods
-    socket_client.kline symbol: market.id.upcase, interval: '1m', methods: methods
     socket_client.single stream: { type: 'miniTicker', symbol: market.id.upcase}, methods: methods
+    ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '1w'].each do |period|
+      socket_client.kline symbol: market.id.upcase, interval: period, methods: methods
+    end
   end
 end

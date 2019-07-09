@@ -6,8 +6,13 @@ class ActivationsController < ApplicationController
   before_action :token_required!, only: :edit
 
   def new
-    current_user.send_activation
-    redirect_to settings_path
+    token = current_user.send_activation
+    if token.errors.present?
+      render_json(ActivationMailSendFailure.new('too-often-request'))
+    else
+      render_json(ActivationMailSent.new)
+    end
+    # redirect_to settings_path
   end
 
   def edit
@@ -25,7 +30,8 @@ class ActivationsController < ApplicationController
 
   def verified?
     if current_user.activated?
-      redirect_to settings_path, notice: t('.verified')
+      render_json(ActivationMailSendFailure.new('already-activated'))
+      # redirect_to settings_path, notice: t('.verified')
     end
   end
 

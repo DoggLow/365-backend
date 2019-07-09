@@ -55,6 +55,12 @@ defaults: &defaults
   #
   LOAN_MAX_RATE: '100'
 
+  # withdraw h24 limit
+  # --------------------------------------------------------------
+  #
+  WITHDRAW_H24_LIMIT_AMOUNT: '3'
+  WITHDRAW_H24_LIMIT_CURRENCY: 'btc'
+
   # referral settings
   # --------------------------------------------------------------
   #

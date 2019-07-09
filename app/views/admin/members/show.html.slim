@@ -2,8 +2,7 @@
   .col-xs-12
     = render partial: 'shared/admin/member', locals: {member: @member}
   .col-xs-12
-    - if @member.activated? && @member.id_document.present? && @member.id_document_verified?
-      = render partial: 'shared/admin/member_accounts', locals: {member: @member}
+    = render partial: 'shared/admin/member_accounts', locals: {member: @member}
 
 .row
   .col-xs-24

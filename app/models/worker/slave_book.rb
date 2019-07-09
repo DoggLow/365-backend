@@ -27,6 +27,8 @@ module Worker
         book.find(order).volume = order.volume # only volume would change
       when 'remove'
         book.remove order
+      when 'none'
+        Rails.logger.debug "No action needed for order: #{order}"
       else
         raise ArgumentError, "Unknown action: #{@payload.action}"
       end

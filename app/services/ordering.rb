@@ -14,7 +14,7 @@ class Ordering
 
     @orders.each do |order|
       if order.market_obj.is_binance?
-        order_id = BinanceAPI.create_order(order)
+        order_id = BinanceClient.new.create_order(order)
         if order_id
           ActiveRecord::Base.transaction do
             order.binance_id = order_id
@@ -67,7 +67,7 @@ class Ordering
 
   def do_cancel(order)
     if order.market_obj.is_binance?
-      result = BinanceAPI.cancel_order(order)
+      result = BinanceClient.new.cancel_order(order)
       if result
         do_cancel! order
       end
