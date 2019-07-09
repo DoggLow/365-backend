@@ -14,7 +14,8 @@ module Private
             withdraws_h24.each do |withdraw|
               sum += Global.estimate(withdraw.currency_obj.code, ENV['WITHDRAW_H24_LIMIT_CURRENCY'], withdraw.sum)
             end
-            if sum + @withdraw.sum > ENV['WITHDRAW_H24_LIMIT_AMOUNT'].to_d
+            sum += Global.estimate(@withdraw.currency_obj.code, ENV['WITHDRAW_H24_LIMIT_CURRENCY'], @withdraw.sum)
+            if sum > ENV['WITHDRAW_H24_LIMIT_AMOUNT'].to_d
               render text: "You've exceed 24h withdrawal limit.", status: 403 and return
             end
           end
