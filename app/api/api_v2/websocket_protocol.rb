@@ -7,9 +7,13 @@ module APIv2
       @logger = logger
     end
 
-    def broadcast
-      subscribe_orders
-      subscribe_trades
+    def broadcast(path)
+      market_id = nil
+      if Market.find_by_id(path).present?
+        market_id = path
+      end
+      subscribe_orders(market_id)
+      subscribe_trades(market_id)
     rescue
       @logger.error "Error on handling message: #{$!}"
       @logger.error $!.backtrace.join("\n")
@@ -19,17 +23,19 @@ module APIv2
 
     def send(method, data)
       payload = JSON.dump({method => data})
-      @logger.debug payload
+      # @logger.debug payload
       @socket.send payload
     end
 
-    def subscribe_orders
+    def subscribe_orders(market_id = nil)
       x = @channel.send *AMQPConfig.exchange(:orderbook)
       q = @channel.queue '', auto_delete: true
       q.bind(x).subscribe do |metadata, payload|
         begin
           payload = JSON.parse payload
-          send payload['order']['type'], payload['order']
+          if market_id.blank? || (market_id.present? && payload['order']['market'] == market_id)
+            send payload['order']['type'], payload['order']
+          end
         rescue
           @logger.error "Error on receiving orders: #{$!}"
           @logger.error $!.backtrace.join("\n")
@@ -37,14 +43,16 @@ module APIv2
       end
     end
 
-    def subscribe_trades
+    def subscribe_trades(market_id = nil)
       x = @channel.send *AMQPConfig.exchange(:trade)
       q = @channel.queue '', auto_delete: true
       q.bind(x, arguments: {trade: 'new'})
       q.subscribe(ack: true) do |metadata, payload|
         begin
           payload = JSON.parse payload
-          send :trade, payload
+          if market_id.blank? || (market_id.present? && payload['market'] == market_id)
+            send :trade, payload
+          end
         rescue
           @logger.error "Error on receiving trades: #{$!}"
           @logger.error $!.backtrace.join("\n")

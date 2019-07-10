@@ -38,8 +38,8 @@ EM.run do
 
     protocol = ::APIv2::WebSocketProtocol.new(ws, ch, logger)
 
-    ws.onopen do
-      protocol.broadcast
+    ws.onopen do |handshake|
+      protocol.broadcast(handshake.path[1..-1])
     end
 
     ws.onmessage do |message|
