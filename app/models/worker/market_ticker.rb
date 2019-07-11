@@ -13,6 +13,7 @@ module Worker
     end
 
     def process(payload, metadata, delivery_info)
+      return unless Market.find_by_id(payload['market']).is_inner?
       trade = Trade.new payload
       update_ticker trade
       update_latest_trades trade

@@ -28,7 +28,8 @@ module Worker
       when 'remove'
         book.remove order
       when 'none'
-        Rails.logger.debug "No action needed for order: #{order}"
+        # Rails.logger.debug "No action needed for order: #{@payload}"
+        return
       else
         raise ArgumentError, "Unknown action: #{@payload.action}"
       end
