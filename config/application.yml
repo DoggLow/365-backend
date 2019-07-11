@@ -64,7 +64,7 @@ defaults: &defaults
   # referral settings
   # --------------------------------------------------------------
   #
-  REFERRAL_RATE_STEP: '0.0001'
+  REFERRAL_RATE_STEP: '0.01'
   REFERRAL_MAX_TIER: '10'
 
 development:

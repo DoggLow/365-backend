@@ -94,7 +94,17 @@ class Order < ActiveRecord::Base
 
     self.save!
 
-    create_or_update_referral(add, trade.id) if member.referrer_ids.present?
+    if member.referrer_ids.present?
+      if real_fee_estimation != 0
+        ref_amount = real_fee_estimation
+        ref_currency = member.fee_account.currency
+      else
+        ref_amount = real_fee
+        ref_currency = expect_account.currency
+      end
+      create_or_update_referral(ref_amount, ref_currency, trade.id)
+    end
+
 
     create_or_update_position(trade) if trigger_order || source == 'Position'
   end
@@ -183,8 +193,7 @@ class Order < ActiveRecord::Base
     required_funds
   end
 
-  def create_or_update_referral(amount, trade_id)
-    currency = kind == 'bid' ? ask : bid
+  def create_or_update_referral(amount, currency, trade_id)
     Referral.create(
         member: member,
         currency: currency,
