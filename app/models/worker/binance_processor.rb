@@ -1,7 +1,7 @@
 module Worker
   class BinanceProcessor
 
-    FRESH_TRADES = 80
+    FRESH_TRADES = 50
 
     def initialize
       @binance_api_client  = Binance::Client::REST.new
@@ -76,13 +76,11 @@ module Worker
       bids.each do |order|
         @bid_depth[market_id][order[0]] = order[1]
         @bid_depth[market_id].delete_if{|k, v| v.to_f == 0}
-        broadcast_order(market_id, 'bid', order[0], order[1])
       end
 
       asks.each do |order|
         @ask_depth[market_id][order[0]] = order[1]
         @ask_depth[market_id].delete_if{|k, v| v.to_f == 0}
-        broadcast_order(market_id, 'ask', order[0], order[1])
       end
     end
 
@@ -99,11 +97,6 @@ module Worker
     rescue
       Rails.logger.error "Failed to cache depth: #{$!}"
       Rails.logger.error $!.backtrace.join("\n")
-    end
-
-    def broadcast_order(market, type, price, volume)
-      data = {action: 'none', order: {type: type, volume: volume, price: price, market: market}}
-      AMQPQueue.enqueue(:slave_book, data, {persistent: false})
     end
 
     def process_trade(data)
@@ -123,6 +116,5 @@ module Worker
       Rails.cache.write "exchange:#{market_id}:ticker_last", price
       AMQPQueue.publish(:trade, trade.for_notify, {headers: {trade: 'new'}})
     end
-
   end
 end
