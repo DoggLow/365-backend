@@ -47,8 +47,8 @@ defaults: &defaults
   # --------------------------------------------------------------
   # https://github.com/twilio/twilio-ruby
   #
-  BINANCE_API_KEY: 'F8fnOuMpb4KPWJ3zOXO39wMv79iH8APJsFsxa7qIENP1roHQnvOJqaI48FVzGLnV'
-  BINANCE_SEC_KEY: '54G2s9dRmojWI7EypSPennMeQAQzHcrlQdUKMEvF3YzF5RsVId4uM7jc33pdg5P5'
+  BINANCE_API_KEY: 'Ce15mH2ZmefXeIst01dVZnlIOLrZ9CWqRsVqDHeyGEsnKr1nwLJRz3gYBOtWDJps'
+  BINANCE_SEC_KEY: '4gcnO56nmPHlJSEVVlJ8oXd21x0uxIhtxdT5Y0wsHeN4zV5vfJPTwYcGJz5Abyyn'
 
   # margin trading and loan setting
   # --------------------------------------------------------------
