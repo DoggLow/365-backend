@@ -134,7 +134,7 @@ module CoinAPI
           query_params = {
               wallet_id: wallet_id
           }
-          query_params[:page] = last_page.nil?? 1 : last_page + 1
+          query_params[:page] = last_page + 1 if last_page.present?
 
           response = json_rpc('get', 'transactions', query_params)
 
@@ -149,10 +149,13 @@ module CoinAPI
         collected += deposits unless deposits.nil?
 
         page = response.fetch('meta').fetch('pagination').fetch('page')
-        Rails.cache.write("last_checked_#{currency.code}_page", page, force: true)
-
         total_pages = response.fetch('meta').fetch('pagination').fetch('totalPages')
-        break if page > total_pages
+        if page < total_pages
+          Rails.cache.write("last_checked_#{currency.code}_page", page, force: true)
+        else
+          Rails.cache.write("last_checked_#{currency.code}_page", nil, force: true)
+          break
+        end
       end
 
       yield collected
