@@ -4,8 +4,8 @@
   base_unit: eth
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: eth, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: eth, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -19,7 +19,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: xrp, fixed: 8}
+  ask: {fee: 0.001, currency: xrp, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -32,8 +32,8 @@
   base_unit: ltc
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: ltc, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: ltc, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -46,8 +46,8 @@
   base_unit: bchabc
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: bchabc, fixed: 8}
+  bid: {fee: 0, currency: btc, fixed: 6}
+  ask: {fee: 0, currency: bchabc, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -60,8 +60,8 @@
   base_unit: bnb
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: bnb, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 7}
+  ask: {fee: 0.001, currency: bnb, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -75,7 +75,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: ada, fixed: 8}
+  ask: {fee: 0.001, currency: ada, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -88,8 +88,8 @@
   base_unit: btc
   quote_unit: pax
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: pax, fixed: 8}
-  ask: {fee: 0, currency: btc, fixed: 8}
+  bid: {fee: 0, currency: pax, fixed: 2}
+  ask: {fee: 0, currency: btc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -102,8 +102,8 @@
   base_unit: dash
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: dash, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: dash, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -116,8 +116,8 @@
   base_unit: xmr
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: xmr, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: xmr, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -130,8 +130,8 @@
   base_unit: neo
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: neo, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: neo, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -144,8 +144,8 @@
   base_unit: etc
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: etc, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: etc, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -159,7 +159,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: xem, fixed: 8}
+  ask: {fee: 0.001, currency: xem, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -173,7 +173,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: dent, fixed: 8}
+  ask: {fee: 0, currency: dent, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -187,7 +187,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: bat, fixed: 8}
+  ask: {fee: 0.001, currency: bat, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -200,8 +200,8 @@
   base_unit: omg
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: omg, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: omg, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -214,8 +214,8 @@
   base_unit: btg
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: btg, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: btg, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -228,8 +228,8 @@
   base_unit: rep
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: rep, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: rep, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -242,8 +242,8 @@
   base_unit: btc
   quote_unit: tusd
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: tusd, fixed: 8}
-  ask: {fee: 0, currency: btc, fixed: 8}
+  bid: {fee: 0, currency: tusd, fixed: 2}
+  ask: {fee: 0, currency: btc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -257,7 +257,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: link, fixed: 8}
+  ask: {fee: 0.001, currency: link, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -271,7 +271,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: zrx, fixed: 8}
+  ask: {fee: 0.001, currency: zrx, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -284,8 +284,8 @@
   base_unit: bcd
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: bcd, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: bcd, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -298,8 +298,8 @@
   base_unit: mco
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: mco, fixed: 8}
+  bid: {fee: 0, currency: btc, fixed: 6}
+  ask: {fee: 0, currency: mco, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -313,7 +313,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: snt, fixed: 8}
+  ask: {fee: 0, currency: snt, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -326,8 +326,8 @@
   base_unit: dgd
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: dgd, fixed: 8}
+  bid: {fee: 0, currency: btc, fixed: 6}
+  ask: {fee: 0, currency: dgd, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -340,8 +340,8 @@
   base_unit: btc
   quote_unit: usdc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdc, fixed: 8}
-  ask: {fee: 0, currency: btc, fixed: 8}
+  bid: {fee: 0, currency: usdc, fixed: 2}
+  ask: {fee: 0, currency: btc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -355,7 +355,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: mana, fixed: 8}
+  ask: {fee: 0, currency: mana, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -368,8 +368,8 @@
   base_unit: btc
   quote_unit: usds
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usds, fixed: 8}
-  ask: {fee: 0, currency: btc, fixed: 8}
+  bid: {fee: 0, currency: usds, fixed: 2}
+  ask: {fee: 0, currency: btc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -382,8 +382,8 @@
   base_unit: gas
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: btc, fixed: 8}
-  ask: {fee: 0.001, currency: gas, fixed: 8}
+  bid: {fee: 0.001, currency: btc, fixed: 6}
+  ask: {fee: 0.001, currency: gas, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -397,7 +397,7 @@
   quote_unit: btc
   #price_group_fixed: 1 # aggregate price levels in orderbook
   bid: {fee: 0, currency: btc, fixed: 8}
-  ask: {fee: 0, currency: tsf, fixed: 8}
+  ask: {fee: 0, currency: tsf, fixed: 2}
   margin: false
   sort_order: 1
   visible: false     # default to true
@@ -408,8 +408,8 @@
   base_unit: btc
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: btc, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 2}
+  ask: {fee: 0.001, currency: btc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -422,8 +422,8 @@
   base_unit: eth
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: eth, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 2}
+  ask: {fee: 0.001, currency: eth, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -436,8 +436,8 @@
   base_unit: xrp
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: xrp, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 6}
+  ask: {fee: 0.001, currency: xrp, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -450,8 +450,8 @@
   base_unit: ltc
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: ltc, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 2}
+  ask: {fee: 0.001, currency: ltc, fixed: 6}
   margin: false
   sort_order: 1
   source: binance
@@ -464,8 +464,8 @@
   base_unit: bchabc
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: bchabc, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 2}
+  ask: {fee: 0, currency: bchabc, fixed: 5}
   margin: false
   sort_order: 1
   source: binance
@@ -478,8 +478,8 @@
   base_unit: bnb
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: bnb, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: bnb, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -492,8 +492,8 @@
   base_unit: ada
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: ada, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 5}
+  ask: {fee: 0.001, currency: ada, fixed: 1}
   margin: false
   sort_order: 1
   source: binance
@@ -506,8 +506,8 @@
   base_unit: pax
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: pax, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 4}
+  ask: {fee: 0, currency: pax, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -520,8 +520,8 @@
   base_unit: dash
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: dash, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 2}
+  ask: {fee: 0.001, currency: dash, fixed: 5}
   margin: false
   sort_order: 1
   source: binance
@@ -534,8 +534,8 @@
   base_unit: xmr
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: xmr, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 2}
+  ask: {fee: 0.001, currency: xmr, fixed: 5}
   margin: false
   sort_order: 1
   source: binance
@@ -548,8 +548,8 @@
   base_unit: neo
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: neo, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 3}
+  ask: {fee: 0.001, currency: neo, fixed: 3}
   margin: false
   sort_order: 1
   source: binance
@@ -562,8 +562,8 @@
   base_unit: etc
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: etc, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: etc, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -576,8 +576,8 @@
   base_unit: bat
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: bat, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: bat, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -590,8 +590,8 @@
   base_unit: omg
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: omg, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: omg, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -604,8 +604,8 @@
   base_unit: tusd
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: tusd, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 4}
+  ask: {fee: 0, currency: tusd, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -618,8 +618,8 @@
   base_unit: link
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: link, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: link, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -632,8 +632,8 @@
   base_unit: zrx
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0.001, currency: usdt, fixed: 8}
-  ask: {fee: 0.001, currency: zrx, fixed: 8}
+  bid: {fee: 0.001, currency: usdt, fixed: 4}
+  ask: {fee: 0.001, currency: zrx, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -646,8 +646,8 @@
   base_unit: usdc
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: usdc, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 4}
+  ask: {fee: 0, currency: usdc, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -660,8 +660,8 @@
   base_unit: usds
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: usds, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 4}
+  ask: {fee: 0, currency: usds, fixed: 2}
   margin: false
   sort_order: 1
   source: binance
@@ -674,8 +674,8 @@
   base_unit: tsf
   quote_unit: usdt
   #price_group_fixed: 1 # aggregate price levels in orderbook
-  bid: {fee: 0, currency: usdt, fixed: 8}
-  ask: {fee: 0, currency: tsf, fixed: 8}
+  bid: {fee: 0, currency: usdt, fixed: 4}
+  ask: {fee: 0, currency: tsf, fixed: 2}
   margin: false
   sort_order: 1
   visible: false     # default to true
