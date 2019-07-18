@@ -58,7 +58,7 @@ module Worker
     end
 
     def fetch_depth(market)
-      data = @binance_api_client.depth symbol: market.id.upcase, limit: 80
+      data = @binance_api_client.depth symbol: market.id.upcase, limit: 50
       last_update_id = data.fetch('lastUpdateId')
       Rails.cache.write("exchange:#{market.id}:last_update_id", last_update_id, force: true)
 
@@ -91,10 +91,10 @@ module Worker
     def cache_depth(market)
       bids = @bid_depth[market].to_a
       asks = @ask_depth[market].to_a
-        bids.reverse!
+      bids.reverse!
 
-        Rails.cache.write "exchange:#{market}:depth:asks", asks
-        Rails.cache.write "exchange:#{market}:depth:bids", bids
+      Rails.cache.write "exchange:#{market}:depth:asks", asks
+      Rails.cache.write "exchange:#{market}:depth:bids", bids
     rescue
       Rails.logger.error "Failed to cache depth: #{$!}"
       Rails.logger.error $!.backtrace.join("\n")
