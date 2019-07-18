@@ -25,6 +25,9 @@ def process_trade(data)
   trade_params[:binance_id] = id if id.present?
 
   order = Order.find_by(binance_id: order_id)
+  return if order.blank?
+  # raise "Cannot find order of which binance id is #{order_id}" if order.blank?
+
   if is_buyer
     trade_params[:bid_id] = order.id
     trade_params[:bid_member_id] = order.member_id
@@ -42,6 +45,9 @@ end
 def process_order(data)
   id = data.fetch('orderId')
   order = Order.find_by(binance_id: id)
+  return if order.blank?
+  # raise "Cannot find order of which binance id is #{id}" if order.blank?
+
   status = data.fetch('status')
   return if order.state != Order::WAIT || status == 'NEW'
 

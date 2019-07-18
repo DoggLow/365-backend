@@ -24,11 +24,19 @@ class BinanceClient
   end
 
   def my_trades(market_id, from_id = nil, limit = 1000)
-    @client.my_trades(symbol: market_id.upcase, from_id: from_id, limit: limit)
+    if from_id.present?
+      @client.my_trades(symbol: market_id.upcase, from_id: from_id, limit: limit)
+    else
+      @client.my_trades(symbol: market_id.upcase, limit: limit)
+    end
   end
 
   def all_orders(market_id, order_id = nil, limit = 1000)
-    @client.all_orders(symbol: market_id.upcase, order_id: order_id, limit: limit)
+    if order_id.present?
+      @client.all_orders(symbol: market_id.upcase, order_id: order_id, limit: limit)
+    else
+      @client.all_orders(symbol: market_id.upcase, limit: limit)
+    end
   end
 
   def open_orders(market_id = nil)

@@ -4,8 +4,9 @@ module Admin
       load_and_authorize_resource
 
       def index
-        @accounts = @accounts.select {|account| account.payment_address.present? && account.payment_address.address.present? && !(account.currency_obj.api_client.casecmp('BTC').zero?)}
-        @accounts = Kaminari.paginate_array(@accounts).page(params[:page])
+        @accounts = @accounts.page(params[:page]).per(32)
+        @accounts = @accounts.includes(:payment_addresses)
+        @filtered_accounts = @accounts.select {|account| account.payment_address.present? && account.payment_address.address.present? && !(account.currency_obj.api_client.casecmp('BTC').zero?)}
       end
 
       def show

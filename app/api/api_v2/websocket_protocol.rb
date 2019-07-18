@@ -15,7 +15,8 @@ module APIv2
         market_id = path
         init_market(market_id)
       end
-      subscribe_market(market_id)
+      subscribe_orderbook(market_id)
+      subscribe_trades(market_id)
     rescue
       @logger.error "Error on handling message: #{$!}"
       @logger.error $!.backtrace.join("\n")
@@ -23,38 +24,52 @@ module APIv2
 
     private
 
-    def send(method, data)
-      payload = JSON.dump({method => data})
+    def send(method, market, data)
+      payload = JSON.dump({market: market, method => data})
       # @logger.debug payload
       @socket.send payload
     end
 
     def init_market(market_id)
-      subscribe_orderbook(market_id)
-      subscribe_trades(market_id)
+      send_orders(market_id)
+      send_trades(market_id)
     end
 
-    def subscribe_trades(market_id)
-      send :trades, Global[market_id].trades.first(FRESH_ORDERS)
+    def send_trades(market_id)
+      send :trades, market_id, Global[market_id].trades.first(FRESH_ORDERS)
     end
 
-    def subscribe_orderbook(market_id)
-      send :asks, Global[market_id].asks.first(FRESH_ORDERS).reverse()
-      send :bids, Global[market_id].bids.first(FRESH_ORDERS)
+    def send_orders(market_id)
+      send :asks, market_id, Global[market_id].asks.first(FRESH_ORDERS).reverse()
+      send :bids, market_id, Global[market_id].bids.first(FRESH_ORDERS)
     end
 
-    def subscribe_market(market_id = nil)
+    def subscribe_orderbook(market_id = nil)
+      x = @channel.send *AMQPConfig.exchange(:orderbook)
+      q = @channel.queue '', auto_delete: true
+      q.bind(x).subscribe do |metadata, payload|
+        begin
+          payload = JSON.parse payload
+          if market_id.present? && payload['order']['market'] == market_id
+            send_orders market_id
+          end
+        rescue
+          @logger.error "Error on receiving orders: #{$!}"
+          @logger.error $!.backtrace.join("\n")
+        end
+      end
+    end
+
+    def subscribe_trades(market_id = nil)
       x = @channel.send *AMQPConfig.exchange(:trade)
       q = @channel.queue '', auto_delete: true
       q.bind(x, arguments: {trade: 'new'})
       q.subscribe(ack: true) do |metadata, payload|
         begin
           payload = JSON.parse payload
-          if market_id.blank?
-            send :trade, payload
-          elsif payload['market'] == market_id
-            subscribe_orderbook(market_id)
-            send :trade, format_trade(payload)
+          if market_id.present? && payload['market'] == market_id
+            # send_orders(market_id)
+            send :trade, market_id, format_trade(payload)
           end
         rescue
           @logger.error "Error on receiving trades: #{$!}"

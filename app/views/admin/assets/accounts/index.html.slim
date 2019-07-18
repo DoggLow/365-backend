@@ -3,7 +3,7 @@
     .panel-heading
       span = "User addresses"
     .panel-body
-      = table_for(@accounts, class: 'table table-condensed table-hover') do |t|
+      = table_for(@filtered_accounts, class: 'table table-condensed table-hover') do |t|
         - t.column :currency, class: 'col-xs-2'
         - t.column :address, class: 'col-xs-12' do |x|
           = x.payment_address.address

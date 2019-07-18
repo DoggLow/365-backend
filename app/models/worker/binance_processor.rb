@@ -7,12 +7,11 @@ module Worker
       @binance_api_client  = Binance::Client::REST.new
 
       init_market_data
+
       Thread.new do
         loop do
-          fetch_depth
-
-          30.times do |n|
-            cache_depth
+          Market.from_binance.each do |market|
+            fetch_depth market
             sleep 2
           end
         end
@@ -53,23 +52,24 @@ module Worker
         @ask_depth[market.id] = RBTree.new
 
         @trades[market.id] = Array.new
+
+        cache_depth(market.id)
       end
     end
 
-    def fetch_depth
-      Market.from_binance.each do |market|
-        data = @binance_api_client.depth symbol: market.id.upcase, limit: 100
-        last_update_id = data.fetch('lastUpdateId')
-        Rails.cache.write("exchange:#{market.id}:last_update_id", last_update_id, force: true)
+    def fetch_depth(market)
+      data = @binance_api_client.depth symbol: market.id.upcase, limit: 80
+      last_update_id = data.fetch('lastUpdateId')
+      Rails.cache.write("exchange:#{market.id}:last_update_id", last_update_id, force: true)
 
-        @bid_depth[market.id].clear
-        @ask_depth[market.id].clear
+      @bid_depth[market.id].clear
+      @ask_depth[market.id].clear
 
-        update_depth market.id, data.fetch('bids'), data.fetch('asks')
-      end
+      update_depth market.id, data.fetch('bids'), data.fetch('asks')
     rescue
       Rails.logger.error "Failed to get depth: #{$!}"
       Rails.logger.error $!.backtrace.join("\n")
+      Rails.logger.error "Response: #{data}"
     end
 
     def update_depth(market_id, bids, asks)
@@ -82,18 +82,19 @@ module Worker
         @ask_depth[market_id][order[0]] = order[1]
         @ask_depth[market_id].delete_if{|k, v| v.to_f == 0}
       end
+
+      cache_depth market_id
+
+      AMQPQueue.enqueue(:slave_book, {action: 'none', order: {market: market_id}}, {persistent: false})
     end
 
-    def cache_depth
-      Market.from_binance.each do |market|
-
-        bids = @bid_depth[market.id].to_a
-        asks = @ask_depth[market.id].to_a
+    def cache_depth(market)
+      bids = @bid_depth[market].to_a
+      asks = @ask_depth[market].to_a
         bids.reverse!
 
         Rails.cache.write "exchange:#{market}:depth:asks", asks
         Rails.cache.write "exchange:#{market}:depth:bids", bids
-      end
     rescue
       Rails.logger.error "Failed to cache depth: #{$!}"
       Rails.logger.error $!.backtrace.join("\n")
