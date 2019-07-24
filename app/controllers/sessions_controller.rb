@@ -2,10 +2,11 @@ class SessionsController < ApplicationController
 
   layout false
 
-  skip_before_action :verify_authenticity_token#, only: [:create]
+  skip_before_action :verify_authenticity_token #, only: [:create]
 
   before_action :auth_member!, only: :destroy
   before_action :auth_anybody!, only: [:new, :failure]
+  before_action :check_member!, only: :google_auth_verify
 
   helper_method :require_captcha?
 
@@ -27,9 +28,12 @@ class SessionsController < ApplicationController
         reset_session rescue nil
         session[:member_id] = @member.id
         save_session_key @member.id, cookies['_exchange_session']
-        save_signup_history @member.id
-        MemberMailer.notify_signin(@member.id).deliver if @member.activated?
-        render_json(SignInSuccess.new)
+
+        if @member.app_two_factor.activated?
+          render_json(TFARequired.new)
+        else
+          login_success(@member)
+        end
       end
     else
       increase_failed_logins
@@ -43,9 +47,21 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    clear_all_sessions current_user.id
-    reset_session
+    clear_current_user_session
     render_json(SignOutSuccess.new)
+  end
+
+  def google_auth_verify
+    if two_factor_failed_locked?
+      clear_current_user_session
+      clear_two_factor_auth_failed
+      render_json(LogInRequired.new)
+    elsif google_auth_verified?
+      unlock_two_factor!
+      login_success(current_user)
+    else
+      render_json(TFAError.new(t('two_factors.update.alert')))
+    end
   end
 
   private
@@ -76,7 +92,34 @@ class SessionsController < ApplicationController
     @auth_hash
   end
 
+  def login_success(member)
+    save_signup_history member.id
+    MemberMailer.notify_signin(member.id).deliver if member.activated?
+    render_json(SignInSuccess.new)
+  end
 
+  def clear_current_user_session
+    clear_all_sessions current_user.id
+    reset_session
+  end
+
+  def check_member!
+    if current_user.blank? || params[:email].blank? || params[:email] != current_user.email
+      render_json(LogInRequired.new)
+    end
+  end
+
+  def google_auth_verified?
+    google_auth = current_user.app_two_factor
+    google_auth.assign_attributes params.require(:google_auth).permit(:otp)
+    if google_auth.verify?
+      clear_two_factor_auth_failed
+      true
+    else
+      increase_two_factor_auth_failed
+      false
+    end
+  end
 
   def save_signup_history(member_id)
     SignupHistory.create(
@@ -86,5 +129,4 @@ class SessionsController < ApplicationController
       ua: request.headers["User-Agent"]
     )
   end
-
 end

@@ -20,6 +20,7 @@ Exchange::Application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure', :as => :failure
   match '/auth/:provider/callback' => 'sessions#create', via: [:get, :post]
+  post '/auth/app' => 'sessions#google_auth_verify', :as => :google_auth_verify
 
   resource :member, :only => [:show, :update]
   resource :identity, :only => [:edit, :update]

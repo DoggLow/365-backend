@@ -49,11 +49,13 @@ class Order < ActiveRecord::Base
     @config ||= Market.find(currency)
   end
 
-  def strike(trade)
+  def strike(trade, is_maker_option = nil)
     raise "Cannot strike on cancelled or done order. id: #{id}, state: #{state}" unless state == Order::WAIT
 
+    is_maker = is_maker_option.nil? ? member_id == trade.maker : is_maker_option
+
     real_sub, add = get_account_changes trade
-    real_fee, real_fee_estimation = member.get_trade_fee(expect_account.currency, add, member_id == trade.maker)
+    real_fee, real_fee_estimation = member.get_trade_fee(expect_account.currency, add, is_maker)
     real_add = add - real_fee
 
     if self.trigger_order_id.blank? && self.source != 'Position'

@@ -1,7 +1,7 @@
 module Private
   class WithdrawsController < BaseController
 
-    # before_action :two_factor_activated!
+    before_action :two_factor_auth_passed!
 
     def create
       @withdraw = Withdraw.new(withdraw_params)

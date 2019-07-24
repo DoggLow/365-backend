@@ -14,12 +14,18 @@ Signal.trap(:TERM) {running = false}
 def process_trade(data)
   market_id = data.fetch('symbol').downcase
   id = data.fetch('id')
+
+  trade = Trade.find_by(binance_id: id)
+  return if trade.present?
+
   price = data.fetch('price').to_f
   volume = data.fetch('qty').to_f
-  funds = data.fetch('quoteQty').to_f
+  # funds = data.fetch('quoteQty').to_f
+  funds = price * volume
   created_at = Time.at(data.fetch('time') / 1000)
   order_id = data.fetch('orderId')
   is_buyer = data.fetch('isBuyer')
+  is_maker = data.fetch('isMaker')
 
   trade_params = {price: price, volume: volume, funds: funds, currency: market_id.to_sym, created_at: created_at}
   trade_params[:binance_id] = id if id.present?
@@ -37,7 +43,8 @@ def process_trade(data)
   end
 
   trade = Trade.create!(trade_params)
-  order.strike trade
+
+  order.strike(trade, is_maker)
 rescue StandardError => e
   Rails.logger.fatal e.inspect
 end
@@ -68,7 +75,12 @@ def process_order(data)
     state = Order::WAIT
   end
 
-  order.update!(volume: origin_volume - executed_volume, funds_received: funds_received, state: state)
+  if state == Order::DONE
+    order.update!(volume: origin_volume - executed_volume, funds_received: funds_received, state: state) if order.locked == 0 || order.volume == 0
+  elsif state == Order::WAIT
+  else
+    order.update!(volume: origin_volume - executed_volume, funds_received: funds_received, state: state)
+  end
 rescue StandardError => e
   Rails.logger.fatal e.inspect
 end

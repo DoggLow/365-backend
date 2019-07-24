@@ -146,6 +146,12 @@ module Concerns
       end
     end
 
+    class TFARequired < Result
+      def initialize
+        super code: 4012, text: 'TFA required!', status: :unauthorized
+      end
+    end
+
     class AdminRoleRequired < Result
       def initialize
         super code: 4014, text: 'You have no admin role.', status: :unauthorized

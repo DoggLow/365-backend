@@ -10,7 +10,7 @@
             th.text-right Balance
             th.text-right Sum
             th.text-right Hot-Wallet Balance
-            th.text-right Cold-Wallet Balance
+            / th.text-right Cold-Wallet Balance
 
           tbody
             - @currencies_summary.each do |c|
@@ -22,15 +22,16 @@
 
                 - if c[:coinable]
                   td.text-right = c[:hot]
-                  - if c[:hot] == 'N/A'
-                    td.text-right = c[:hot]
-                  - else
-                    td.text-right = c[:sum] - c[:hot]
+                  / - if c[:hot] == 'N/A'
+                  /   td.text-right = c[:hot]
+                  / - else
+                  /   td.text-right = c[:sum] - c[:hot]
                 - else
                   td.text-right N/A
-                  td.text-right N/A
+                  / td.text-right N/A
       .panel-footer
-        span Tips: Locked + Balance = Sum | Hot-Wallet + Cold-Wallet = Sum
+        span Tips: Locked + Balance = Sum
+        / span Tips: Locked + Balance = Sum | Hot-Wallet + Cold-Wallet = Sum
 .row
   .col-xs-12: .panel.panel-primary
     .panel-heading Daemon Statuses

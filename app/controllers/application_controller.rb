@@ -67,14 +67,27 @@ class ApplicationController < ActionController::Base
   end
 
   def two_factor_activated!
-    if not current_user.two_factors.activated?
-      render_json(TFAError.new(t('two_factors.auth.please_active_two_factor')))
-    end
+    render_json(TFAError.new(t('two_factors.auth.please_active_two_factor'))) unless current_user.two_factors.activated?
   end
 
   def two_factor_auth_verified?
-    return false if not current_user.two_factors.activated?
-    return false if two_factor_failed_locked? && !simple_captcha_valid?
+    return false unless current_user.two_factors.activated?
+    two_factor_verified?
+  end
+
+  def two_factor_auth_passed!
+    # temporary method
+    render_json(TFAError.new(t('private.withdraws.create.two_factors_error'))) unless two_factor_auth_passed?
+  end
+
+  def two_factor_auth_passed?
+    # temporary method
+    return true unless current_user.two_factors.activated?
+    two_factor_verified?
+  end
+
+  def two_factor_verified?
+    return false if two_factor_failed_locked?# && !simple_captcha_valid?
 
     two_factor = current_user.two_factors.by_type(params[:two_factor][:type])
     return false if not two_factor
