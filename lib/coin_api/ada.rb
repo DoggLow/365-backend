@@ -89,6 +89,19 @@ module CoinAPI
       }
     end
 
+    def local_block_height
+      node_info.fetch('localBlockchainHeight').fetch('quantity')
+    end
+
+    def sync_status
+      n_info = node_info
+      blockchain_height = n_info.fetch('blockchainHeight').fetch('quantity')
+      local_height = n_info.fetch('localBlockchainHeight').fetch('quantity')
+      return blockchain_height, local_height
+    rescue StandardError => e
+      return 0, 0
+    end
+
     protected
 
     def connection
@@ -224,6 +237,10 @@ module CoinAPI
         response = json_rpc('post', account_path, post_body)
         response.fetch('data')
       end
+    end
+
+    def node_info
+      json_rpc('get', 'node-info' ).fetch('data')
     end
   end
 end

@@ -111,6 +111,10 @@ module CoinAPI
       }
     end
 
+    def sync_status
+      return blockchain_height, local_block_height
+    end
+
     protected
 
     def connection
@@ -220,5 +224,12 @@ module CoinAPI
     rescue StandardError => e
       0
     end
+
+    def blockchain_height
+      json_rpc('get', 'node/active-peers/max-chain-height').fetch('height')
+    rescue StandardError => e
+      0
+    end
+
   end
 end

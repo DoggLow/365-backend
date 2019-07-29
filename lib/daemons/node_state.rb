@@ -18,11 +18,11 @@ HEIGHTS_URL = 'https://min-api.cryptocompare.com/data/coin/generalinfo'
 
 # Status of coin nodes that don't know full blockchain status.
 # BTC, BCH, LTC, DASH, NEO, XMR, BTG, BCD
-COINS_WITH_3RD_PARTY = ['BTC', 'LTC']
+COINS_WITH_3RD_PARTY = ['BTC', 'BCH', 'LTC', 'DASH', 'XMR', 'BTG', 'BCD', 'NEO']
 
 # Coins that know full blockchain status with block height.
 # ADA, ETH, ETC, XEM
-COINS_WITHOUT_3RD_PARTY = ['ETH']
+COINS_WITHOUT_3RD_PARTY = ['ADA', 'ETH', 'ETC', 'XEM']
 
 def get_coin_data_3rd_party
   coin_data = {}
@@ -60,7 +60,7 @@ while($running) do
     end
 
     # XRP
-    # nodes_status['xrp'] = CoinAPI['xrp'].node_status
+    nodes_status['xrp'] = CoinAPI['xrp'].node_status
 
     coin_data = get_coin_data_3rd_party
     COINS_WITH_3RD_PARTY.each do |coin|

@@ -76,6 +76,13 @@ module CoinAPI
       }
     end
 
+    def local_block_height
+      json_rpc(:get_height).fetch('result').fetch('height')
+    rescue StandardError => e
+      Rails.logger.info e
+      0
+    end
+
     protected
 
     def connection

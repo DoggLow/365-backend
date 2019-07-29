@@ -104,6 +104,19 @@ module CoinAPI
                           tag: tx['DestinationTag']}] }
     end
 
+    def node_status
+      result = json_rpc(:server_info, []).fetch('result')
+      status = result.fetch('info').fetch('server_state')
+
+      if status == 'disconnected' ||  status == 'connected' ||  status == 'syncing'
+        status.camelize
+      else
+        'Synced.'
+      end
+    rescue StandardError => e
+      'Stopped.'
+    end
+
     protected
 
     def connection
