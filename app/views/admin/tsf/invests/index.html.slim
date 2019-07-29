@@ -30,6 +30,7 @@
 .row
   .panel.panel-primary
     .panel-heading: span = 'Invests'
+    .panel-body
       = table_for(@invests, class: 'table table-condensed table-hover') do |t|
         - t.column :created_at, class: 'col-xs-6'
         - t.column :member, class: 'col-xs-6' do |p|
