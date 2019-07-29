@@ -42,13 +42,13 @@ class ApplicationController < ActionController::Base
   end
 
   def auth_activated!
-    render_json(SettingsAlert.new(t('private.settings.index.auth-activated'))) unless current_user.activated?
+    # render_json(SettingsAlert.new(t('private.settings.index.auth-activated'))) unless current_user.activated?
   end
 
   def auth_verified!
-    unless current_user and current_user.id_document and current_user.id_document_verified?
-      render_json(SettingsAlert.new(t('private.settings.index.auth-verified')))
-    end
+    # unless current_user and current_user.id_document and current_user.id_document_verified?
+    #   render_json(SettingsAlert.new(t('private.settings.index.auth-verified')))
+    # end
   end
 
   def auth_no_initial!
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def two_factor_activated!
-    render_json(TFAError.new(t('two_factors.auth.please_active_two_factor'))) unless current_user.two_factors.activated?
+    # render_json(TFAError.new(t('two_factors.auth.please_active_two_factor'))) unless current_user.two_factors.activated?
   end
 
   def two_factor_auth_verified?
