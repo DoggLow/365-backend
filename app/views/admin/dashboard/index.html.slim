@@ -33,7 +33,7 @@
         span Tips: Locked + Balance = Sum
         / span Tips: Locked + Balance = Sum | Hot-Wallet + Cold-Wallet = Sum
 .row
-  .col-xs-12: .panel.panel-primary
+  .col-xs-8: .panel.panel-primary
     .panel-heading Daemon Statuses
     .panel-body
       table.table.table-condensed
@@ -49,7 +49,28 @@
               - else
                 td.text-info = daemon
                 td.text-info = state
-  .col-xs-12: .panel.panel-primary
+  .col-xs-8: .panel.panel-primary
+    .panel-heading Nodes Status
+    .panel-body
+      table.table.table-condensed
+        thead: tr
+          th Coin
+          th State
+        tbody
+          - @nodes_status.each do |coin, state|
+            tr
+              - if state.include?('Stopped')
+                td.text-danger: b = coin
+                td.text-danger: b = state
+              - elsif state.include?('Synced')
+                td.text-info: b = coin
+                td.text-info: b = state
+              - else
+                td.text-warning = coin
+                td.text-warning = state
+    .panel-footer
+      span = "Last checked: #{@last_nodes_checked} (UTC)"
+  .col-xs-8: .panel.panel-primary
     .panel-heading Exchange Summary
     .panel-body
       table.table.table-condensed

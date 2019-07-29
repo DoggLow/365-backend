@@ -100,11 +100,18 @@ module CoinAPI
       method_not_implemented
     end
 
+    #
+    # get block height.
+    #
+    def local_block_height
+      latest_block_number
+    end
+
     def convert_to_base_unit!(value)
       x = value.to_d * currency.base_factor
       unless (x % 1).zero?
         raise CoinAPI::Error, "Failed to convert value to base (smallest) unit because it exceeds the maximum precision: " +
-                              "#{value.to_d} - #{x.to_d} must be equal to zero."
+            "#{value.to_d} - #{x.to_d} must be equal to zero."
       end
       x.to_i
     end
@@ -129,7 +136,16 @@ module CoinAPI
       RUBY
     end
 
-  protected
+    protected
+
+    #
+    # cached local block height.
+    #
+    # TODO: Doc.
+    #
+    def latest_block_number
+      method_not_implemented
+    end
 
     def silencing_exception
       yield

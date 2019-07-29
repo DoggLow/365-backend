@@ -10,6 +10,19 @@ class Global
       end
     end
 
+    def nodes_status
+      node_status = {}
+      Currency.coin_codes.each do |coin|
+        status = Rails.cache.read "exchange:nodes:#{coin}:status"
+        node_status[coin.upcase] = status if status.present?
+      end
+      node_status
+    end
+
+    def last_nodes_checked
+      Rails.cache.read 'exchange:nodes:last_checked' || 0
+    end
+
     def estimate(base_unit, quote_unit, amount)
       if Market.find_by_id("#{base_unit}#{quote_unit}").present? || Market.find_by_id("#{quote_unit}#{base_unit}").present?
         price = get_latest_price(base_unit, quote_unit)

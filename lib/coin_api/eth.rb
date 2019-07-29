@@ -92,6 +92,26 @@ module CoinAPI
       0
     end
 
+    def sync_status
+      result = json_rpc(:eth_syncing).fetch('result')
+
+      if result.present?
+        local_height = result.fetch('currentBlock').hex
+        highest_block = result.fetch('highestBlock').hex
+
+        if local_height < highest_block
+          return highest_block, local_height
+        else
+          return local_height, local_height
+        end
+      else
+        local_height = local_block_height
+        return local_height, local_height
+      end
+    rescue StandardError => e
+      return 0, 0
+    end
+
     protected
 
     def connection

@@ -47,6 +47,12 @@ module CoinAPI
       }
     end
 
+    def local_block_height
+      json_rpc(:getblockcount).fetch('result')
+    rescue StandardError => e
+      0
+    end
+
     protected
 
     def connection
