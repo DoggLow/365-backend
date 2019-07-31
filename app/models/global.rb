@@ -20,7 +20,7 @@ class Global
     end
 
     def last_nodes_checked
-      Rails.cache.read 'exchange:nodes:last_checked' || 0
+      Rails.cache.read 'exchange:nodes:last_checked'
     end
 
     def estimate(base_unit, quote_unit, amount)

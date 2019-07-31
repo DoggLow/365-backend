@@ -7,7 +7,7 @@ module Admin
       @currencies_summary = Currency.all.map(&:summary)
       @register_count = Member.count
       @nodes_status = Global.nodes_status
-      @last_nodes_checked = Time.at(Global.last_nodes_checked)
+      @last_nodes_checked = Time.at(Global.last_nodes_checked || 0)
     end
   end
 end

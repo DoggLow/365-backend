@@ -44,11 +44,11 @@ def check_status(values)
   if local_height <= 0
     "Stopped." # TODO: send email to admin
   elsif local_height < chain_height
-    "Syncing. (#{chain_height} / #{local_height})"
+    "Syncing. (Total: #{chain_height} / Synced: #{local_height})"
   elsif chain_height <= 0
-    "Check official site. (#{chain_height} / #{local_height})"
+    "Check official site. (Total: #{chain_height} / Synced: #{local_height})"
   else
-    "Synced. (#{chain_height} / #{local_height})"
+    "Full. (Total: #{chain_height} / Synced: #{local_height})"
   end
 end
 
