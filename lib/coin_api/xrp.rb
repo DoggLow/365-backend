@@ -111,7 +111,7 @@ module CoinAPI
       if status == 'disconnected' ||  status == 'connected' ||  status == 'syncing'
         status.camelize
       else
-        'Synced.'
+        'Full synced.'
       end
     rescue StandardError => e
       'Stopped.'
