@@ -9,4 +9,4 @@
     = x.currency_obj.name
   - t.column :state_and_action, class: 'col-xs-3' do |x|
     span = "#{x.aasm_state_text} / "
-    = link_to t("actions.view"), admin_tsf_point_exchange_path(x.id), target: '_blank'
+    = link_to t("actions.view"), admin_tsf_pld_point_exchange_path(x.id), target: '_blank'

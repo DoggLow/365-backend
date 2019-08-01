@@ -3,7 +3,7 @@
     .panel-heading
       span = 'Manage Profits'
     .panel-body
-      = form_tag admin_tsf_invests_path, method: :get do |f|
+      = form_tag admin_tsf_pld_invests_path, method: :get do |f|
         .col-xs-2.text-right = label_tag 'Created at'
         .col-xs-4 = month_field_tag :date, @created_at
         .col-xs-2.text-right = label_tag 'Unit'

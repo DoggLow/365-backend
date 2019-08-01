@@ -1,5 +1,5 @@
 module Admin
-  module Tsf
+  module TsfPld
     class PointExchangesController < BaseController
 
       def index

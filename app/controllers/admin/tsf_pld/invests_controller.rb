@@ -1,5 +1,5 @@
 module Admin
-  module Tsf
+  module TsfPld
     class InvestsController < BaseController
       # load_and_authorize_resource
 

@@ -73,20 +73,22 @@ html lang="en"
             li class = check_active('members')
               = link_to t(".menus.sections.members"), admin_members_path
 
-          li.dropdown class = check_active('tsf')
+          li.dropdown class = check_active('tsf_pld')
             = link_to 'javascript:;', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
-              span = 'TSF'
+              span = 'TSF&PLD'
               span.caret
             ul.dropdown-menu
               li class = check_active('purchase_options')
-                = link_to "Purchase Options", admin_tsf_purchase_options_path
+                = link_to "Purchase Options", admin_tsf_pld_purchase_options_path
+              li class = check_active('products')
+                = link_to "Products", admin_tsf_pld_products_path
               li class = check_active('invests')
-                = link_to "TSF Profit Program", admin_tsf_invests_path
+                = link_to "TSF Profit Program", admin_tsf_pld_invests_path
               li class = check_active('point_exchanges')
-                = link_to "TSFP Exchanges", admin_tsf_point_exchanges_path
+                = link_to "TSFP Exchanges", admin_tsf_pld_point_exchanges_path
 
-          li class = check_active('markets')
-            = link_to t(".menus.sections.markets"), admin_markets_path
+          / li class = check_active('markets')
+          /   = link_to t(".menus.sections.markets"), admin_markets_path
 
           - if can? :manage, Ticket
             li class = check_active(Proof)

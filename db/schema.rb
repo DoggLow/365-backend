@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190426170008) do
+ActiveRecord::Schema.define(version: 20190501001010) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -294,10 +294,10 @@ ActiveRecord::Schema.define(version: 20190426170008) do
     t.boolean  "api_disabled",                default: false
     t.string   "nickname"
     t.integer  "referrer_id"
-    t.text "referrer_ids"
+    t.text     "referrer_ids"
     t.string   "ref_id"
-    t.integer "level", limit: 1, default: 0, null: false
-    t.boolean "commission_status", default: false, null: false
+    t.integer  "level",             limit: 1, default: 0,     null: false
+    t.boolean  "commission_status",           default: false, null: false
   end
 
   create_table "oauth_access_grants", force: true do |t|
@@ -433,13 +433,13 @@ ActiveRecord::Schema.define(version: 20190426170008) do
   add_index "payment_transactions", ["type"], name: "index_payment_transactions_on_type", using: :btree
 
   create_table "point_exchanges", force: true do |t|
-    t.integer "member_id", null: false
-    t.integer "currency", null: false
-    t.integer "amount", default: 0, null: false
-    t.decimal "fee", precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal "price", precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal "total", precision: 32, scale: 16, default: 0.0, null: false
-    t.string "aasm_state"
+    t.integer  "member_id",                                          null: false
+    t.integer  "currency",                                           null: false
+    t.integer  "amount",                               default: 0,   null: false
+    t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "price",      precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "total",      precision: 32, scale: 16, default: 0.0, null: false
+    t.string   "aasm_state"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -473,6 +473,16 @@ ActiveRecord::Schema.define(version: 20190426170008) do
 
   add_index "prices", ["market_id"], name: "index_prices_on_market_id", unique: true, using: :btree
 
+  create_table "products", force: true do |t|
+    t.string   "name",        limit: 50
+    t.integer  "currency",                           null: false
+    t.string   "sales_unit",  limit: 10,             null: false
+    t.integer  "sales_price",            default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+  end
+
   create_table "proofs", force: true do |t|
     t.integer  "currency"
     t.datetime "created_at"
@@ -485,11 +495,11 @@ ActiveRecord::Schema.define(version: 20190426170008) do
   end
 
   create_table "purchase_options", force: true do |t|
-    t.integer "lot_unit", default: 500, null: false
-    t.decimal "tsf_usd", precision: 32, scale: 2, default: 0.15, null: false
-    t.decimal "affiliate_fee", precision: 5, scale: 2, default: 20.0, null: false
-    t.decimal "tsfp_usd", precision: 32, scale: 2, default: 1.0, null: false
-    t.integer "tsfp_fee", limit: 1, default: 1, null: false
+    t.integer "lot_unit",                                         default: 500,  null: false
+    t.decimal "tsf_usd",                 precision: 32, scale: 2, default: 0.15, null: false
+    t.decimal "affiliate_fee",           precision: 5,  scale: 2, default: 20.0, null: false
+    t.decimal "tsfp_usd",                precision: 32, scale: 2, default: 1.0,  null: false
+    t.integer "tsfp_fee",      limit: 1,                          default: 1,    null: false
   end
 
   create_table "purchases", force: true do |t|

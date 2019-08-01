@@ -37,8 +37,9 @@ namespace :admin do
     resource :history, :controller => 'history', :only => :show
   end
 
-  namespace :tsf do
+  namespace :tsf_pld do
     resources :purchase_options
+    resources :products
     resources :invests, only: [:index]
     resources :point_exchanges
   end

@@ -1,0 +1,10 @@
+.row
+  .col-xs-12
+    = simple_vertical_form_for @product, :url => admin_tsf_pld_product_path do |f|
+      = f.input :id, readonly: true
+      = f.input :name
+      = f.input :currency, collection: Currency.all
+      = f.input :sales_unit, collection: Product.available_currencies
+      = f.input :sales_price
+
+      = f.button :wrapped, t('actions.submit'), cancel: admin_tsf_pld_products_path
