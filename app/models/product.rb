@@ -11,8 +11,8 @@ class Product < ActiveRecord::Base
   has_many :purchases
 
   class << self
-    def available_currencies
-      Currency.codes << 'usd'
+    def sale_currencies
+      ['USD', 'TSF', 'PLD']
     end
   end
 
@@ -35,7 +35,7 @@ class Product < ActiveRecord::Base
   end
 
   def validate_sales_unit
-    unless Product.available_currencies.include?(self.sales_unit)
+    unless Product.sale_currencies.include?(self.sales_unit.upcase)
       errors.add(:sales_unit, 'should be currency code')
     end
   end

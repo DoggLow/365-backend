@@ -5,9 +5,12 @@
   .panel-body
     = table_for(@products, class: 'table table-condensed table-hover') do |t|
       - t.column :id
-      - t.column :name
-      - t.column :currency
-      - t.column :sales_unit, "Sales currency"
+      - t.column :name do |x|
+        = x.label
+      - t.column :currency do |x|
+        = x.currency.upcase
+      - t.column :sales_unit, "Sales currency"do |x|
+        = x.sales_unit.upcase
       - t.column :sales_price, "Sales price"
       - t.column :action, class: 'col-xs-6' do |x|
         / = link_to t('actions.edit'), edit_admin_tsf_pld_product_path(x)
