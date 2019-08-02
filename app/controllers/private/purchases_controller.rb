@@ -3,7 +3,21 @@ module Private
     layout false
 
     def index
-      render json: current_user.purchases
+      @currency = params[:currency]
+      purchases = current_user.purchases.includes(:product)
+      if @currency.present?
+        purchases = purchases.select { |purchase| purchase.product.currency.upcase == @currency }
+      end
+      if params[:page].present? && params[:perPage].present?
+        render json: {
+          total_length: purchases.length,
+          purchases:  Kaminari.paginate_array(purchases).page(params[:page]).per(params[:perPage]).map(&:for_notify)
+        }
+      else
+        render json: {
+            purchases:  Kaminari.paginate_array(purchases).map(&:for_notify)
+        }
+      end
     end
 
     def create

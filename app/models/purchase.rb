@@ -36,6 +36,21 @@ class Purchase < ActiveRecord::Base
     create_and_calculate_referral if self.product.currency.upcase == 'TSF'
   end
 
+  def for_notify
+    {
+        id: id,
+        product_name: product.label,
+        product_count: product_count,
+        at: created_at.to_i,
+        fiat: fiat,
+        currency: currency,
+        rate: rate,
+        sale_rate: sale_rate,
+        amount: amount,
+        fee: fee
+    }
+  end
+
   private
 
   def create_and_calculate_referral
