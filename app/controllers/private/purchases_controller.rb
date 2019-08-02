@@ -18,8 +18,6 @@ module Private
 
     def prepare
       new_purchase_params = purchase_params
-      new_purchase_params[:unit] = PurchaseOption.get('lot_unit')
-
       new_purchase = current_user.purchases.new new_purchase_params
       if new_purchase.valid?
         render json: new_purchase, status: :ok
@@ -29,15 +27,20 @@ module Private
     end
 
     def options
+      fiat = params[:fiat] || 'USD'
       currency = params[:currency]
-      price = Price.latest_price_3rd_party(currency, 'USD')
-      render json: {price: price, tsf_price: PurchaseOption.get('tsf_usd'), lot_unit: PurchaseOption.get('lot_unit')}.to_json
+      product_currency = params[:product_currency].downcase
+      rate = Price.get_rate(currency, fiat)
+      product_rate = Price.get_rate('TSF', fiat)
+      products = Product.where(currency: Currency.find_by_code(product_currency).id)
+
+      render json: {rate: rate, product_rate: product_rate, products: products}.to_json
     end
 
     private
 
     def purchase_params
-      params.require(:purchase).permit(:currency, :unit, :amount, :currency, :fee)
+      params.require(:purchase).permit(:product_id, :product_count, :currency)
     end
   end
 end

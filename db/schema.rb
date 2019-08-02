@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190501001010) do
+ActiveRecord::Schema.define(version: 20190502000005) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -503,13 +503,15 @@ ActiveRecord::Schema.define(version: 20190501001010) do
   end
 
   create_table "purchases", force: true do |t|
-    t.integer  "member_id",                                          null: false
-    t.integer  "currency",                                           null: false
-    t.integer  "unit",                                 default: 0,   null: false
-    t.integer  "amount",                               default: 0,   null: false
-    t.decimal  "price",      precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal  "total",      precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "member_id",                                                        null: false
+    t.string   "fiat",          limit: 10,                                         null: false
+    t.integer  "product_id",                                                       null: false
+    t.integer  "product_count",                                      default: 0,   null: false
+    t.decimal  "sale_rate",                precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "currency",                                                         null: false
+    t.decimal  "rate",                     precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "amount",                   precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "fee",                      precision: 32, scale: 16, default: 0.0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

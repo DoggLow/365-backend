@@ -29,6 +29,17 @@ class Price < ActiveRecord::Base
     rescue StandardError => e
       0
     end
+
+    def get_rate(base_unit, quote_unit)
+      if base_unit.upcase == 'TSF'
+        PurchaseOption.get('tsf_usd')
+      elsif base_unit.upcase == 'PLD'
+        1 # TODO: need more work
+        # PurchaseOption.get('pld_usd')
+      else
+        Price.latest_price_3rd_party(base_unit, quote_unit)
+      end
+    end
   end
 
   def market_name

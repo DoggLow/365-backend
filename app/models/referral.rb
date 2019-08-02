@@ -46,6 +46,6 @@ class Referral < ActiveRecord::Base
     referrer_account.lock!.plus_funds commission, reason: Account::PURCHASE, ref: ref
 
     self.update!(total: commission, state: Referral::PAID)
-    TSFMailer.affiliate(ref, commission).deliver
+    PurchaseMailer.affiliate(self, ref).deliver
   end
 end

@@ -1,0 +1,11 @@
+<p>
+  <%= t(".content", symbol: @product.currency.upcase) %>
+</p>
+
+<p>
+  <%= t(".time", time: @purchase.created_at) %>
+  <br/>
+  <%= t(".operation", symbol: @product.currency.upcase) %>
+  <br/>
+  <%= t(".amount", amount: @referral.total, symbol: @referral.currency.upcase) %>
+</p>

@@ -8,6 +8,8 @@ class Product < ActiveRecord::Base
   validates_numericality_of :sales_price, greater_than: 0.0
   validate :validate_sales_unit
 
+  has_many :purchases
+
   class << self
     def available_currencies
       Currency.codes << 'usd'
@@ -16,7 +18,7 @@ class Product < ActiveRecord::Base
 
   def label
     if name.blank?
-      "#{currency} - #{sales_price}#{sales_unit}"
+      "#{currency.upcase} - #{sales_price}#{sales_unit.upcase}"
     else
       name
     end
