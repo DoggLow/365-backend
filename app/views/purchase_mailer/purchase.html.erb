@@ -11,7 +11,7 @@
   <br/>
   <%= t(".count", count: @purchase.product_count) %>
   <br/>
-  <%= t(".paid", amount: @purchase.amount, symbol: @product.currency.upcase) %>
+  <%= t(".paid", amount: @purchase.amount, symbol: @purchase.currency.upcase) %>
   <br/>
-  <%= t(".fee", fee: @purchase.fee, symbol: @product.currency.upcase) %>
+  <%= t(".fee", fee: @purchase.fee, symbol: @purchase.currency.upcase) %>
 </p>

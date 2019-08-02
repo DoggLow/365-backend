@@ -12,7 +12,7 @@ module Private
       if new_purchase.save
         render json: new_purchase, status: :ok
       else
-        head :bad_request
+        render json: new_purchase.errors.full_messages.join(', '), status: 403
       end
     end
 
@@ -22,7 +22,7 @@ module Private
       if new_purchase.valid?
         render json: new_purchase, status: :ok
       else
-        head :bad_request
+        render json: new_purchase.errors.full_messages.join(', '), status: 403
       end
     end
 
@@ -31,7 +31,7 @@ module Private
       currency = params[:currency]
       product_currency = params[:product_currency].downcase
       rate = Price.get_rate(currency, fiat)
-      product_rate = Price.get_rate('TSF', fiat)
+      product_rate = Price.get_rate(product_currency, fiat)
       products = Product.where(currency: Currency.find_by_code(product_currency).id)
 
       render json: {rate: rate, product_rate: product_rate, products: products}.to_json

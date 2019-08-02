@@ -31,7 +31,9 @@ class Price < ActiveRecord::Base
     end
 
     def get_rate(base_unit, quote_unit)
-      if base_unit.upcase == 'TSF'
+      if base_unit.upcase == quote_unit.upcase
+        1
+      elsif base_unit.upcase == 'TSF'
         PurchaseOption.get('tsf_usd')
       elsif base_unit.upcase == 'PLD'
         PurchaseOption.get('pld_usd')
