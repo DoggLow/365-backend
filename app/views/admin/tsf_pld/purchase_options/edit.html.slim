@@ -1,10 +1,11 @@
 .row
   .col-xs-12
     = simple_vertical_form_for @purchase_option, :url => admin_tsf_pld_purchase_option_path do |f|
-      = f.input :lot_unit, label: "LOT Unit (TSF)"
       = f.input :tsf_usd
       = f.input :affiliate_fee, label: "Affiliate Fee (%)"
       = f.input :tsfp_usd
       = f.input :tsfp_fee, label: "TSFP Exchange Fee (%)"
+      = f.input :pld_usd
+      = f.input :pldp_usd
 
       = f.button :wrapped, t('actions.submit'), cancel: admin_tsf_pld_purchase_options_path
