@@ -1,0 +1,29 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      span = t('.search')
+    .panel-body
+      = form_tag admin_tsf_pld_purchases_path, method: :get do |f|
+        .col-xs-4.text-right = label_tag 'Product Currency'
+        .col-xs-3 = select_tag :currency, options_for_select(['TSF', 'PLD'], @currency)
+        .col-xs-3.col-xs-offset-1 = submit_tag 'Search'
+        .pull-right.col-xs-4.col-xs-offset-1
+          = link_to 'Export to CSV', admin_tsf_pld_purchases_path(format: :csv)
+
+.row
+  .panel.panel-primary
+    .panel-heading
+      span = t('.purchases')
+    .panel-body
+      = table_for(@purchases, class: 'table table-condensed table-hover') do |t|
+        - t.column :id, class: 'col-xs-1'
+        - t.column :created_at, class: 'col-xs-3'
+        - t.column :member, class: 'col-xs-4' do |x|
+          = link_to x.member.name || x.member.email, url_for([:admin, x.member]), target: '_blank'
+        - t.column :product, class: 'col-xs-2' do |x|
+          code.text-info = x.product.label
+        - t.column :product_count, class: 'col-xs-2'
+        - t.column :amount, class: 'col-xs-2' do |x|
+          = "#{x.amount} #{x.currency.upcase}"
+
+      = paginate @purchases

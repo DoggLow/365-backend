@@ -1,3 +1,5 @@
+require 'csv'
+
 class Purchase < ActiveRecord::Base
   include Currencible
 
@@ -11,6 +13,18 @@ class Purchase < ActiveRecord::Base
 
   belongs_to :member
   belongs_to :product
+
+  def self.to_csv
+    attributes = %w{id product_name product_count amount currency}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |purchase|
+        csv << attributes.map{ |attr| purchase.send(attr) }
+      end
+    end
+  end
 
   def strike
     hold_account.sub_funds amount + fee, fee: 0, reason: Account::PURCHASE, ref: self
@@ -83,5 +97,9 @@ class Purchase < ActiveRecord::Base
 
   def expect_account
     member.get_account(self.product.currency)
+  end
+
+  def product_name
+    product.label
   end
 end

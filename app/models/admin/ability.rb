@@ -15,6 +15,7 @@ module Admin
       can :manage, Setting
       can :manage, PurchaseOption
       can :manage, Product
+      can :manage, Purchase
       can :manage, Ticket
       can :manage, IdDocument
       can :manage, TwoFactor

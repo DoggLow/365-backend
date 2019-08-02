@@ -40,6 +40,7 @@ namespace :admin do
   namespace :tsf_pld do
     resources :purchase_options
     resources :products
+    resources :purchases, only: [:index]
     resources :invests, only: [:index]
     resources :point_exchanges
   end
