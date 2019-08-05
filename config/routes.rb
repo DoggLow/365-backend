@@ -25,7 +25,8 @@ Exchange::Application.routes.draw do
   resource :member, :only => [:show, :update]
   resource :identity, :only => [:edit, :update]
 
-  get '/currencies' => 'currencies#index', as: :currency_list
+  get '/configs/currencies' => 'configs#currencies', as: :currency_list
+  get '/configs/levels' => 'configs#levels', as: :level_list
 
   namespace :verify do
     resource :sms_auth,    only: [:show, :update]
