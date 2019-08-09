@@ -31,8 +31,8 @@ class Invest < ActiveRecord::Base
     event :check do |e|
       before :pay_profit
 
-      transitions :from => [:pending], :to => :processing, :guard => :profit_is_set?
       transitions :from => [:pending, :processing], :to => :done, :guard => :all_paid?
+      transitions :from => [:pending], :to => :processing, :guard => :profit_is_set?
     end
   end
 
