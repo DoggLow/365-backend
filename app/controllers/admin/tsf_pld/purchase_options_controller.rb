@@ -20,7 +20,7 @@ module Admin
       private
 
       def purchase_option_params
-        params.require(:purchase_option).permit(:tsf_usd, :affiliate_fee, :tsfp_usd, :tsfp_fee, :pld_usd, :pldp_usd)
+        params.require(:purchase_option).permit(:tsf_usd, :tsf_aff_fee, :tsfp_usd, :tsfp_fee, :pld_aff_fee, :pldp_usd, :pld_completion_date)
       end
     end
   end

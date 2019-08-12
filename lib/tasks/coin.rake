@@ -20,10 +20,53 @@ namespace :coin do
     end
   end
 
-  desc "Add new lending_accounts for new currency to already existing Members"
+  desc "Add profits to TSF invests"
   task pay_profit_invests: :environment do
     Invest.processing.each do |invest|
       invest.check!
+    end
+  end
+
+  desc "Add profits to CC Purchase"
+  task pay_profit_cc_purchase: :environment do
+    # define constants
+    yearly_pld_count = 10_500_000.0
+    daily_pld_count = yearly_pld_count / 365 * 65 / 100
+    period = (PurchaseOption.get('pld_completion_date').to_date - Date.today).to_i
+    break if period < 0
+
+    # get PLD price of 1 day before
+    last_price = PurchaseOption.get('pld_usd') || 0
+
+    # calculate sum of purchase in a day
+    daily_sum = 0
+    Purchase.pending.each do |purchase|
+      case purchase.product.sales_price
+      when 1000
+        return_rate = 1
+      when 3000
+        return_rate = 1.1
+      when 10000
+        return_rate = 1.2
+      else
+        return_rate = 1
+      end
+      daily_sum += purchase.product_count * purchase.product.sales_price * return_rate
+    end
+
+    # calculate PLD price and update DB
+    price = last_price + daily_sum / period / daily_pld_count
+    PurchaseOption.set('pld_usd', price)
+
+    # set product rate and volume of pending purchase
+    Purchase.pending.each do |purchase|
+      purchase.set_volume
+    end
+
+    # add daily profit of pending or processing purchase
+    Purchase.not_done.each do |purchase|
+      p_period = (PurchaseOption.get('pld_completion_date').to_date - purchase.created_at.to_date).to_i
+      purchase.fill_volume(purchase.volume / p_period)
     end
   end
 

@@ -1,11 +1,18 @@
 .row
   .col-xs-12
     = simple_vertical_form_for @purchase_option, :url => admin_tsf_pld_purchase_option_path do |f|
-      = f.input :tsf_usd
-      = f.input :affiliate_fee, label: "Affiliate Fee (%)"
-      = f.input :tsfp_usd
+      = f.input :tsf_usd, label: "TSF/USD Price"
+      = f.input :tsf_aff_fee, label: "TSF Affiliate Fee (%)"
+      = f.input :tsfp_usd, label: "TSFP/USD Price"
       = f.input :tsfp_fee, label: "TSFP Exchange Fee (%)"
-      = f.input :pld_usd
-      = f.input :pldp_usd
+
+      hr.split
+
+      = f.input :pld_aff_fee, label: "PLD Affiliate Fee (%)"
+      = f.input :pldp_usd, label: "PLDP/USD Price"
+      = f.input :pld_completion_date, label: "PLD Completion Date (UTC)", as: :date,
+              start_year: Date.today.year, end_year: Date.today.year
+
+      hr.split
 
       = f.button :wrapped, t('actions.submit'), cancel: admin_tsf_pld_purchase_options_path

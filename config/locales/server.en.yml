@@ -1783,6 +1783,15 @@ en:
       count: 'Amount: %{count}'
       paid: 'Paid: %{amount} %{symbol}'
       fee: 'Fee: %{fee} %{symbol}'
+    profit:
+      subject: "[365 Exchange] Purchase profit received"
+      content: 'The profit of %{symbol} purchase is received. Please check your account.'
+      operation: '%{symbol} Purchase'
+      purchase_time: 'Purcahse Time: %{time}'
+      product: 'Product: %{label}'
+      count: 'Amount: %{count}'
+      received_now: 'Received today: %{amount} %{symbol}'
+      received_total: 'Received until now: %{amount} %{symbol}'
     affiliate:
       subject: "[365 Exchange] Purchase Affiliate"
       content: 'The affiliate of %{symbol} purchase is occurred. Please check your account.'

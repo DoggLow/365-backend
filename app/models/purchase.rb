@@ -1,11 +1,19 @@
 require 'csv'
 
 class Purchase < ActiveRecord::Base
+  STATES = [:pending, :processing, :done]
+
+  extend Enumerize
+
+  include AASM
+  include AASM::Locking
   include Currencible
+
+  enumerize :aasm_state, in: STATES, scope: true
 
   validates_presence_of :fiat, :amount, :product_id, :product_count, :sale_rate, :currency, :rate, :amount
   validates_numericality_of :product_count, :sale_rate, :rate, :amount, greater_than: 0.0
-  validates_numericality_of :fee, greater_than_or_equal_to: 0.0
+  validates_numericality_of :fee, :product_rate, :volume, :filled_volume, greater_than_or_equal_to: 0.0
 
   before_validation :fill_data, on: :create
   validate :validate_data, on: :create
@@ -13,6 +21,11 @@ class Purchase < ActiveRecord::Base
 
   belongs_to :member
   belongs_to :product
+  has_many :profits, as: :modifiable
+
+  scope :pending, -> { where(aasm_state: :pending) }
+  scope :processing, -> { where(aasm_state: :processing) }
+  scope :not_done, -> { where.not(aasm_state: :done) }
 
   def self.to_csv
     attributes = %w{id product_name product_count amount currency}
@@ -26,14 +39,45 @@ class Purchase < ActiveRecord::Base
     end
   end
 
-  def strike
-    hold_account.sub_funds amount + fee, fee: 0, reason: Account::PURCHASE, ref: self
-    expect_account.plus_funds real_purchase_amount, fee: 0, reason: Account::PURCHASE, ref: self # TODO: calculate amount to add
+  aasm :whiny_transitions => false do
+    state :pending, initial: true
+    state :processing
+    state :done, after_commit: :unlock_filled
 
+    event :check do |e|
+      transitions :from => [:pending, :processing], :to => :done, :guard => :all_filled?
+      transitions :from => [:pending], :to => :processing, :guard => :product_rate_is_set?
+    end
+  end
+
+  def strike
+    sub_funds
     PurchaseMailer.purchase(self).deliver
+    return unless is_tsf_purchase?
+
+    set_volume
+    fill_volume(self.volume)
+  end
+
+  def set_volume
+    self.product_rate = Price.get_rate(self.product.currency, self.fiat)
+    self.volume = is_tsf_purchase? ? self.product_count * self.product.sales_price : self.amount * self.rate / self.product_rate
+    self.save!
+  end
+
+  def fill_volume(value)
+    self.filled_volume += value
+    self.save!
+
+    lock_filled(value)
+    check!
+
+    unless is_tsf_purchase? # PLD
+      create_profit(value)
+    end
 
     # Referral for TSF Purchase
-    create_and_calculate_referral if self.product.currency.upcase == 'TSF'
+    create_and_calculate_referral(value)
   end
 
   def for_notify
@@ -47,40 +91,69 @@ class Purchase < ActiveRecord::Base
         rate: rate,
         sale_rate: sale_rate,
         amount: amount,
+        volume: volume,
+        filled_volume: filled_volume,
         fee: fee
     }
   end
 
   private
 
-  def create_and_calculate_referral
+  def sub_funds
+    hold_account.lock!.sub_funds amount + fee, fee: 0, reason: Account::PURCHASE, ref: self
+  end
+
+  def lock_filled(value)
+    expect_account.lock!.plus_locked value, reason: Account::PURCHASE, ref: self
+  end
+
+  def unlock_filled
+    expect_account.lock!.unlock_funds self.filled_volume, reason: Account::PURCHASE, ref: self
+  end
+
+  def create_profit(value)
+    profit = Profit.create(
+        member: member,
+        currency: product.currency,
+        amount: value,
+        modifiable_id: self.id,
+        modifiable_type: Purchase.name
+    )
+    PurchaseMailer.profit(self, profit).deliver
+  end
+
+  def create_and_calculate_referral(value)
     referrer = member.referrer
     return if referrer.blank?
     return unless referrer.id_document and referrer.id_document_verified?
-    return if referrer.purchases.blank?
+    return if referrer.purchases.blank? # TODO
 
     # calculate
-    coin = 'tsfp'
-    ref_amount = real_purchase_amount * PurchaseOption.get('affiliate_fee') / 100
+    coin = "#{product.currency}p" # TSFP, PLDP
+    aff_fee = PurchaseOption.get("#{product.currency}_aff_fee") / 100
 
     # Create referral
     referral = Referral.create(
         member: member,
         currency: coin,
-        amount: real_purchase_amount,
+        amount: value,
         modifiable_id: self.id,
         modifiable_type: Purchase.name,
         state: Referral::PENDING
     )
-    referral.calculate_from_purchase(ref_amount, self)
+    referral.calculate_from_purchase(value * aff_fee, self)
   end
 
-  def real_purchase_amount
-    if self.product.currency.upcase == 'TSF'
-      self.product_count * self.product.sales_price
-    else # PLD
-      self.product_count * self.product.sales_price / Price.get_rate(self.product.currency, self.product.sales_unit)
-    end
+  def is_tsf_purchase?
+    self.product.currency.upcase == 'TSF'
+  end
+
+  def product_rate_is_set?
+    product_rate > 0
+  end
+
+  def all_filled?
+    (filled_volume >= volume) && (volume > 0)
   end
 
   def fill_data
@@ -89,7 +162,7 @@ class Purchase < ActiveRecord::Base
     self.rate = Price.get_rate(currency, self.fiat)
     self.amount = (self.product_count.to_i * self.product.sales_price * self.sale_rate / self.rate).round(8)
 
-    if self.product.currency.upcase == 'TSF'
+    if is_tsf_purchase?
       self.fee = CoinAPI[currency].gas_price.round(8) * 21000
     end
   end

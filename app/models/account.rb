@@ -26,7 +26,7 @@ class Account < ActiveRecord::Base
   POINT_EXCHANGE = :point_exchange
   ZERO = 0.to_d
 
-  FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5}
+  FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5, :plus_locked => 10}
 
   belongs_to :member
   has_many :payment_addresses
@@ -96,6 +96,11 @@ class Account < ActiveRecord::Base
     change_balance_and_locked amount, -amount
   end
 
+  def plus_locked(amount, reason: nil, ref: nil)
+    amount <= ZERO and raise AccountError, "cannot lock funds (amount: #{amount})"
+    change_balance_and_locked 0, amount
+  end
+
   def unlock_and_sub_funds(amount, locked: ZERO, fee: ZERO, reason: nil, ref: nil)
     raise AccountError, "cannot unlock and subtract funds (amount: #{amount})" if ((amount <= 0) or (amount > locked))
     raise LockedError, "invalid lock amount" unless locked
@@ -148,6 +153,8 @@ class Account < ActiveRecord::Base
       [amount, ZERO - amount]
     when :unlock_funds then
       [ZERO - amount, amount]
+    when :plus_locked then
+      [ZERO, ZERO - amount]
     when :unlock_and_sub_funds
       locked = ZERO - opts[:locked]
       balance = opts[:locked] - amount

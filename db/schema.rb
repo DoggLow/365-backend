@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190505011000) do
+ActiveRecord::Schema.define(version: 20190507001000) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -483,6 +483,20 @@ ActiveRecord::Schema.define(version: 20190505011000) do
     t.datetime "deleted_at"
   end
 
+  create_table "profits", force: true do |t|
+    t.integer  "member_id",                                               null: false
+    t.integer  "currency",                                                null: false
+    t.decimal  "amount",          precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "fee",             precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "modifiable_id"
+    t.string   "modifiable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profits", ["member_id"], name: "index_profits_on_member_id", using: :btree
+  add_index "profits", ["modifiable_id", "modifiable_type"], name: "index_profits_on_modifiable_id_and_modifiable_type", using: :btree
+
   create_table "proofs", force: true do |t|
     t.integer  "currency"
     t.datetime "created_at"
@@ -495,12 +509,14 @@ ActiveRecord::Schema.define(version: 20190505011000) do
   end
 
   create_table "purchase_options", force: true do |t|
-    t.decimal "tsf_usd",                 precision: 32, scale: 2, default: 0.15, null: false
-    t.decimal "affiliate_fee",           precision: 5,  scale: 2, default: 20.0, null: false
-    t.decimal "tsfp_usd",                precision: 32, scale: 2, default: 1.0,  null: false
-    t.integer "tsfp_fee",      limit: 1,                          default: 1,    null: false
-    t.decimal "pld_usd",                 precision: 32, scale: 2, default: 0.15, null: false
-    t.decimal "pldp_usd",                precision: 32, scale: 2, default: 0.15, null: false
+    t.decimal  "tsf_usd",                       precision: 32, scale: 2,  default: 0.15, null: false
+    t.decimal  "tsf_aff_fee",                   precision: 5,  scale: 2,  default: 20.0, null: false
+    t.decimal  "tsfp_usd",                      precision: 32, scale: 2,  default: 1.0,  null: false
+    t.integer  "tsfp_fee",            limit: 1,                           default: 1,    null: false
+    t.decimal  "pld_usd",                       precision: 32, scale: 16, default: 0.0,  null: false
+    t.decimal  "pldp_usd",                      precision: 32, scale: 2,  default: 0.15, null: false
+    t.decimal  "pld_aff_fee",                   precision: 32, scale: 2,  default: 5.0,  null: false
+    t.datetime "pld_completion_date"
   end
 
   create_table "purchases", force: true do |t|
@@ -515,6 +531,10 @@ ActiveRecord::Schema.define(version: 20190505011000) do
     t.decimal  "fee",                      precision: 32, scale: 16, default: 0.0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "product_rate",             precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "volume",                   precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "filled_volume",            precision: 32, scale: 16, default: 0.0, null: false
+    t.string   "aasm_state"
   end
 
   add_index "purchases", ["member_id"], name: "index_purchases_on_member_id", using: :btree
