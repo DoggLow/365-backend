@@ -14,6 +14,9 @@
     - t.column :pld_aff_fee, "PLD Affiliate Fee (%)"
     - t.column :pldp_usd, "PLDP/USD Price"
     - t.column :pld_completion_date, "PLD Completion Date (UTC)" do |x|
-      = x.pld_completion_date.to_date
+      - if x.pld_completion_date.present?
+        = x.pld_completion_date.to_date
+      - else
+        = x.pld_completion_date
     - t.column '' do |x|
       = link_to t('actions.edit'), edit_admin_tsf_pld_purchase_option_path(x)
