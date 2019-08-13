@@ -84,6 +84,7 @@ class Purchase < ActiveRecord::Base
     {
         id: id,
         product_name: product.label,
+        product_currency: product.currency,
         product_count: product_count,
         at: created_at.to_i,
         fiat: fiat,
@@ -93,10 +94,14 @@ class Purchase < ActiveRecord::Base
         amount: amount,
         volume: volume,
         filled_volume: filled_volume,
-        fee: fee
+        fee: fee,
+        state: aasm_state
     }
   end
 
+  def as_json(options = {})
+    for_notify
+  end
   private
 
   def sub_funds
@@ -162,9 +167,9 @@ class Purchase < ActiveRecord::Base
     self.rate = Price.get_rate(currency, self.fiat)
     self.amount = (self.product_count.to_i * self.product.sales_price * self.sale_rate / self.rate).round(8)
 
-    if is_tsf_purchase?
-      self.fee = CoinAPI[currency].gas_price.round(8) * 21000
-    end
+    # if is_tsf_purchase? # TODO
+    #   self.fee = CoinAPI[currency].gas_price.round(8) * 21000
+    # end
   end
 
   def validate_data

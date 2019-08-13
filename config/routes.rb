@@ -145,10 +145,11 @@ Exchange::Application.routes.draw do
     resources :invests, only: [:index, :create]
     resources :point_exchanges, only: [:index, :create]
 
-    resources :purchases, only: [:index, :create, :prepare, :options] do
+    resources :purchases, only: [:index, :create, :prepare, :options, :profits] do
       collection do
         post  :options
         post  :prepare
+        get  :profits
       end
     end
   end

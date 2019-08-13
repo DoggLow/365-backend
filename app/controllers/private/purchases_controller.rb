@@ -51,6 +51,24 @@ module Private
       render json: {rate: rate, product_rate: product_rate, products: products}.to_json
     end
 
+    def profits
+      @currency = params[:currency]
+      profits = current_user.profits
+      if @currency.present?
+        profits = profits.select { |profit| profit.currency.upcase == @currency }
+      end
+      if params[:page].present? && params[:perPage].present?
+        render json: {
+            total_length: profits.length,
+            profits:  Kaminari.paginate_array(profits).page(params[:page]).per(params[:perPage]).map(&:for_notify)
+        }
+      else
+        render json: {
+            profits:  Kaminari.paginate_array(profits).map(&:for_notify)
+        }
+      end
+    end
+
     private
 
     def purchase_params
