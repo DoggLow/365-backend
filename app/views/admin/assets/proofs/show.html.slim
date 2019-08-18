@@ -6,6 +6,8 @@
       = description_for :proof do
         = item_for @proof, :currency
         = item_for @proof, :address
+        - if @proof.currency == 'xrp'
+          = item_for @proof, :tag
         = item_for @proof, :balance
 
 .row
@@ -14,8 +16,10 @@
       span = t('.transfer_to')
     .panel-body
       = form_tag admin_assets_proof_path, :class => 'form form-horizontal', method: :get do |f|
-        .col-xs-2.text-right = label_tag :label_to_address, 'To', :class => 'string required control-label'
-        .col-xs-12 = text_field_tag :to_address, @to_address, placeholder: 'to_address', :class => 'string required form-control'
+        .col-xs-1.text-right = label_tag :label_to_address, 'To', :class => 'string required control-label'
+        .col-xs-12 = text_field_tag :dest_address, @dest_address, placeholder: 'Destination address', :class => 'string required form-control'
+        - if @proof.currency == 'xrp'
+          .col-xs-3 = text_field_tag :dest_tag, @dest_tag, placeholder: 'Tag (XRP only)', :class => 'string required form-control'
         .col-xs-2.text-right = label_tag :label_amount, 'Amount', :class => 'string required control-label'
         .col-xs-3 = number_field_tag :amount, @amount, placeholder: 'amount', step:0.0001, min:0.0001, :class => 'string required form-control'
-        .col-xs-3.col-xs-offset-2 = submit_tag 'Transfer', data: {confirm: 'Are you sure to transfer coins?'}, :class => 'btn btn-default'
+        .col-xs-2.col-xs-offset-1 = submit_tag 'Transfer', data: {confirm: 'Are you sure to transfer coins?'}, :class => 'btn btn-default'

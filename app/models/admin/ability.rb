@@ -10,6 +10,7 @@ module Admin
       can :read, Proof
       can :read, Account
       can :read, PaymentAddress
+      can :read, AssetTransaction
       can :manage, Document
       can :manage, Member
       can :manage, Setting

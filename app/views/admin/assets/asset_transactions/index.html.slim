@@ -1,0 +1,19 @@
+- unless @asset_transactions.empty?
+  .panel.panel-primary
+    .panel-heading
+      span = "Asset Transactions"
+    .panel-body
+      = table_for(@asset_transactions, class: 'table table-condensed table-hover') do |t|
+        - t.column :currency, class: 'col-xs-2' do |x|
+          = x.currency.upcase
+        - t.column :tx_id, class: 'col-xs-12' do |x|
+          a href='#{x.currency_obj.blockchain_url(x.tx_id)}' target='_blank'
+            code.text-info = x.tx_id
+        - t.column :amount, class: 'col-xs-4'
+        - t.column :created_at, class: 'col-xs-4' do |x|
+          = x.created_at.to_date
+
+      = paginate @asset_transactions
+
+- if @asset_transactions.empty?
+    h3.text-info.text-center = t('.empty')

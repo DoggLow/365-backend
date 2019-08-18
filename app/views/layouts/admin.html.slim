@@ -30,6 +30,8 @@ html lang="en"
                 = link_to t(".menus.items.operating.proofs"), admin_assets_proofs_path
               li class = check_active(PaymentAddress)
                 = link_to t(".menus.items.operating.payment_addresses"), admin_assets_accounts_path
+              li class = check_active(AssetTransaction)
+                = link_to 'Asset Transactions', admin_assets_asset_transactions_path
 
           - if can? :manage, Setting
             li class = check_active('settings')

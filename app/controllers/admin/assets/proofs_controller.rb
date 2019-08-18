@@ -10,11 +10,12 @@ module Admin
 
       def show
         @amount = params[:amount]
-        @to_address = params[:to_address]
+        @dest_address = params[:dest_address]
+        @dest_tag = params[:dest_tag]
 
         return unless params[:commit].present?
 
-        if @amount.blank? || @to_address.blank?
+        if @amount.blank? || @dest_address.blank?
           redirect_to :back, alert: 'Invalid input data'
         else
           begin
@@ -25,8 +26,8 @@ module Admin
 
             redirect_to :back, alert: 'Insufficient balance!' and return if balance < @amount.to_d
 
-            recipient = { address: @to_address }
-            # recipient[:tag]= @tag unless @tag.nil?
+            recipient = { address: @dest_address}
+            recipient[:tag]= @dest_tag if @proof.currency == 'xrp'
 
             txid = @proof.currency_obj.api.create_withdrawal!(
                 { address: @proof.address, secret: @proof.secret, tag: @proof.tag },

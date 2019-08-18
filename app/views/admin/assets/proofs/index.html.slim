@@ -10,7 +10,7 @@
         / - t.column :updated_at, class: 'col-xs-4' do |x|
         /   = x.updated_at.to_date
         - t.column '', class: 'col-xs-2' do |x|
-          = link_to I18n.t('actions.transfer'), admin_assets_proof_path(x) if x.currency == 'eth'
+          = link_to I18n.t('actions.transfer'), admin_assets_proof_path(x)
 
       = paginate @proofs
 
