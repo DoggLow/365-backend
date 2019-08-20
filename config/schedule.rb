@@ -19,6 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
+env :PATH, ENV['PATH']
+env :GEM_PATH, ENV['GEM_PATH']
+
 every '0 0 15 * *' do
   rake 'referral:calculate'
 end

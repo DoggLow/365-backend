@@ -3,10 +3,13 @@ module Admin
     class AccountsController < BaseController
       load_and_authorize_resource
 
+      NO_NEED_MOVE_COINS = ['BTC', 'XRP', 'ADA']
+
       def index
-        @accounts = @accounts.page(params[:page]).per(32)
+        @accounts = @accounts.has_real_balance
         @accounts = @accounts.includes(:payment_addresses)
-        @filtered_accounts = @accounts.select {|account| account.payment_address.present? && account.payment_address.address.present? && !(account.currency_obj.api_client.casecmp('BTC').zero?)}
+        @accounts = @accounts.select {|account| account.payment_address.present? && account.payment_address.address.present? && NO_NEED_MOVE_COINS.exclude?(account.currency_obj.api_client)}
+        @accounts = Kaminari.paginate_array(@accounts).page(params[:page]).per(20)
       end
 
       def show

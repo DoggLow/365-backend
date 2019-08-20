@@ -43,6 +43,7 @@ class Account < ActiveRecord::Base
   validates_numericality_of :balance, :locked, greater_than_or_equal_to: ZERO
 
   scope :enabled, -> {where("currency in (?)", Currency.ids)}
+  scope :has_real_balance, -> {where("real_balance > 0")}
 
   def payment_address
     return nil unless currency_obj.coin?

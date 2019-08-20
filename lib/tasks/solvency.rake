@@ -43,14 +43,17 @@ namespace :solvency do
 
   desc "Sync balances of payment_addresses."
   task :sync_balance => :environment do
-    Account.all.each do |account|
-      begin
-        next if account.payment_address.blank? || account.payment_address.address.blank? || account.currency_obj.nil?
+    Member.all.each do |member|
+      next if member.deposits.blank?
+      member.accounts.each do |account|
+        begin
+          next if account.payment_address.blank? || account.payment_address.address.blank? || account.currency_obj.nil? || !account.currency_obj.visible
 
-        balance = account.currency_obj.api.load_balance_of!(account.payment_address.address)
-        account.update! real_balance: balance
-      rescue => e
-        puts e.inspect
+          balance = account.currency_obj.api.load_balance_of!(account.payment_address.address)
+          account.update! real_balance: balance
+        rescue => e
+          puts e.inspect
+        end
       end
     end
     puts "Complete."
