@@ -2,61 +2,61 @@
   key: 'General'
   trade: {currency: btc, amount: 0}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.15, holding: 0.15} # fee for maker, unit: %
-  taker: {normal: 0.15, holding: 0.15} # fee for taker, unit: %
+  maker: {normal: 0.24, holding: 0.24} # fee for maker, unit: %
+  taker: {normal: 0.24, holding: 0.24} # fee for taker, unit: %
 
 - id: 1
   key: 'VIP 1'
   trade: {currency: btc, amount: 50}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.12, holding: 0.12} # fee for maker, unit: %
-  taker: {normal: 0.12, holding: 0.12} # fee for taker, unit: %
+  maker: {normal: 0.21, holding: 0.21} # fee for maker, unit: %
+  taker: {normal: 0.21, holding: 0.21} # fee for taker, unit: %
 
 - id: 2
   key: 'VIP 2'
   trade: {currency: btc, amount: 250}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.1, holding: 0.1} # fee for maker, unit: %
-  taker: {normal: 0.11, holding: 0.11} # fee for taker, unit: %
+  maker: {normal: 0.19, holding: 0.19} # fee for maker, unit: %
+  taker: {normal: 0.2, holding: 0.2} # fee for taker, unit: %
 
 - id: 3
   key: 'VIP 3'
   trade: {currency: btc, amount: 2250}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.09, holding: 0.09} # fee for maker, unit: %
-  taker: {normal: 0.1, holding: 0.1} # fee for taker, unit: %
+  maker: {normal: 0.18, holding: 0.18} # fee for maker, unit: %
+  taker: {normal: 0.19, holding: 0.19} # fee for taker, unit: %
 
 - id: 4
   key: 'VIP 4'
   trade: {currency: btc, amount: 5000}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.08, holding: 0.08} # fee for maker, unit: %
-  taker: {normal: 0.1, holding: 0.1} # fee for taker, unit: %
+  maker: {normal: 0.17, holding: 0.17} # fee for maker, unit: %
+  taker: {normal: 0.19, holding: 0.19} # fee for taker, unit: %
 
 - id: 5
   key: 'VIP 5'
   trade: {currency: btc, amount: 10000}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.07, holding: 0.07} # fee for maker, unit: %
-  taker: {normal: 0.09, holding: 0.09} # fee for taker, unit: %
+  maker: {normal: 0.16, holding: 0.16} # fee for maker, unit: %
+  taker: {normal: 0.18, holding: 0.18} # fee for taker, unit: %
 
 - id: 6
   key: 'VIP 6'
   trade: {currency: btc, amount: 20000}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.06, holding: 0.06} # fee for maker, unit: %
-  taker: {normal: 0.08, holding: 0.08} # fee for taker, unit: %
+  maker: {normal: 0.15, holding: 0.15} # fee for maker, unit: %
+  taker: {normal: 0.17, holding: 0.17} # fee for taker, unit: %
 
 - id: 7
   key: 'VIP 7'
   trade: {currency: btc, amount: 40000}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.05, holding: 0.05} # fee for maker, unit: %
-  taker: {normal: 0.07, holding: 0.07} # fee for taker, unit: %
+  maker: {normal: 0.14, holding: 0.14} # fee for maker, unit: %
+  taker: {normal: 0.16, holding: 0.16} # fee for taker, unit: %
 
 - id: 8
   key: 'VIP 8'
   trade: {currency: btc, amount: 75000}
   holding: {currency: tsf, amount: 0}
-  maker: {normal: 0.04, holding: 0.04} # fee for maker, unit: %
-  taker: {normal: 0.06, holding: 0.06} # fee for taker, unit: %
+  maker: {normal: 0.13, holding: 0.13} # fee for maker, unit: %
+  taker: {normal: 0.15, holding: 0.15} # fee for taker, unit: %
