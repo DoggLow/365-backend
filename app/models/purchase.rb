@@ -59,9 +59,9 @@ class Purchase < ActiveRecord::Base
     fill_volume(self.volume)
   end
 
-  def set_volume
+  def set_volume(return_rate = 0)
     self.product_rate = Price.get_rate(self.product.currency, self.fiat)
-    self.volume = is_tsf_purchase? ? self.product_count * self.product.sales_price : self.amount * self.rate / self.product_rate
+    self.volume = is_tsf_purchase? ? self.product_count * self.product.sales_price : self.amount * self.rate / self.product_rate * return_rate
     self.save!
   end
 

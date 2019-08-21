@@ -27,12 +27,25 @@ namespace :coin do
     end
   end
 
+  def get_return_rate(purchase)
+    case purchase.product.sales_price
+    when 1000
+      return 1
+    when 3000
+      return 1.1
+    when 10000
+      return 1.2
+    else
+      return 1
+    end
+  end
+
   desc "Add profits to CC Purchase"
   task pay_profit_cc_purchase: :environment do
     # define constants
     yearly_pld_count = 10_500_000.0
     daily_pld_count = yearly_pld_count / 365 * 65 / 100
-    period = (PurchaseOption.get('pld_completion_date').to_date - Date.today).to_i
+    period = (PurchaseOption.get('pld_completion_date').to_date - Date.today).to_i + 1
     break if period < 0
 
     # get PLD price of 1 day before
@@ -41,17 +54,7 @@ namespace :coin do
     # calculate sum of purchase in a day
     daily_sum = 0
     Purchase.pending.each do |purchase|
-      case purchase.product.sales_price
-      when 1000
-        return_rate = 1
-      when 3000
-        return_rate = 1.1
-      when 10000
-        return_rate = 1.2
-      else
-        return_rate = 1
-      end
-      daily_sum += purchase.product_count * purchase.product.sales_price * return_rate
+      daily_sum += purchase.product_count * purchase.product.sales_price * get_return_rate(purchase)
     end
 
     # calculate PLD price and update DB
@@ -60,7 +63,7 @@ namespace :coin do
 
     # set product rate and volume of pending purchase
     Purchase.pending.each do |purchase|
-      purchase.set_volume
+      purchase.set_volume(get_return_rate(purchase))
     end
 
     # add daily profit of pending or processing purchase
