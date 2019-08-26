@@ -46,7 +46,7 @@ class Purchase < ActiveRecord::Base
 
     event :check do |e|
       transitions :from => [:pending, :processing], :to => :done, :guard => :all_filled?
-      transitions :from => [:pending], :to => :processing, :guard => :product_rate_is_set?
+      transitions :from => [:pending], :to => :processing, :guard => :any_filled?
     end
   end
 
@@ -153,12 +153,12 @@ class Purchase < ActiveRecord::Base
     self.product.currency.upcase == 'TSF'
   end
 
-  def product_rate_is_set?
-    product_rate > 0
+  def any_filled?
+    filled_volume > 0
   end
 
   def all_filled?
-    (filled_volume >= volume) && (volume > 0)
+    (Date.today > PurchaseOption.get('pld_completion_date').to_date) && (filled_volume > 0)
   end
 
   def fill_data
@@ -167,9 +167,9 @@ class Purchase < ActiveRecord::Base
     self.rate = Price.get_rate(currency, self.fiat)
     self.amount = (self.product_count.to_i * self.product.sales_price * self.sale_rate / self.rate).round(8)
 
-    # if is_tsf_purchase? # TODO
-    #   self.fee = CoinAPI[currency].gas_price.round(8) * 21000
-    # end
+    if is_tsf_purchase? # TODO
+      self.fee = CoinAPI[currency].gas_price.round(8) * 21000
+    end
   end
 
   def validate_data

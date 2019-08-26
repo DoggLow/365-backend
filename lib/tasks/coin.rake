@@ -45,7 +45,8 @@ namespace :coin do
     # define constants
     yearly_pld_count = 10_500_000.0
     daily_pld_count = yearly_pld_count / 365 * 65 / 100
-    period = (PurchaseOption.get('pld_completion_date').to_date - Date.today).to_i + 1
+    cur_date = Date.today.prev_day # Date.strptime('2019-08-25', '%Y-%m-%d')
+    period = (PurchaseOption.get('pld_completion_date').to_date - cur_date).to_i + 1
     break if period < 0
 
     # get PLD price of 1 day before
@@ -53,7 +54,7 @@ namespace :coin do
 
     # calculate sum of purchase in a day
     daily_sum = 0
-    Purchase.pending.each do |purchase|
+    Purchase.where(created_at: cur_date.beginning_of_day..cur_date.end_of_day).each do |purchase|
       daily_sum += purchase.product_count * purchase.product.sales_price * get_return_rate(purchase)
     end
 
@@ -61,15 +62,12 @@ namespace :coin do
     price = last_price + daily_sum / period / daily_pld_count
     PurchaseOption.set('pld_usd', price)
 
-    # set product rate and volume of pending purchase
-    Purchase.pending.each do |purchase|
-      purchase.set_volume(get_return_rate(purchase))
-    end
-
     # add daily profit of pending or processing purchase
     Purchase.not_done.each do |purchase|
+      next if purchase.created_at.to_date > cur_date
       p_period = (PurchaseOption.get('pld_completion_date').to_date - purchase.created_at.to_date).to_i
-      purchase.fill_volume(purchase.volume / p_period)
+      purchase.fill_volume(get_return_rate(purchase) * purchase.amount / p_period / price)
+      # puts purchase.id
     end
   end
 
