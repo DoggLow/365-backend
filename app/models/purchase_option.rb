@@ -11,5 +11,11 @@ class PurchaseOption < ActiveRecord::Base
     rescue StandardError => e
       puts e
     end
+
+    def get_all
+      find_or_create_by(id: 1)
+    rescue StandardError => e
+      0
+    end
   end
 end

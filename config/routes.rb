@@ -27,6 +27,7 @@ Exchange::Application.routes.draw do
 
   get '/configs/currencies' => 'configs#currencies', as: :currency_list
   get '/configs/levels' => 'configs#levels', as: :level_list
+  get '/configs/purchase' => 'configs#purchase', as: :level_purchase
 
   namespace :verify do
     resource :sms_auth,    only: [:show, :update]
