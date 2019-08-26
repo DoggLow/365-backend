@@ -102,6 +102,7 @@ class Purchase < ActiveRecord::Base
   def as_json(options = {})
     for_notify
   end
+
   private
 
   def sub_funds
@@ -130,8 +131,12 @@ class Purchase < ActiveRecord::Base
   def create_and_calculate_referral(value)
     referrer = member.referrer
     return if referrer.blank?
-    return unless referrer.id_document and referrer.id_document_verified?
-    return if referrer.purchases.blank? # TODO
+
+    if is_tsf_purchase?
+      return if referrer.id_document.blank?
+      return unless referrer.id_document_verified?
+      return if referrer.purchases.blank? # For only TSF
+    end
 
     # calculate
     coin = "#{product.currency}p" # TSFP, PLDP
