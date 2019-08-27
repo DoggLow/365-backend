@@ -395,6 +395,7 @@ class Member < ActiveRecord::Base
     positions.open.each {|position| position.complete_close}
   end
 
+  @deprecated
   def all_ref_commissions
     all_commissions = {}
     Currency.all.each do |currency|
@@ -404,16 +405,31 @@ class Member < ActiveRecord::Base
     all_commissions
   end
 
-  def ref_uplines # TODO
+  def ref_uplines
     uplines = []
     referrers.each do |member|
       tier = member.referrer.blank? ? 1 : get_tier(member.id) + 1
+
+      # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       rewards = {}
       Currency.all.each do |currency|
         amount = referrals.blank? ? 0 : referrals.amount_sum(currency.code)
         rewards[currency.code.upcase] = amount * commission if amount > 0
       end
+
+      if tier == 1
+        # TSF purchase referrals
+        symbol = 'tsfp'
+        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
+        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+
+        # PLD purchase referrals
+        symbol = 'pldp'
+        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
+        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+      end
+
       if member.referrer.blank?
         uplines << {parent: email, child: referrer.email, attributes: rewards}
       else
@@ -426,8 +442,11 @@ class Member < ActiveRecord::Base
   def ref_downlines
     all_rewards = {}
     downlines = []
+
     all_referees.each do |referee|
       tier = referee.get_tier(self.id)
+
+      # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       commissions = {}
       Currency.all.each do |currency|
@@ -436,8 +455,24 @@ class Member < ActiveRecord::Base
         commissions[currency.code.upcase] = paid if amount > 0
         all_rewards[currency.code] = all_rewards[currency.code].blank? ? paid : all_rewards[currency.code] + paid
       end
-      downlines << {parent: referee.referrer.email, child: referee.email, attributes: commissions} # TODO
+
+      if tier == 1
+        # TSF purchase referrals
+        symbol = 'tsfp'
+        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+        all_rewards[symbol] = all_rewards[symbol].blank? ? paid : all_rewards[symbol] + paid
+
+        # PLD purchase referrals
+        symbol = 'pldp'
+        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+        all_rewards[symbol] = all_rewards[symbol].blank? ? paid : all_rewards[symbol] + paid
+      end
+
+      downlines << {parent: referee.referrer.email, child: referee.email, attributes: commissions}
     end
+
     [all_rewards, downlines]
   end
 
@@ -445,24 +480,43 @@ class Member < ActiveRecord::Base
     all_rewards, downlines = ref_downlines
     {
         referral_id: get_ref_id,
-        all_commissions: all_ref_commissions,
+        all_commissions: nil,
         all_rewards: all_rewards,
         uplines: ref_uplines,
         downlines: downlines
     }
-
   end
 
   def ref_uplines_admin
-    uplines = [{parent: referrer.email, name: email, attributes: nil}]
+    if referrer.blank?
+      uplines = [{parent:'', name: email, attributes: nil}]
+    else
+      uplines = [{parent: referrer.email, name: email, attributes: nil}]
+    end
+
     referrers.each do |member|
       tier = get_tier(member.id)
+
+      # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       rewards = {}
       Currency.all.each do |currency|
         amount = referrals.blank? ? 0 : referrals.amount_sum(currency.code)
         rewards[currency.code.upcase] = amount * commission if amount > 0
       end
+
+      if tier == 1
+        # TSF purchase referrals
+        symbol = 'tsfp'
+        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
+        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+
+        # PLD purchase referrals
+        symbol = 'pldp'
+        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
+        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+      end
+
       parent = member.referrer.blank? ? nil : member.referrer.email
       uplines << {parent: parent, name: member.email, attributes: rewards}
     end
@@ -473,6 +527,8 @@ class Member < ActiveRecord::Base
     downlines = [{parent: nil, name: email, attributes: nil}]
     all_referees.each do |referee|
       tier = referee.get_tier(self.id)
+
+      # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       commissions = {}
       Currency.all.each do |currency|
@@ -480,6 +536,19 @@ class Member < ActiveRecord::Base
         paid = amount * commission
         commissions[currency.code.upcase] = paid if amount > 0
       end
+
+      if tier == 1
+        # TSF purchase referrals
+        symbol = 'tsfp'
+        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+
+        # PLD purchase referrals
+        symbol = 'pldp'
+        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+      end
+
       downlines << {parent: referee.referrer.email, name: referee.email, attributes: commissions}
     end
     downlines

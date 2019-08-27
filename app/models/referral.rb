@@ -13,8 +13,8 @@ class Referral < ActiveRecord::Base
 
   scope :paid, -> {with_state(:paid)}
   scope :pending, -> {with_state(:pending)}
-  scope :paid_sum, -> (currency) {paid.with_currency(currency).sum(:total)}
-  scope :amount_sum, -> (currency) {paid.with_currency(currency).sum(:amount)}
+  scope :paid_sum, -> (currency, type=Trade.name) {paid.with_currency(currency).where(modifiable_type: type).sum(:total)}
+  scope :amount_sum, -> (currency, type=Trade.name) {paid.with_currency(currency).where(modifiable_type: type).sum(:amount)}
 
   def calculate
     return unless state == Referral::PENDING
