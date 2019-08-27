@@ -133,8 +133,8 @@ class Purchase < ActiveRecord::Base
     return if referrer.blank?
 
     if is_tsf_purchase?
-      return if referrer.id_document.blank?
-      return unless referrer.id_document_verified?
+      # return if referrer.id_document.blank?
+      # return unless referrer.id_document_verified?
       return if referrer.purchases.blank? # For only TSF
     end
 
