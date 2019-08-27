@@ -130,6 +130,8 @@ Exchange::Application.routes.draw do
 
     resources :positions, :only => [:update]
     resources :referrals, :only => [:index]
+    get '/referrals/list' => 'referrals#list', as: :referral_list
+    get '/referrals/purchase' => 'referrals#purchase', as: :purchase_referral
 
     resources :loan_markets, :only => [:show, :update] do
       resources :open_loans, :only => [:index, :create, :update, :destroy] do

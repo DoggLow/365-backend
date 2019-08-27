@@ -48,4 +48,19 @@ class Referral < ActiveRecord::Base
     self.update!(total: commission, state: Referral::PAID)
     PurchaseMailer.affiliate(self, ref).deliver
   end
+
+  def for_notify
+    {
+        id: id,
+        at: created_at.to_i,
+        currency: currency,
+        amount: amount,
+        total: total,
+        member: member,
+        referrer: member.referrer,
+        state: state,
+        modifiable: modifiable
+    }
+  end
+
 end

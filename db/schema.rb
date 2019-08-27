@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190507001000) do
+ActiveRecord::Schema.define(version: 20190510015050) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -550,13 +550,15 @@ ActiveRecord::Schema.define(version: 20190507001000) do
   add_index "read_marks", ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id", using: :btree
 
   create_table "referrals", force: true do |t|
-    t.integer "member_id",                                               null: false
-    t.integer "currency",                                                null: false
-    t.decimal "amount",          precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal "total",           precision: 32, scale: 16, default: 0.0, null: false
-    t.integer "state"
-    t.integer "modifiable_id"
-    t.string  "modifiable_type"
+    t.integer  "member_id",                                               null: false
+    t.integer  "currency",                                                null: false
+    t.decimal  "amount",          precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "total",           precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "state"
+    t.integer  "modifiable_id"
+    t.string   "modifiable_type"
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
   end
 
   add_index "referrals", ["currency", "state"], name: "index_referrals_on_currency_and_state", using: :btree
