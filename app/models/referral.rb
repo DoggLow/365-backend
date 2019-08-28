@@ -49,7 +49,7 @@ class Referral < ActiveRecord::Base
     PurchaseMailer.affiliate(self, ref).deliver
   end
 
-  def for_notify
+  def as_json
     {
         id: id,
         at: created_at.to_i,
@@ -58,6 +58,20 @@ class Referral < ActiveRecord::Base
         total: total,
         member: member,
         referrer: member.referrer,
+        state: state,
+        modifiable: modifiable
+    }
+  end
+
+  def for_purchase
+    mem_id = member.email[0,2] + '*' * 5 + member.email[-2..-1]
+    {
+        id: id,
+        at: created_at.to_i,
+        currency: currency,
+        amount: amount,
+        total: total,
+        referee: mem_id,
         state: state,
         modifiable: modifiable
     }

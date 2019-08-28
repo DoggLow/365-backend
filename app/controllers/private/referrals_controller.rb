@@ -15,11 +15,11 @@ module Private
       if params[:page].present? && params[:perPage].present?
         render json: {
             total_length: referrals.length,
-            referrals:  Kaminari.paginate_array(referrals).page(params[:page]).per(params[:perPage]).map(&:for_notify)
+            referrals:  Kaminari.paginate_array(referrals).page(params[:page]).per(params[:perPage])
         }
       else
         render json: {
-            referrals:  Kaminari.paginate_array(referrals).map(&:for_notify)
+            referrals:  Kaminari.paginate_array(referrals)
         }
       end
     end
@@ -37,11 +37,11 @@ module Private
       if params[:page].present? && params[:perPage].present?
         render json: {
             total_length: referrals.length,
-            referrals:  Kaminari.paginate_array(referrals).page(params[:page]).per(params[:perPage]).map(&:for_notify)
+            referrals:  Kaminari.paginate_array(referrals).page(params[:page]).per(params[:perPage]).map(&:for_purchase)
         }
       else
         render json: {
-            referrals:  Kaminari.paginate_array(referrals).map(&:for_notify)
+            referrals:  Kaminari.paginate_array(referrals).map(&:for_purchase)
         }
       end
     end
