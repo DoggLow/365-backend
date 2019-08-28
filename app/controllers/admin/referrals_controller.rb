@@ -10,25 +10,17 @@ module Admin
 
     def show
       @member = Member.find params[:id]
-      referrals = @member.referrals
+      rewards = @member.all_rewards
       @ref_summaries = []
       Currency.all.each do |currency|
-        commissions = referrals.blank? ? 0 : referrals.paid_sum(currency.code)
-        rewards = 0
-        @member.all_referees.each do |referee|
-          tier = referee.get_tier(@member.id)
-          commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
-          amount = referee.referrals.blank? ? 0 : referee.referrals.amount_sum(currency.code)
-          rewards += amount * commission if amount > 0
-        end
-        @ref_summaries << {currency: currency.code.upcase, commissions: commissions, rewards: rewards}
+        @ref_summaries << {currency: currency.code.upcase, rewards: rewards[currency.code]}
       end
     end
 
     def tree
       @type = params[:type]
       @member = Member.find params[:id]
-      @data = @type == 'referrers' ? @member.ref_uplines_admin : @member.ref_downlines_admin
+      @data = @type == 'referrers' ? @member.ref_uplines_admin : @member.ref_downlines(true)
     end
   end
 end

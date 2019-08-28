@@ -26,6 +26,10 @@ every '0 0 15 * *' do
   rake 'referral:calculate'
 end
 
+every 1.day, :at => '0:30 am' do
+  rake 'referral:calculate_rewards'
+end
+
 every 1.day, :at => '0:00 am' do
   rake 'member:cal_level'
 end

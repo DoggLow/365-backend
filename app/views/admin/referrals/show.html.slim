@@ -15,14 +15,12 @@
             = link_to "#{@member.referrer_ids.length} Members", admin_path(@member, 'referrers')
           = item_for t('.all_referees') do
             = link_to "#{@member.all_referees.count} Members", admin_path(@member, 'referees')
-  / .col-xs-12
-  /   .panel.panel-info
-  /     .panel-heading Referral Details
-  /     .panel-body
-  /       = table_for(@ref_summaries, class: 'table table-condensed table-hover') do |t|
-  /         - t.column 'currency', class: 'col-xs-4' do |x|
-  /           code.text-info = x[:currency]
-  /         - t.column 'commissions', class: 'col-xs-10' do |x|
-  /           = x[:commissions]
-  /         - t.column 'rewards', class: 'col-xs-10' do |x|
-  /           = x[:rewards]
+  .col-xs-12
+    .panel.panel-info
+      .panel-heading Referral Details
+      .panel-body
+        = table_for(@ref_summaries, class: 'table table-condensed table-hover') do |t|
+          - t.column 'currency', class: 'col-xs-4' do |x|
+            code.text-info = x[:currency]
+          - t.column 'rewards', class: 'col-xs-10' do |x|
+            = x[:rewards] || 0

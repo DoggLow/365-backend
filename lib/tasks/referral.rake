@@ -4,6 +4,11 @@ namespace :referral do
     Referral.pending.each { |referral| referral.calculate }
   end
 
+  desc "Calculate referral rewards of all members"
+  task calculate_rewards: :environment do
+    Member.all.each { |member| member.calculate_rewards }
+  end
+
   desc "Generate referrer_ids column of members from referrer_id column"
   task gen_referrer_ids: :environment do
     Member.all.each { |member| member.set_referrer_ids }

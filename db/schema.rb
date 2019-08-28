@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190510015050) do
+ActiveRecord::Schema.define(version: 20190516100200) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20190510015050) do
     t.decimal  "out",                             precision: 32, scale: 16
     t.integer  "default_withdraw_fund_source_id"
     t.decimal  "real_balance",                    precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "rewards",                         precision: 32, scale: 16, default: 0.0, null: false
+    t.datetime "rewarded_at",                                                             null: false
   end
 
   add_index "accounts", ["member_id", "currency"], name: "index_accounts_on_member_id_and_currency", using: :btree

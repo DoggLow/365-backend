@@ -396,6 +396,7 @@ class Member < ActiveRecord::Base
   end
 
   @deprecated
+
   def all_ref_commissions
     all_commissions = {}
     Currency.all.each do |currency|
@@ -407,27 +408,25 @@ class Member < ActiveRecord::Base
 
   def ref_uplines
     uplines = []
+
     referrers.each do |member|
       tier = member.referrer.blank? ? 1 : get_tier(member.id) + 1
 
-      # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       rewards = {}
-      Currency.all.each do |currency|
-        amount = referrals.blank? ? 0 : referrals.amount_sum(currency.code)
-        rewards[currency.code.upcase] = amount * commission if amount > 0
-      end
+      if referrals.present?
+        Currency.all.each do |currency|
+          # Trade referrals
+          amount = referrals.blank? ? 0 : referrals.amount_sum(currency.code)
+          reward = amount * commission
 
-      if tier == 1
-        # TSF purchase referrals
-        symbol = 'tsfp'
-        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
-        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+          # TSF & PLD purchase referrals
+          next unless tier == 1
+          next unless currency.code == 'tsfp' || currency.code == 'pldp'
+          reward += referrals.paid_sum(currency.code, Purchase.name)
 
-        # PLD purchase referrals
-        symbol = 'pldp'
-        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
-        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+          rewards[currency.code.upcase] = reward
+        end
       end
 
       if member.referrer.blank?
@@ -436,54 +435,88 @@ class Member < ActiveRecord::Base
         uplines << {parent: member.email, child: member.referrer.email, attributes: rewards}
       end
     end
+
     uplines
   end
 
-  def ref_downlines
-    all_rewards = {}
-    downlines = []
+  def ref_downlines(is_admin = false)
+    downlines = is_admin ? [{parent: nil, name: email, attributes: nil}] : []
 
     all_referees.each do |referee|
-      tier = referee.get_tier(self.id)
+      # tier = referee.get_tier(self.id)
+      #
+      # # Trade referrals
+      # commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
+      # commissions = {}
+      # Currency.all.each do |currency|
+      #   amount = referee.referrals.blank? ? 0 : referee.referrals.amount_sum(currency.code)
+      #   paid = amount * commission
+      #   commissions[currency.code.upcase] = paid if amount > 0
+      # end
+      #
+      # if tier == 1
+      #   # TSF purchase referrals
+      #   symbol = 'tsfp'
+      #   paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+      #   commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+      #
+      #   # PLD purchase referrals
+      #   symbol = 'pldp'
+      #   paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
+      #   commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
+      # end
 
-      # Trade referrals
-      commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
-      commissions = {}
-      Currency.all.each do |currency|
-        amount = referee.referrals.blank? ? 0 : referee.referrals.amount_sum(currency.code)
-        paid = amount * commission
-        commissions[currency.code.upcase] = paid if amount > 0
-        all_rewards[currency.code] = all_rewards[currency.code].blank? ? paid : all_rewards[currency.code] + paid
-      end
-
-      if tier == 1
-        # TSF purchase referrals
-        symbol = 'tsfp'
-        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
-        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
-        all_rewards[symbol] = all_rewards[symbol].blank? ? paid : all_rewards[symbol] + paid
-
-        # PLD purchase referrals
-        symbol = 'pldp'
-        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
-        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
-        all_rewards[symbol] = all_rewards[symbol].blank? ? paid : all_rewards[symbol] + paid
-      end
-
-      downlines << {parent: referee.referrer.email, child: referee.email, attributes: commissions}
+      downlines << {parent: referee.referrer.email, child: referee.email, attributes: nil}
     end
 
-    [all_rewards, downlines]
+    downlines
+  end
+
+  def calculate_rewards
+    referees = all_referees
+    Currency.all.each do |currency|
+      rewards = 0
+      referees.each do |referee|
+        next if referee.referrals.blank?
+
+        tier = referee.get_tier(self.id)
+
+        # Trade referrals
+        commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
+        amount = referee.referrals.amount_sum(currency.code)
+        rewards += amount * commission
+
+        # TSF & PLD purchase referrals
+        next unless tier == 1
+        next unless currency.code == 'tsfp' || currency.code == 'pldp'
+        rewards += referee.referrals.paid_sum(currency.code, Purchase.name)
+      end
+
+      next unless rewards > 0
+
+      account = get_account(currency.code)
+      account.rewards = rewards
+      account.rewarded_at = DateTime.now
+      account.save!
+    end
+  end
+
+  def all_rewards
+    rewards = {}
+    Currency.all.each do |currency|
+      account = get_account(currency.code)
+      rewards[currency.code] = account.rewards if account.rewards > 0
+    end
+    rewards
   end
 
   def referral_info
-    all_rewards, downlines = ref_downlines
     {
         referral_id: get_ref_id,
         all_commissions: nil,
         all_rewards: all_rewards,
         uplines: ref_uplines,
-        downlines: downlines
+        downlines: ref_downlines
     }
   end
 
@@ -500,58 +533,25 @@ class Member < ActiveRecord::Base
       # Trade referrals
       commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
       rewards = {}
-      Currency.all.each do |currency|
-        amount = referrals.blank? ? 0 : referrals.amount_sum(currency.code)
-        rewards[currency.code.upcase] = amount * commission if amount > 0
-      end
+      if referrals.present?
+        Currency.all.each do |currency|
+          # Trade referrals
+          amount = referrals.amount_sum(currency.code)
+          reward = amount * commission
 
-      if tier == 1
-        # TSF purchase referrals
-        symbol = 'tsfp'
-        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
-        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+          # TSF & PLD purchase referrals
+          next unless tier == 1
+          next unless currency.code == 'tsfp' || currency.code == 'pldp'
+          reward += referrals.paid_sum(currency.code, Purchase.name)
 
-        # PLD purchase referrals
-        symbol = 'pldp'
-        paid = referrals.blank? ? 0 : referrals.paid_sum(symbol, Purchase.name)
-        rewards[symbol.upcase] = rewards[symbol.upcase].blank? ? paid : rewards[symbol.upcase] + paid if paid > 0
+          rewards[currency.code.upcase] = reward
+        end
       end
 
       parent = member.referrer.blank? ? nil : member.referrer.email
       uplines << {parent: parent, name: member.email, attributes: rewards}
     end
     uplines
-  end
-
-  def ref_downlines_admin
-    downlines = [{parent: nil, name: email, attributes: nil}]
-    all_referees.each do |referee|
-      tier = referee.get_tier(self.id)
-
-      # Trade referrals
-      commission = (ENV["REFERRAL_MAX_TIER"].to_i - tier) * ENV["REFERRAL_RATE_STEP"].to_d
-      commissions = {}
-      Currency.all.each do |currency|
-        amount = referee.referrals.blank? ? 0 : referee.referrals.amount_sum(currency.code)
-        paid = amount * commission
-        commissions[currency.code.upcase] = paid if amount > 0
-      end
-
-      if tier == 1
-        # TSF purchase referrals
-        symbol = 'tsfp'
-        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
-        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
-
-        # PLD purchase referrals
-        symbol = 'pldp'
-        paid = referee.referrals.blank? ? 0 : referee.referrals.paid_sum(symbol, Purchase.name)
-        commissions[symbol.upcase] = commissions[symbol.upcase].blank? ? paid : commissions[symbol.upcase] + paid if paid > 0
-      end
-
-      downlines << {parent: referee.referrer.email, name: referee.email, attributes: commissions}
-    end
-    downlines
   end
 
   def identity
