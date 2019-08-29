@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20190516100200) do
     t.integer  "default_withdraw_fund_source_id"
     t.decimal  "real_balance",                    precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "rewards",                         precision: 32, scale: 16, default: 0.0, null: false
-    t.datetime "rewarded_at",                                                             null: false
+    t.datetime "rewarded_at"
   end
 
   add_index "accounts", ["member_id", "currency"], name: "index_accounts_on_member_id_and_currency", using: :btree
