@@ -20,6 +20,17 @@ namespace :coin do
     end
   end
 
+  desc "Write addresses to redis (for deposit)"
+  task cache_addresses: :environment do
+    Global.cache_addresses('eth')
+    Global.cache_addresses('etc')
+  end
+
+  desc "Write tx_ids to redis"
+  task cache_txs: :environment do
+    Global.cache_txs
+  end
+
   desc "Add profits to TSF invests"
   task pay_profit_invests: :environment do
     Invest.processing.each do |invest|

@@ -175,12 +175,14 @@ module CoinAPI
     end
 
     def collect_deposits(current_block)
+      sym = currency.code == 'etc' ? currency.code : 'eth'
       txs = current_block.fetch('transactions')
       txs.map do |tx|
         # Skip contract creation transactions.
         # Skip outcomes (less than zero) and contract transactions (zero).
         next if tx.fetch('to').blank? || tx.fetch('value').hex.to_d <= 0
-        next unless PaymentAddress.where(address: tx.fetch('to')).exists? # filter received
+        next unless Global.is_cached_address?(sym, tx.fetch('to')) # filter received
+        # next unless PaymentAddress.where(address: tx.fetch('to')).exists? # filter received
 
         {
             id:            tx.fetch('hash'),

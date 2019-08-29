@@ -19,11 +19,16 @@ def check_transactions(currency)
   options = client.is_a?(CoinAPI::ETH) ? {blocks_limit: 40} : {}
   client.each_deposit options do |deposit|
     # Ignore deposits from admin addresses
-    next if AssetTransaction.where(tx_id: deposit[:id]).exists?
+    # next if AssetTransaction.where(tx_id: deposit[:id]).exists?
     # Skip if transaction is processed.
-    next if PaymentTransaction::Normal.where(txid: deposit[:id]).exists?
+    # next if PaymentTransaction::Normal.where(txid: deposit[:id]).exists?
     # Skip zombie transactions (for which all addresses don't exist).
-    next if deposit[:entries].all? {|entry| PaymentAddress.get_with(currency, entry).nil?}
+    # next if deposit[:entries].all? {|entry| PaymentAddress.get_with(currency, entry).nil?}
+    next if Global.is_cached_tx?(deposit[:id])
+    if client.is_a?(CoinAPI::ETH) || client.is_a?(CoinAPI::ERC20)
+      sym = currency.code == 'etc' ? 'etc' : 'eth'
+      next if deposit[:entries].all? {|entry| !Global.is_cached_address?(sym, entry[:address])}
+    end
 
     received_at = deposit[:received_at]
     Rails.logger.debug {"Processing deposit received at #{received_at.to_s('%Y-%m-%d %H:%M %Z')}."} if received_at

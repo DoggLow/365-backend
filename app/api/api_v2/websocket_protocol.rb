@@ -40,8 +40,14 @@ module APIv2
     end
 
     def send_orders(market_id)
-      send :asks, market_id, Global[market_id].asks.first(FRESH_ORDERS).reverse()
-      send :bids, market_id, Global[market_id].bids.first(FRESH_ORDERS)
+      asks = Global[market_id].asks
+      bids = Global[market_id].bids
+      asks = asks.sort_by{|order| order[0].to_f}
+      bids = bids.sort_by{|order| order[0].to_f}
+      asks = asks.first(FRESH_ORDERS).reverse
+      bids = bids.reverse.first(FRESH_ORDERS)
+      send :asks, market_id, asks
+      send :bids, market_id, bids
     end
 
     def subscribe_orderbook(market_id = nil)

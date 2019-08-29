@@ -23,6 +23,36 @@ class Global
       Rails.cache.read 'exchange:nodes:last_checked'
     end
 
+    def cache_address(symbol, address)
+      Rails.cache.write "exchange:addr:#{symbol}:#{address}", '1'
+    end
+
+    def cache_tx(tx)
+      Rails.cache.write "exchange:tx:#{tx}", '1'
+    end
+
+    def cache_addresses(symbol = 'eth')
+      coin_id = Currency.find_by_code(symbol).id
+      addresses = PaymentAddress.where(currency: coin_id).pluck(:address).uniq
+
+      addresses.each { |address| cache_address(symbol, address) }
+    end
+
+    def cache_txs
+      asset_txs = AssetTransaction.pluck(:tx_id).uniq
+      deposit_txs = PaymentTransaction::Normal.pluck(:txid).uniq
+      txs = asset_txs + deposit_txs
+      txs.each { |tx| cache_tx(tx) }
+    end
+
+    def is_cached_address?(symbol = 'eth', address)
+      Rails.cache.read("exchange:addr:#{symbol}:#{address}").present?
+    end
+
+    def is_cached_tx?(tx)
+      Rails.cache.read("exchange:tx:#{tx}").present?
+    end
+
     def estimate(base_unit, quote_unit, amount)
       if Market.find_by_id("#{base_unit}#{quote_unit}").present? || Market.find_by_id("#{quote_unit}#{base_unit}").present?
         price = get_latest_price(base_unit, quote_unit)

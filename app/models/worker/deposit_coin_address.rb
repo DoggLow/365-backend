@@ -13,6 +13,10 @@ module Worker
           options = acc.currency == 'xrp' ? { is_admin: acc.member.admin? } : {}
           result =  CoinAPI[acc.currency].new_address!(options)
           pa.update! result.extract!(:address, :secret, :tag).merge(details: result)
+
+          if acc.currency_obj.api.is_a?(CoinAPI::ETH)
+            Global.cache_address(acc.currency, result[:address])
+          end
         end
       end
 
