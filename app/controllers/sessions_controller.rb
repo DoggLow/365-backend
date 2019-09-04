@@ -124,7 +124,7 @@ class SessionsController < ApplicationController
   def save_signup_history(member_id)
     SignupHistory.create(
       member_id: member_id,
-      ip: request.ip,
+      ip: request.remote_ip || request.ip,
       accept_language: request.headers["Accept-Language"],
       ua: request.headers["User-Agent"]
     )
