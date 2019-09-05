@@ -78,12 +78,14 @@ namespace :coin do
 
       daily_sum = 0
       purchases.each do |purchase|
+        next if purchase.is_tsf_purchase?
         daily_sum += daily_paid(purchase, p_period)
       end
 
       daily_distributed = U * Math.log(daily_sum * (K - 1) / (U * last_price) + 1) / Math.log(K) + 1
 
       purchases.each do |purchase|
+        next if purchase.is_tsf_purchase?
         purchase.fill_volume(daily_paid(purchase, p_period) / daily_sum * daily_distributed)
       end
 

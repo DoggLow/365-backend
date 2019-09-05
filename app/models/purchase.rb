@@ -103,6 +103,10 @@ class Purchase < ActiveRecord::Base
     for_notify
   end
 
+  def is_tsf_purchase?
+    self.product.currency.upcase == 'TSF'
+  end
+
   private
 
   def sub_funds
@@ -152,10 +156,6 @@ class Purchase < ActiveRecord::Base
         state: Referral::PENDING
     )
     referral.calculate_from_purchase(value * aff_fee, self)
-  end
-
-  def is_tsf_purchase?
-    self.product.currency.upcase == 'TSF'
   end
 
   def any_filled?
