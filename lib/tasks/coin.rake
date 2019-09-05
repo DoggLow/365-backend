@@ -51,35 +51,50 @@ namespace :coin do
     end
   end
 
+  def daily_paid(purchase, p_period)
+    get_return_rate(purchase) * purchase.amount / p_period
+  end
+
   desc "Add profits to CC Purchase"
   task pay_profit_cc_purchase: :environment do
     # define constants
-    yearly_pld_count = 10_500_000.0
-    daily_pld_count = yearly_pld_count / 365 * 65 / 100
-    cur_date = Date.today.prev_day # Date.strptime('2019-08-25', '%Y-%m-%d')
-    period = (PurchaseOption.get('pld_completion_date').to_date - cur_date).to_i + 1
-    break if period < 0
+    T = 52_500_000 # USD
+    K = 1.02 # 2%
+    N = 10_500_000.0 # all PLD
+    U = 10000 # block unit
+    X = T / U * (K - 1) / (K ** (N / U) - 1)
 
     # get PLD price of 1 day before
     last_price = PurchaseOption.get('pld_usd') || 0
+    total_distributed = PurchaseOption.get('distributed_pld') || 0
+    last_price = X unless last_price > 0
 
-    # calculate sum of purchase in a day
-    daily_sum = 0
-    Purchase.where(created_at: cur_date.beginning_of_day..cur_date.end_of_day).each do |purchase|
-      daily_sum += purchase.product_count * purchase.product.sales_price * get_return_rate(purchase)
+    # cur_date = Date.strptime('2019-09-04', '%Y-%m-%d')
+    cur_date = Date.today.prev_day
+    Purchase.not_done.all.group_by{|p| p.created_at.to_date}.each do |key_date, purchases|
+      next if key_date > cur_date
+
+      p_period = (PurchaseOption.get('pld_completion_date').to_date - key_date).to_i
+
+      daily_sum = 0
+      purchases.each do |purchase|
+        daily_sum += daily_paid(purchase, p_period)
+      end
+
+      daily_distributed = U * Math.log(daily_sum * (K - 1) / (U * last_price) + 1) / Math.log(K) + 1
+
+      purchases.each do |purchase|
+        purchase.fill_volume(daily_paid(purchase, p_period) / daily_sum * daily_distributed)
+      end
+
+      total_distributed += daily_distributed
+      # calculate PLD price
+      last_price = X * (K ** ((total_distributed.to_i - 1) / U))
     end
 
-    # calculate PLD price and update DB
-    price = last_price + daily_sum / period / daily_pld_count
-    PurchaseOption.set('pld_usd', price)
-
-    # add daily profit of pending or processing purchase
-    Purchase.not_done.each do |purchase|
-      next if purchase.created_at.to_date > cur_date
-      p_period = (PurchaseOption.get('pld_completion_date').to_date - purchase.created_at.to_date).to_i
-      purchase.fill_volume(get_return_rate(purchase) * purchase.amount / p_period / price)
-      # puts purchase.id
-    end
+    # update DB
+    PurchaseOption.set('pld_usd', last_price)
+    PurchaseOption.set('distributed_pld', total_distributed)
   end
 
   desc "Claim neo gas and divide into per member."
