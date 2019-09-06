@@ -25,5 +25,7 @@
         - t.column :product_count, class: 'col-xs-2'
         - t.column :amount, class: 'col-xs-2' do |x|
           = "#{x.amount} #{x.currency.upcase}"
+        - t.column :filled_volume, class: 'col-xs-2' do |x|
+          = "#{x.filled_volume.round 2} #{x.currency.upcase}"
 
       = paginate @purchases

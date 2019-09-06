@@ -28,7 +28,7 @@ class Purchase < ActiveRecord::Base
   scope :not_done, -> { where.not(aasm_state: :done) }
 
   def self.to_csv
-    attributes = %w{id product_name product_count amount currency}
+    attributes = %w{id member_email product_name product_count amount currency filled_volume}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
@@ -195,6 +195,10 @@ class Purchase < ActiveRecord::Base
 
   def expect_account
     member.get_account(self.product.currency)
+  end
+
+  def member_email
+    member.email
   end
 
   def product_name
