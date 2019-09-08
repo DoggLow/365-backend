@@ -37,6 +37,7 @@ module Admin
 
             if txid
               AssetTransaction.create!(tx_id: txid, currency: @proof.currency, amount: @amount)
+              Global.cache_tx(txid)
               redirect_to admin_assets_proofs_path, notice: "Transfer succeed! Txid: #{txid}"
             else
               redirect_to :back, alert: 'Transfer failed!'
