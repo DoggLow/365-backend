@@ -4,6 +4,24 @@ namespace :referral do
     Referral.pending.each { |referral| referral.calculate }
   end
 
+  desc "Recalculate referrals of trades"
+  task recalculate: :environment do
+    Referral.where(modifiable_type: 'Trade').each do |referral|
+      # puts "referral: #{referral.id}"
+      account_versions = AccountVersion.where('modifiable_type = ? AND modifiable_id = ?', 'Referral', referral.id)
+      next if account_versions.blank?
+      account_versions.each do |account_version|
+        puts "account_version: #{account_version.id}"
+        # next if account_version.id < 5032
+        account = Account.find_by(id: account_version.account_id)
+        next if account.blank?
+        puts "account: #{account.id}"
+        balance = account.balance > account_version.balance ? account.balance - account_version.balance : 0
+        account.update! balance: balance
+      end
+    end
+  end
+
   desc "Calculate referral rewards of all members"
   task calculate_rewards: :environment do
     Member.all.each { |member| member.calculate_rewards }

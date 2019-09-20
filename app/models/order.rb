@@ -104,7 +104,7 @@ class Order < ActiveRecord::Base
         ref_amount = real_fee
         ref_currency = expect_account.currency
       end
-      create_or_update_referral(ref_amount, ref_currency, trade.id)
+      # create_or_update_referral(ref_amount, ref_currency, trade.id)
     end
 
 

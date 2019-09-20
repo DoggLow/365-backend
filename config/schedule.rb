@@ -22,9 +22,9 @@
 env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
 
-every '0 0 15 * *' do
-  rake 'referral:calculate'
-end
+# every '0 0 15 * *' do
+#   rake 'referral:calculate'
+# end
 
 every 1.day, :at => '0:30 am' do
   rake 'referral:calculate_rewards'
@@ -50,11 +50,11 @@ every 1.day, :at => '0:00 am' do
   rake 'coin:pay_profit_cc_purchase'
 end
 
-every 1.hour do
+every 5.minutes do
   rake 'solvency:liability_proof'
 end
 
-every 1.day, :at => '4:00 pm' do
+every 3.hours do
   rake 'solvency:sync_balance'
 end
 
