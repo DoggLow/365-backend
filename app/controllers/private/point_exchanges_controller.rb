@@ -4,7 +4,7 @@ module Private
     before_action :auth_activated!
     before_action :auth_verified!
     # before_action :two_factor_activated!
-    before_action :two_factor_auth_passed!
+    before_action :two_factor_auth_passed!,    only: :create
 
     def index
       render json: current_user.point_exchanges.map(&:for_notify)
