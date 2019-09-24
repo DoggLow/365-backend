@@ -46,7 +46,7 @@ every '0 2 1 * *' do
   rake 'coin:pay_profit_invests'
 end
 
-every 1.day, :at => '0:00 am' do
+every 1.minute do
   rake 'coin:pay_profit_cc_purchase'
 end
 

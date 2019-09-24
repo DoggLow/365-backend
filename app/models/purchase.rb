@@ -53,10 +53,13 @@ class Purchase < ActiveRecord::Base
   def strike
     sub_funds
     PurchaseMailer.purchase(self).deliver
-    return unless is_tsf_purchase?
 
-    set_volume
-    fill_volume(self.volume)
+    if is_tsf_purchase?
+      set_volume
+      fill_volume(self.volume)
+    else
+      calc_and_fill_daily
+    end
   end
 
   def set_volume(return_rate = 0)
@@ -79,6 +82,80 @@ class Purchase < ActiveRecord::Base
     # Referral for TSF Purchase
     create_and_calculate_referral(value)
   end
+
+  # Only for PLD Purchase
+  def calc_and_fill_daily
+    return if is_tsf_purchase?
+
+    # define constants
+    c_t = 52_500_000 # USD
+    c_n = 105_000_000.0 # all PLD
+    c_k = 1.011 # 1.1%
+    c_u = 250_000 # lot unit
+    c_x = c_t / c_u * (c_k - 1) / (c_k ** (c_n / c_u) - 1)
+
+    # get last PLD price and total distributed
+    last_price = PurchaseOption.get('pld_usd') || 0
+    total_distributed = PurchaseOption.get('distributed_pld') || 0
+    last_price = c_x unless last_price > 0
+
+    d_paid = daily_paid
+    daily_distribution = 0
+
+    if total_distributed > 0
+      first_distribution = c_u - (total_distributed.to_i - 1) % c_u
+      if d_paid >= first_distribution * last_price
+        daily_distribution = first_distribution
+        d_paid -= first_distribution * last_price
+        last_price *= c_k
+      else
+        daily_distribution = d_paid / last_price
+        d_paid = 0
+      end
+    end
+
+    until d_paid <= 0 do
+      if d_paid >= last_price * c_u
+        daily_distribution += c_u
+        d_paid -= last_price * c_u
+        last_price *= c_k
+      else
+        daily_distribution += d_paid / last_price
+        d_paid = 0
+      end
+    end
+
+    fill_volume(daily_distribution)
+
+    # calculate PLD price and total distributed
+    total_distributed += daily_distribution
+
+    # update DB
+    PurchaseOption.set('pld_usd', last_price)
+    PurchaseOption.set('distributed_pld', total_distributed)
+  end
+
+  def daily_paid
+    return_rate * amount / period
+  end
+
+  def period
+    (PurchaseOption.get('pld_completion_date').to_date - created_at.to_date).to_i + 1
+  end
+
+  def return_rate
+    case product.sales_price
+    when 1000
+      return 1
+    when 3000
+      return 1.1
+    when 10000
+      return 1.2
+    else
+      return 1
+    end
+  end
+
 
   def for_notify
     {
