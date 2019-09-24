@@ -52,25 +52,41 @@ module CoinAPI
       destination_tag = recipient.fetch(:tag)
       tx_json = {
           Account:         normalize_address(issuer.fetch(:address)),
-          Amount:          convert_to_base_unit!(amount),
+          Amount:          convert_to_base_unit!(amount).to_s,
           Destination:     normalize_address(recipient.fetch(:address)),
           TransactionType: 'Payment'
       }
       tx_json[:DestinationTag] = destination_tag unless destination_tag.nil?
 
       result = json_rpc(
-          :submit,
+          :sign,
           [{
-               secret:       issuer.fetch(:secret),
+               seed:       issuer.fetch(:secret),
+               key_type:   'secp256k1',
                fee_mult_max: 1000,
                tx_json:      tx_json
            }]
       ).fetch('result')
+      if result.present? && result['status'].to_s == 'success'
+        tx_blob =  result['tx_blob']
+        if tx_blob.present?
+          result = json_rpc(
+              :submit,
+              [{
+                   tx_blob: tx_blob
+               }]
+          ).fetch('result')
 
-      if result['engine_result'].to_s == 'tesSUCCESS' && result['status'].to_s == 'success'
-        normalize_txid(result.fetch('tx_json').fetch('hash'))
+          if result['engine_result'].to_s == 'tesSUCCESS' && result['status'].to_s == 'success'
+            normalize_txid(result.fetch('tx_json').fetch('hash'))
+          else
+            raise CoinAPI::Error, "#{currency.code.upcase} withdrawal from #{normalize_address(issuer[:address])} to #{normalize_address(recipient[:address])} failed: #{result}."
+          end
+        else
+          raise CoinAPI::Error, "#{currency.code.upcase} transaction signing failed. #{result}."
+        end
       else
-        raise CoinAPI::Error, "#{currency.code.upcase} withdrawal from #{normalize_address(issuer[:address])} to #{normalize_address(recipient[:address])} failed: #{result.fetch('engine_result_message')}."
+        raise CoinAPI::Error, "#{currency.code.upcase} transaction signing failed. #{result}."
       end
     end
 
@@ -198,7 +214,7 @@ module CoinAPI
     def gen_address!
       password = Passgen.generate(length: 64, symbols: true)
       result = json_rpc(:wallet_propose, [{ passphrase: password }]).fetch('result')
-      { address: normalize_address(result.fetch('account_id')), secret: password, tag: gen_tag }
+      { address: normalize_address(result.fetch('account_id')), secret: result.fetch('master_seed'), tag: gen_tag }
     end
 
     def ledger_current_index
