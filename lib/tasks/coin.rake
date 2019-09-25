@@ -83,7 +83,7 @@ namespace :coin do
   desc "Add profits to CC Purchase"
   task pay_profit_cc_purchase: :environment do
     cur_time = Time.new.strftime("%k:%M")
-    purchases = Purchase.not_done.select{|purchase| purchase.created_at.strftime("%k:%M") == cur_time.strftime("%k:%M")}
+    purchases = Purchase.not_done.select{|purchase| purchase.created_at.strftime("%k:%M") == cur_time}
     purchases.each do |purchase|
       purchase.calc_and_fill_daily
     end
