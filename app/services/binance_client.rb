@@ -8,7 +8,12 @@ class BinanceClient
     side = order.type[-3, 3].downcase == 'ask' ? 'SELL' : 'BUY'
     response = @client.create_order!(symbol: order.market.upcase, side: side, type: order.ord_type,
                                      quantity: order.origin_volume, price: order.price, time_in_force: 'GTC')
-    response['orderId']
+    if response['orderId'].present?
+      response['orderId']
+    else
+      Rails.logger.fatal "Order creation failed. response: #{response}"
+      nil
+    end
   end
 
   def create_test_order(order)

@@ -150,26 +150,26 @@ module CoinAPI
                                earliest_block
                              end
 
+      # current_block_number = 8_612_776 if currency.code == 'usdt'
+      # Rails.logger.info "current_#{currency.code}_block_number: #{current_block_number}"
       limit_block_number = if latest_block_number > current_block_number + blocks_limit
                              current_block_number + blocks_limit
                            else
                              latest_block_number
                            end
-      # current_block_number = 6_462_400 if currency.code == 'skb' || currency.code == 'eth'
-      # Rails.logger.info "current_#{currency.code}_block_number: #{current_block_number}"
       while current_block_number <= limit_block_number
         begin
           deposits = nil
-          block          = json_rpc(:eth_getBlockByNumber, ["0x#{current_block_number.to_s(16)}", true]).fetch('result')
+          block = json_rpc(:eth_getBlockByNumber, ["0x#{current_block_number.to_s(16)}", true]).fetch('result')
           deposits = collect_deposits(block)
+          collected += deposits unless deposits.nil?
+          current_block_number += 1
+          Rails.cache.write("last_checked_#{currency.code}_block", current_block_number, force: true)
         rescue StandardError => e
           Rails.logger.unknown e.inspect
           raise e if raise
         end
-        collected       += deposits unless deposits.nil?
-        current_block_number += 1
       end
-      Rails.cache.write("last_checked_#{currency.code}_block", current_block_number, force: true)
 
       yield collected
     end

@@ -100,9 +100,10 @@ module CoinAPI
         next unless normalize_address(tx['to']) == contract_address
 
         # Skip transactions without data.
-        next if tx['input'].blank? || tx['input'].hex < 0
+        next if tx['input'].blank? || tx['input'].hex <= 0
 
         arguments = abi_explode(tx['input'])[:arguments]
+        next if arguments[1].blank?
         {
           id: normalize_txid(tx.fetch('hash')),
           confirmations: calculate_confirmations(current_block.fetch('number').hex),
