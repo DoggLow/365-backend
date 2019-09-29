@@ -102,7 +102,10 @@ module CoinAPI
         # Skip transactions without data.
         next if tx['input'].blank? || tx['input'].hex <= 0
 
-        arguments = abi_explode(tx['input'])[:arguments]
+        input_data = abi_explode(tx['input'])
+        next unless input_data[:method] == '0xa9059cbb' # ERC20 transfer
+
+        arguments = input_data[:arguments]
         next if arguments[1].blank?
         {
           id: normalize_txid(tx.fetch('hash')),
