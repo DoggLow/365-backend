@@ -8,11 +8,16 @@
           = item_for @withdraw, :id
           = item_for @withdraw, :created_at
           = item_for @withdraw, :aasm_state_text
+          = item_for @withdraw, :txid do
+            - if @withdraw.txid.present?
+              a href='#{@withdraw.blockchain_url}' target='_blank'
+                code.text-info = @withdraw.txid.truncate(40)
           hr.split
           = item_for @withdraw.member, :name
           = item_for @withdraw, :fund_extra
           = item_for @withdraw, :fund_uid do
-            span = @withdraw.fund_uid.truncate(22)
+            a href='#{@withdraw.currency_obj.address_url(@withdraw.fund_uid)}' target='_blank'
+              code.text-info = @withdraw.fund_uid.truncate(36)
           = item_for @withdraw, :amount
           hr.split
           = item_for @withdraw, :remark
