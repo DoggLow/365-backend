@@ -1,36 +1,51 @@
-.panel.panel-primary
-  .panel-heading: span = t('.verify_account')
-  = table_for(@id_documents, class: 'table table-condensed table-hover') do |t|
-    - t.column :id, class: 'col-xs-1' do |x|
-      = link_to x.id, admin_id_document_path(x)
-    - t.column :name, class: 'col-xs-3' do |x|
-      = link_to x.name.to_s, admin_member_path(x.member)
-    - t.column :email, class: 'col-xs-4' do |x|
-      = link_to x.member.email, admin_member_path(x.member)
-    - t.column :id_document_file, t('.id_document'), class: 'col-xs-2' do |x|
-      - if x.id_document_file.blank? || x.id_document_file.file.blank?
-        = 'No File'
-      - else
-        = link_to image_tag(x.id_document_file.file, width: '50'), admin_id_document_path(x)
-    - t.column :id_bill_file1, t('.bill_1'), class: 'col-xs-2' do |x|
-      - if x.id_bill_file1.blank? || x.id_bill_file1.file.blank?
-        = 'No File'
-      - else
-        = link_to image_tag(x.id_bill_file1.file, width: '50'), admin_id_document_path(x)
-    - t.column :id_bill_file2, t('.bill_2'), class: 'col-xs-2' do |x|
-      - if x.id_bill_file2.blank? || x.id_bill_file2.file.blank?
-        = 'No File'
-      - else
-        = link_to image_tag(x.id_bill_file2.file, width: '50'), admin_id_document_path(x)
-    - t.column :id_selfie_file, t('.selfie'), class: 'col-xs-2' do |x|
-      - if x.id_selfie_file.blank? || x.id_selfie_file.file.blank?
-        = 'No File'
-      - else
-        = link_to image_tag(x.id_selfie_file.file, width: '50'), admin_id_document_path(x)
-    - t.column :updated_at, t('.request_at'), class: 'col-xs-4'
-    - t.column :verified, class: 'col-xs-2' do |x|
-      = yesno(x.verified?)
-    - t.column '', class: 'col-xs-2' do |x|
-      = link_to t('actions.view'), admin_id_document_path(x)
+.row
+  .panel.panel-primary
+    .panel-heading
+      span = 'Search'
+    .panel-body
+      = form_tag admin_id_documents_path, method: :get do |f|
+        .col-xs-2.text-right = label_tag 'Verify State'
+        .col-xs-3 = select_tag :search_field, options_for_select([ \
+            ['All', 'all'],                                \
+            ['Verified',  'verified'],                                 \
+            ['Unverified', 'unverified'],              \
+          ], @search_field)
+        .col-xs-3.col-xs-offset-1 = submit_tag 'Search'
 
-  = paginate @id_documents
+.row
+  .panel.panel-primary
+    .panel-heading: span = t('.verify_account')
+    = table_for(@id_documents, class: 'table table-condensed table-hover') do |t|
+      - t.column :id, class: 'col-xs-1' do |x|
+        = link_to x.id, admin_id_document_path(x)
+      - t.column :name, class: 'col-xs-3' do |x|
+        = link_to x.name.to_s, admin_member_path(x.member)
+      - t.column :email, class: 'col-xs-4' do |x|
+        = link_to x.member.email, admin_member_path(x.member)
+      - t.column :id_document_file, t('.id_document'), class: 'col-xs-2' do |x|
+        - if x.id_document_file.blank? || x.id_document_file.file.blank?
+          = 'No File'
+        - else
+          = link_to image_tag(x.id_document_file.file, width: '50'), admin_id_document_path(x)
+      - t.column :id_bill_file1, t('.bill_1'), class: 'col-xs-2' do |x|
+        - if x.id_bill_file1.blank? || x.id_bill_file1.file.blank?
+          = 'No File'
+        - else
+          = link_to image_tag(x.id_bill_file1.file, width: '50'), admin_id_document_path(x)
+      - t.column :id_bill_file2, t('.bill_2'), class: 'col-xs-2' do |x|
+        - if x.id_bill_file2.blank? || x.id_bill_file2.file.blank?
+          = 'No File'
+        - else
+          = link_to image_tag(x.id_bill_file2.file, width: '50'), admin_id_document_path(x)
+      - t.column :id_selfie_file, t('.selfie'), class: 'col-xs-2' do |x|
+        - if x.id_selfie_file.blank? || x.id_selfie_file.file.blank?
+          = 'No File'
+        - else
+          = link_to image_tag(x.id_selfie_file.file, width: '50'), admin_id_document_path(x)
+      - t.column :updated_at, t('.request_at'), class: 'col-xs-4'
+      - t.column :verified, class: 'col-xs-2' do |x|
+        = yesno(x.verified?)
+      - t.column '', class: 'col-xs-2' do |x|
+        = link_to t('actions.view'), admin_id_document_path(x)
+
+    = paginate @id_documents
