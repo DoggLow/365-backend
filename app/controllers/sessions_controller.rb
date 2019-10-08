@@ -10,6 +10,18 @@ class SessionsController < ApplicationController
 
   helper_method :require_captcha?
 
+  def index
+    if current_user
+      if current_user.app_two_factor.activated? && two_factor_locked?
+        render_json(TFARequired.new)
+      else
+        render_json(SignInSuccess.new)
+      end
+    else
+      render_json(LogInRequired.new)
+    end
+  end
+
   def new
     @identity = Identity.new
   end

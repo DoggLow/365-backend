@@ -15,6 +15,7 @@ Exchange::Application.routes.draw do
     mount MailsViewer::Engine => '/mails'
   end
 
+  get '/auth/status' => 'sessions#index', :as => :auth_status
   get '/signin' => 'sessions#new', :as => :signin
   get '/signup' => 'identities#new', :as => :signup
   get '/signout' => 'sessions#destroy', :as => :signout

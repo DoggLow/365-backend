@@ -20,8 +20,16 @@ module Private
     end
 
     def main
-      accounts = current_user.accounts.map(&:for_notify)
-      render json: {accounts: accounts}.to_json, status: :ok
+      if params[:simple].blank? # default flow
+        accounts = current_user.accounts.map(&:for_notify)
+        render json: {accounts: accounts}.to_json, status: :ok
+      else
+        accounts = {}
+        current_user.accounts.each do |account|
+          accounts[account.currency.to_sym] = account.balance
+        end
+        render json: accounts.to_json, status: :ok
+      end
     end
 
     def lending
