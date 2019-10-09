@@ -183,7 +183,7 @@ module CoinAPI
 
           collected += deposits unless deposits.nil?
 
-          if result.key?(:marker) && result.fetch('marker').nil?
+          if result.key?(:marker) && result.fetch('marker').present?
             Rails.cache.write('xrp_marker', result.fetch('marker'), force: true)
           else
             break
