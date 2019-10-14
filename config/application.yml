@@ -5,6 +5,7 @@ defaults: &defaults
   # admin role account
   URL_HOST: crypto.365-exchange.com:8443
   URL_UI: crypto.365-exchange.com
+  URL_CC: launchpad.365-exchange.com
   URL_SCHEMA: https
   SESSION_EXPIRE: '60'
   ADMIN: 'admin@crypto.365-exchange.com'
@@ -72,6 +73,7 @@ development:
   # sites hosts
   URL_HOST: localhost:4000
   URL_UI: localhost:3000
+  URL_CC: localhost:3002
   URL_SCHEMA: http
 
 test:
