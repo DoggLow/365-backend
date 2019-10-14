@@ -157,8 +157,16 @@ Exchange::Application.routes.draw do
         get  :profits
       end
     end
+
     resources :castings, only: [:index, :create, :history] do
       collection do
+        get  :history
+      end
+    end
+
+    resources :pools, only: [:deposit, :history] do
+      collection do
+        post :deposit
         get  :history
       end
     end

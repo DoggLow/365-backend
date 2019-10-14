@@ -11,7 +11,7 @@ module Private
       if new_casting.save
         render json: new_casting, status: :ok
       else
-        render json: new_casting.errors.full_messages.join(', '), status: 403
+        render json: new_casting.errors.full_messages.join(', '), status: :bad_request
       end
     end
 

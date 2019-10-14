@@ -25,6 +25,7 @@ class Member < ActiveRecord::Base
   has_many :point_exchanges
   has_many :profits
   has_many :castings
+  has_many :pool_deposits
 
   has_one :id_document
   enumerize :level, in: Level.enumerize

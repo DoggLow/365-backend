@@ -32,7 +32,8 @@ class AccountVersion < ActiveRecord::Base
       Account::CC_LOCK => 4200,
       Account::CC_UNLOCK => 4300,
       Account::CC_DISTRIBUTION => 4400,
-      Account::CC_MOVE_POOL => 4500
+      Account::CC_MOVE_POOL => 4500,
+      Account::POOL_DEPOSIT => 4600
   }
   enumerize :reason, in: REASON_CODES, scope: true
 
