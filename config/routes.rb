@@ -92,6 +92,7 @@ Exchange::Application.routes.draw do
     get '/history/loans' => 'history#loans', as: :loan_history
 
     get '/markets' => 'markets#index', as: :market_list
+    get '/markets/prices' => 'markets#prices', as: :market_prices
 
     resources :markets, :only => :show, :constraints => MarketConstraint do
       resources :orders, :only => [:index, :destroy] do

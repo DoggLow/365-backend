@@ -2,7 +2,7 @@ module Private
   class MarketsController < BaseController
     layout false
 
-    skip_before_action :auth_member!, only: [:index, :show]
+    skip_before_action :auth_member!, only: [:index, :show, :prices]
     before_action :visible_market?
 
     layout false
@@ -26,6 +26,14 @@ module Private
       end
 
       render json: data.to_json, status: :ok
+    end
+
+    def prices
+      markets = {}
+      Market.all.each do |market|
+        markets[market.id] = market.last
+      end
+      render json: markets.to_json, status: :ok
     end
 
     private

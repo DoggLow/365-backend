@@ -135,6 +135,10 @@ class Market < ActiveYamlBase
     data
   end
 
+  def last
+    Global[self.id].ticker[:last] || 0
+  end
+
   private
 
   def global
