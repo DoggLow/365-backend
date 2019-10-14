@@ -25,6 +25,17 @@ class PoolDeposit < ActiveRecord::Base
     pool.lock!.deposit_funds(org_total)
   end
 
+  def for_pool
+    {
+        id: id,
+        currency: currency,
+        amount: org_total + fee,
+        fee: fee,
+        funds: remained,
+        at: created_at.to_i
+    }
+  end
+
   private
 
   def fill_data
@@ -48,4 +59,5 @@ class PoolDeposit < ActiveRecord::Base
   def hold_account
     member.get_account(currency)
   end
+
 end

@@ -75,6 +75,17 @@ class Casting < ActiveRecord::Base
     check!
   end
 
+  def for_pool
+    {
+        id: id,
+        currency: currency,
+        amount: paid_amount,
+        fee: paid_fee,
+        funds: distribution,
+        at: created_at.to_i
+    }
+  end
+
   private
 
   def any_distributed?
@@ -149,4 +160,5 @@ class Casting < ActiveRecord::Base
   def market_obj
     Market.find market_id
   end
+
 end

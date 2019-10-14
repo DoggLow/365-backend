@@ -38,17 +38,6 @@ class Pool < ActiveRecord::Base
   class PoolError < RuntimeError;
   end
 
-  def for_notify
-    {
-        id: id,
-        currency: currency_obj,
-        balance: balance,
-        locked: locked,
-        estimated: estimate_balance,
-        payment_address: payment_address
-    }
-  end
-
   private
 
 end

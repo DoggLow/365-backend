@@ -13,6 +13,14 @@ module Private
     end
 
     def history
+      currency = params[:currency]
+      if currency.blank?
+        render json: 'INVALID_PARAMS', status: :bad_request
+      else
+        pool = current_user.get_pool(currency)
+        data = (pool.castings + pool.pool_deposits).sort_by {|t| -t.created_at.to_i }
+        render json: data.map(&:for_pool), status: :ok
+      end
     end
 
     private
