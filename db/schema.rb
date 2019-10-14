@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190606062140) do
+ActiveRecord::Schema.define(version: 20190607062215) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20190606062140) do
     t.text     "bid_distributions",                                          null: false
     t.decimal  "org_distribution",   precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "distribution",       precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "pool_id"
     t.integer  "distribution_times",                           default: 0,   null: false
     t.string   "aasm_state"
     t.datetime "created_at"
@@ -482,11 +483,25 @@ ActiveRecord::Schema.define(version: 20190606062140) do
     t.decimal  "org_total",  precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "remained",   precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "pool_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "pool_deposits", ["member_id"], name: "index_pool_deposits_on_member_id", using: :btree
+
+  create_table "pools", force: true do |t|
+    t.integer  "member_id",                                          null: false
+    t.integer  "account_id",                                         null: false
+    t.integer  "currency",                                           null: false
+    t.integer  "kind",                                 default: 1,   null: false
+    t.decimal  "balance",    precision: 32, scale: 16, default: 0.0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pools", ["member_id", "currency"], name: "index_pools_on_member_id_and_currency", using: :btree
+  add_index "pools", ["member_id"], name: "index_pools_on_member_id", using: :btree
 
   create_table "positions", force: true do |t|
     t.string   "direction",    limit: 5,                                         null: false

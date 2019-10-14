@@ -25,6 +25,7 @@ class Member < ActiveRecord::Base
   has_many :point_exchanges
   has_many :profits
   has_many :castings
+  has_many :pools
   has_many :pool_deposits
 
   has_one :id_document
@@ -281,6 +282,21 @@ class Member < ActiveRecord::Base
 
     fee = amount * fee_config['normal'] / 100
     [fee, 0]
+  end
+
+  def get_pool(currency)
+    pool = pools.with_currency(currency.to_sym).first
+
+    if pool.nil?
+      touch_pool(currency)
+      pool = pools.with_currency(currency.to_sym).first
+    end
+
+    pool
+  end
+
+  def touch_pool(currency)
+    self.pools.create(currency: currency, balance: 0.0)
   end
 
   def fee_account

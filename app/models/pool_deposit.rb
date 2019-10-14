@@ -18,10 +18,11 @@ class PoolDeposit < ActiveRecord::Base
   CC_POOL_DEPOSIT_FEE = 0.05
 
   belongs_to :member
+  belongs_to :pool
 
   def strike
     hold_account.lock!.sub_funds self.org_total + self.fee, fee: self.fee, reason: Account::POOL_DEPOSIT, ref: self
-    # TODO : move_to_pool
+    pool.lock!.deposit_funds(org_total)
   end
 
   private
@@ -30,14 +31,14 @@ class PoolDeposit < ActiveRecord::Base
     total = amount * unit
     self.fee = total * CC_POOL_DEPOSIT_FEE
     self.org_total = self.remained = total * (1 - CC_POOL_DEPOSIT_FEE)
+    self.pool = member.get_pool(currency)
   end
 
   def validate_data
-    account = hold_account
-    if account.blank?
+    if hold_account.blank?
       errors.add 'account', 'invalid'
     else
-      balance = account.balance
+      balance = hold_account.balance
       if balance < unit * amount
         errors.add 'balance', 'insufficient'
       end

@@ -15,6 +15,8 @@ class Casting < ActiveRecord::Base
   serialize :ask_distributions, Array
   serialize :bid_distributions, Array
 
+  POOL_SYMBOL = 'pld'
+
   validates_presence_of :unit, :amount, :currency, :paid_amount, :market_id
   validates_numericality_of :unit, :amount, :paid_amount, :paid_fee, :ask_org_locked, :bid_org_locked, :org_distribution, greater_than: 0.0
   validates_numericality_of :ask_locked, :bid_locked, :distribution, greater_than_or_equal_to: 0.0
@@ -26,6 +28,7 @@ class Casting < ActiveRecord::Base
   CC_FEE = 0.05
 
   belongs_to :member
+  belongs_to :pool
 
   scope :pending, -> { where(aasm_state: :pending) }
   scope :processing, -> { where(aasm_state: :processing) }
@@ -82,9 +85,9 @@ class Casting < ActiveRecord::Base
     org_distribution <= distribution
   end
 
-  def move_to_pool # TODO
+  def move_to_pool
     expect_account.lock!.unlock_and_sub_funds distribution, locked: distribution, reason: Account::CC_MOVE_POOL, ref: self
-
+    pool.lock!.deposit_funds(distribution)
   end
 
   def fill_data
@@ -97,9 +100,10 @@ class Casting < ActiveRecord::Base
     self.paid_fee = Global.estimate('usdt', currency, real_fee).round(8)
     self.ask_locked = self.ask_org_locked = Global.estimate('usdt', ask, real_fiat_amount / 2.0).round(8)
     self.bid_locked = self.bid_org_locked = Global.estimate('usdt', bid, real_fiat_amount / 2.0).round(8)
-    self.org_distribution = (real_fiat_amount / Price.get_rate('PLD', 'USD')).round(8)
+    self.org_distribution = (real_fiat_amount / Price.get_rate(POOL_SYMBOL, 'USD')).round(8)
     self.ask_distributions = gen_distributions
     self.bid_distributions = gen_distributions
+    self.pool = member.get_pool(POOL_SYMBOL)
   end
 
   def gen_distributions
@@ -116,11 +120,10 @@ class Casting < ActiveRecord::Base
   end
 
   def validate_data
-    account = hold_account
-    if account.blank?
+    if hold_account.blank?
       errors.add 'account', 'invalid'
     else
-      balance = account.balance
+      balance = hold_account.balance
       if balance < paid_amount
         errors.add 'balance', 'insufficient'
       end
@@ -128,7 +131,7 @@ class Casting < ActiveRecord::Base
   end
 
   def expect_account
-    member.get_account('pld')
+    member.get_account(POOL_SYMBOL)
   end
 
   def hold_account
