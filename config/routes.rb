@@ -167,6 +167,7 @@ Exchange::Application.routes.draw do
     resources :pools, only: [:deposit, :history] do
       collection do
         post :deposit
+        get  :info
         get  :history
       end
     end

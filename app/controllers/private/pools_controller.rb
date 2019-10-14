@@ -2,6 +2,24 @@ module Private
   class PoolsController < BaseController
     layout false
 
+    def info
+      currency = params[:currency] || 'pld'
+      if currency.blank?
+        render json: 'INVALID_PARAMS', status: :bad_request
+      else
+        pool = current_user.get_pool(currency)
+        wallet_balance = current_user.get_account(currency).balance
+        cc_balance = pool.castings.sum(:distribution)
+        other_balance = pool.balance - cc_balance
+        info = {
+            wallet_balance: wallet_balance,
+            cc_balance: cc_balance,
+            other_balance: other_balance
+        }
+        render json: info, status: :ok
+      end
+    end
+
     def deposit
       new_pool_deposit = current_user.pool_deposits.new deposit_params
 
@@ -13,7 +31,7 @@ module Private
     end
 
     def history
-      currency = params[:currency]
+      currency = params[:currency] || 'pld'
       if currency.blank?
         render json: 'INVALID_PARAMS', status: :bad_request
       else
