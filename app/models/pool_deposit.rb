@@ -28,6 +28,7 @@ class PoolDeposit < ActiveRecord::Base
   def for_pool
     {
         id: id,
+        type: PoolDeposit.name,
         currency: currency,
         amount: org_total + fee,
         fee: fee,

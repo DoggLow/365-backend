@@ -78,6 +78,7 @@ class Casting < ActiveRecord::Base
   def for_pool
     {
         id: id,
+        type: Casting.name,
         currency: currency,
         amount: paid_amount,
         fee: paid_fee,
