@@ -27,7 +27,13 @@ class AccountVersion < ActiveRecord::Base
       Account::INVEST_PROFIT => 3120,
       Account::POINT_EXCHANGE_LOCK => 3200,
       Account::POINT_EXCHANGE_UNLOCK => 3210,
-      Account::POINT_EXCHANGE => 3220}
+      Account::POINT_EXCHANGE => 3220,
+      Account::CC_CHARGE => 4100,
+      Account::CC_LOCK => 4200,
+      Account::CC_UNLOCK => 4300,
+      Account::CC_DISTRIBUTION => 4400,
+      Account::CC_MOVE_POOL => 4500
+  }
   enumerize :reason, in: REASON_CODES, scope: true
 
   belongs_to :account
@@ -89,4 +95,15 @@ class AccountVersion < ActiveRecord::Base
   end
 
   alias :template :detail_template
+
+  def for_cc
+    {
+        id: id,
+        at: created_at.to_i,
+        reason: reason,
+        currency: currency,
+        amount: (balance != 0.0 ? balance : locked).abs,
+        fee: fee
+    }
+  end
 end

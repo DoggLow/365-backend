@@ -156,6 +156,11 @@ Exchange::Application.routes.draw do
         get  :profits
       end
     end
+    resources :castings, only: [:index, :create, :history] do
+      collection do
+        get  :history
+      end
+    end
   end
 
   draw :admin

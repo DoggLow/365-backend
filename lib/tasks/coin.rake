@@ -89,6 +89,15 @@ namespace :coin do
     end
   end
 
+  desc "Distribute CC"
+  task cc_distribute: :environment do
+    cur_min = DateTime.now.minute.to_s
+    castings = Casting.pending_or_processing.select{|casting| casting.created_at.strftime("%M") == cur_min}
+    castings.each do |casting|
+      casting.distribute
+    end
+  end
+
   desc "Claim neo gas and divide into per member."
   task claim_neo_gas: :environment do
     total = Account.locked_sum('neo') + Account.balance_sum('neo')

@@ -48,6 +48,7 @@ end
 
 every 1.minute do
   rake 'coin:pay_profit_cc_purchase'
+  rake 'coin:cc_distribute'
 end
 
 every 5.minutes do

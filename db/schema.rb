@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190522111000) do
+ActiveRecord::Schema.define(version: 20190606062134) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20190522111000) do
     t.integer  "default_withdraw_fund_source_id"
     t.decimal  "real_balance",                    precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "rewards",                         precision: 32, scale: 16, default: 0.0, null: false
-    t.datetime "rewarded_at"
+    t.datetime "rewarded_at",                                                             null: false
   end
 
   add_index "accounts", ["member_id", "currency"], name: "index_accounts_on_member_id_and_currency", using: :btree
@@ -134,6 +134,32 @@ ActiveRecord::Schema.define(version: 20190522111000) do
 
   add_index "authentications", ["member_id"], name: "index_authentications_on_member_id", using: :btree
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", using: :btree
+
+  create_table "castings", force: true do |t|
+    t.integer  "member_id",                                                  null: false
+    t.integer  "unit",                                                       null: false
+    t.integer  "amount",                                       default: 0,   null: false
+    t.integer  "currency",                                                   null: false
+    t.decimal  "paid_amount",        precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "paid_fee",           precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "market_id",                                                  null: false
+    t.integer  "ask"
+    t.integer  "bid"
+    t.decimal  "ask_locked",         precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "bid_locked",         precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "ask_org_locked",     precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "bid_org_locked",     precision: 32, scale: 16, default: 0.0, null: false
+    t.text     "ask_distributions",                                          null: false
+    t.text     "bid_distributions",                                          null: false
+    t.decimal  "org_distribution",   precision: 32, scale: 16, default: 0.0, null: false
+    t.decimal  "distribution",       precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "distribution_times",                           default: 0,   null: false
+    t.string   "aasm_state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "castings", ["member_id"], name: "index_castings_on_member_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.text     "content"
