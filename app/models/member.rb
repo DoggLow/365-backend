@@ -27,6 +27,7 @@ class Member < ActiveRecord::Base
   has_many :castings
   has_many :pools
   has_many :pool_deposits
+  has_many :pool_withdraws
 
   has_one :id_document
   enumerize :level, in: Level.enumerize

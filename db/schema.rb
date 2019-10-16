@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190607062215) do
+ActiveRecord::Schema.define(version: 20190608062140) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -489,6 +489,21 @@ ActiveRecord::Schema.define(version: 20190607062215) do
   end
 
   add_index "pool_deposits", ["member_id"], name: "index_pool_deposits_on_member_id", using: :btree
+
+  create_table "pool_withdraws", force: true do |t|
+    t.integer  "member_id",                                               null: false
+    t.integer  "account_id",                                              null: false
+    t.integer  "currency",                                                null: false
+    t.decimal  "amount",          precision: 32, scale: 16, default: 0.0, null: false
+    t.integer  "modifiable_id"
+    t.string   "modifiable_type"
+    t.string   "aasm_state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pool_withdraws", ["member_id"], name: "index_pool_withdraws_on_member_id", using: :btree
+  add_index "pool_withdraws", ["modifiable_id", "modifiable_type"], name: "index_pool_withdraws_on_modifiable_id_and_modifiable_type", using: :btree
 
   create_table "pools", force: true do |t|
     t.integer  "member_id",                                          null: false

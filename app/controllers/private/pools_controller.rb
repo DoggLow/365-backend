@@ -30,13 +30,23 @@ module Private
       end
     end
 
+    def withdraw
+      new_pool_withdraw = current_user.pool_withdraws.new withdraw_params
+
+      if new_pool_withdraw.save
+        render json: new_pool_withdraw, status: :ok
+      else
+        render json: new_pool_withdraw.errors.full_messages.join(', '), status: :bad_request
+      end
+    end
+
     def history
       currency = params[:currency] || 'pld'
       if currency.blank?
         render json: 'INVALID_PARAMS', status: :bad_request
       else
         pool = current_user.get_pool(currency)
-        data = (pool.castings + pool.pool_deposits).sort_by {|t| -t.created_at.to_i }
+        data = (pool.castings.done + pool.pool_deposits).sort_by {|t| -t.created_at.to_i }
         render json: data.map(&:for_pool), status: :ok
       end
     end
@@ -45,6 +55,10 @@ module Private
 
     def deposit_params
       params.require(:pool_deposit).permit(:unit, :amount, :currency)
+    end
+
+    def withdraw_params
+      params.require(:pool_withdraw).permit(:amount, :currency, :modifiable_id, :modifiable_type)
     end
   end
 end

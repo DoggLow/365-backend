@@ -27,7 +27,6 @@ class Pool < ActiveRecord::Base
   def withdraw_funds(amount, fee: ZERO, reason: nil, ref: nil)
     (amount <= ZERO or amount > self.balance) and raise PoolError, "cannot subtract funds (amount: #{amount})"
     change_balance -amount
-    # TODO: account management
   end
 
   def change_balance(delta_b)

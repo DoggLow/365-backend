@@ -164,11 +164,12 @@ Exchange::Application.routes.draw do
       end
     end
 
-    resources :pools, only: [:deposit, :history] do
+    resources :pools, only: [:info, :deposit, :withdraw, :history] do
       collection do
-        post :deposit
         get  :info
         get  :history
+        post :deposit
+        post :withdraw
       end
     end
   end

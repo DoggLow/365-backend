@@ -1,6 +1,4 @@
 class PoolDeposit < ActiveRecord::Base
-  STATES = [:pending, :processing, :done]
-
   extend Enumerize
 
   include Currencible
@@ -23,6 +21,14 @@ class PoolDeposit < ActiveRecord::Base
   def strike
     hold_account.lock!.sub_funds self.org_total + self.fee, fee: self.fee, reason: Account::POOL_DEPOSIT, ref: self
     pool.lock!.deposit_funds(org_total)
+  end
+
+  def move_from_pool(amount, ref)
+    self.remained -= amount
+    self.save!
+
+    pool.lock!.withdraw_funds(amount)
+    hold_account.lock!.plus_funds amount, reason: Account::POOL_WITHDRAW, ref: ref
   end
 
   def for_pool

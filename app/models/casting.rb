@@ -15,7 +15,9 @@ class Casting < ActiveRecord::Base
   serialize :ask_distributions, Array
   serialize :bid_distributions, Array
 
+  DONE = 'done'
   POOL_SYMBOL = 'pld'
+  CC_FEE = 0.05
 
   validates_presence_of :unit, :amount, :currency, :paid_amount, :market_id
   validates_numericality_of :unit, :amount, :paid_amount, :paid_fee, :ask_org_locked, :bid_org_locked, :org_distribution, greater_than: 0.0
@@ -25,8 +27,6 @@ class Casting < ActiveRecord::Base
   validate :validate_data, on: :create
   after_create :strike
 
-  CC_FEE = 0.05
-
   belongs_to :member
   belongs_to :pool
 
@@ -34,6 +34,7 @@ class Casting < ActiveRecord::Base
   scope :processing, -> { where(aasm_state: :processing) }
   scope :pending_or_processing, -> { where('aasm_state = ? OR aasm_state = ?', :processing, :pending) }
   scope :not_done, -> { where.not(aasm_state: :done) }
+  scope :done, -> { where(aasm_state: :done) }
   scope :h24, -> { where("created_at > ?", 24.hours.ago) }
 
   aasm :whiny_transitions => false do
@@ -73,6 +74,14 @@ class Casting < ActiveRecord::Base
     self.save!
 
     check!
+  end
+
+  def move_from_pool(amount, ref)
+    self.distribution -= amount
+    self.save!
+
+    pool.lock!.withdraw_funds(amount)
+    expect_account.lock!.plus_funds amount, reason: Account::POOL_WITHDRAW, ref: ref
   end
 
   def for_pool
