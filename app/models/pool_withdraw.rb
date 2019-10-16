@@ -49,7 +49,7 @@ class PoolWithdraw < ActiveRecord::Base
       errors.add 'withdraw', 'unavailable'
     else # limit validation
       mod_period = (Date.yesterday - self.modifiable.created_at.to_date).to_i
-      mod_amount = self.modifiable_type == Casting.name ? modifiable.distribution : modifiable.remained
+      mod_amount = self.modifiable_type == Casting.name ? modifiable.org_distribution : modifiable.org_total
       limit_percent = mod_period >= 180 ? 1.0 : 0.2 * (mod_period / 60 + 2)
       withdrawal_limit = limit_percent *  mod_amount
       errors.add 'amount', 'exceed limits' if withdrawal_limit < amount
