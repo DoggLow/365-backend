@@ -3,7 +3,7 @@ module Private
     layout false
 
     def index
-      render json: current_user.referral_info, status: :ok
+      render json: current_user.referral_info(params[:simple].present?), status: :ok
     end
 
     def list

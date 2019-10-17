@@ -224,6 +224,20 @@ class Member < ActiveRecord::Base
     end
   end
 
+  def recur_referee_map
+    recur_referees = []
+    if referees.present?
+      referees.each do |referee|
+        recur_referees << referee.recur_referee_map
+      end
+    end
+    {
+        title: name || email,
+        email: email,
+        children: recur_referees
+    }
+  end
+
   def all_referees
     Member.where("referrer_ids LIKE ?", "% #{id}\n%")
     # Member.all.select{ |m| m.referrer_ids.include? id } # same with above line , but slow in leafs
@@ -529,14 +543,22 @@ class Member < ActiveRecord::Base
     rewards
   end
 
-  def referral_info
-    {
-        referral_id: get_ref_id,
-        all_commissions: nil,
-        all_rewards: all_rewards,
-        uplines: ref_uplines,
-        downlines: ref_downlines
-    }
+  def referral_info(is_simple = false)
+    if is_simple
+      {
+          referral_id: get_ref_id,
+          map: [recur_referee_map],
+          count: referees.length
+      }
+    else
+      {
+          referral_id: get_ref_id,
+          all_commissions: nil,
+          all_rewards: all_rewards,
+          uplines: ref_uplines,
+          downlines: ref_downlines
+      }
+    end
   end
 
   def ref_uplines_admin
