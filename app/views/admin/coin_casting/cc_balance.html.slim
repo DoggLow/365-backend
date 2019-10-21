@@ -1,0 +1,11 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "Balance"
+    .panel-body style = "display: flex; flex-wrap: wrap;"
+      - @accounts.each do |account|
+        / - Currency.coins.each do |coin|
+        - if account.currency != 'pld' && account.currency != 'pldp' && account.currency != 'tsfp'
+          .image style = "width:25%;padding:inherit"
+            = image_tag("coins/#{account.currency}.png", title: account.currency, size: "20")
+            = " #{account.currency.upcase} #{account.balance}"

@@ -3,18 +3,7 @@ module Admin
     # load_and_authorize_resource
 
     def index
-      @search_field = params[:search_field]
-      @search_term = params[:search_term]
-      @members = Member.search(field: @search_field, term: @search_term).page params[:page]
-    end
-
-    def show
-      @member = Member.find params[:id]
-      rewards = @member.all_rewards
-      @ref_summaries = []
-      Currency.all.each do |currency|
-        @ref_summaries << {currency: currency.code.upcase, rewards: rewards[currency.code]}
-      end
+      @members = Member.page params[:page]
     end
 
     def cc_history
@@ -29,14 +18,11 @@ module Admin
       @data = Kaminari.paginate_array(@data).page(params[:page]).per(20)
     end
 
-    def balance
-      @accounts = {}
-      current_user.accounts.each do |account|
-        @accounts[account.currency.to_sym] = account.balance
-      end
+    def cc_balance
+      @accounts = current_user.accounts
     end
 
-    def dashboard
+    def cc_dashboard
       currency = 'pld'
       pool = current_user.get_pool(currency)
       @wallet_balance = current_user.get_account(currency).balance
@@ -48,7 +34,5 @@ module Admin
           other_balance: @other_balance
       }
     end
-
-    private
   end
 end
