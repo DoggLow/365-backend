@@ -1,20 +1,20 @@
 am4core.ready(function() {
     var data = [ {
         "pld": "CC PLD",
-        "amount": 1418.02
+        "amount": 1
     }, {
         "pld": "My PLD",
-        "amount": 2179.98
+        "amount": 1
     }, {
         "pld": "Address PLD",
-        "amount": 2304.0
+        "amount": 1
     }];
 
-    chartShow('chartdiv');
-    chartShow('chartdivpool1');
-    chartShow('chartdivpool2');
-    chartShow('chartdivpool3');
-    chartShow('chartdivpool4');
+    chartShow('chart_div');
+    chartShow('chart_div_pool_1');
+    chartShow('chart_div_pool_2');
+    chartShow('chart_div_pool_3');
+    chartShow('chart_div_pool_4');
 
     function chartShow(id) {
         chartEl = document.getElementById(id);

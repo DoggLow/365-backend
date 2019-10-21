@@ -21,11 +21,11 @@ namespace :admin do
     resources :two_factors, only: [:destroy]
   end
 
-  resources :coin_casting, :controller => 'coin_casting', as: 'coin_casting', :only => [:index, :cc_history, :pool_history, :cc_balance, :cc_dashboard]
+  resources :coin_casting, :controller => 'coin_casting', as: 'coin_casting', :only => [:index, :cc_history, :pool_history, :cc_accounts, :cc_dashboard]
   get 'coin_casting/:id/cc_history', to: 'coin_casting#cc_history', as: :cc_history
   get 'coin_casting/:id/pool_history', to: 'coin_casting#pool_history', as: :pool_history
-  get 'coin_casting/:id/balance', to: 'coin_casting#cc_balance', as: :cc_balance
-  get 'coin_casting/:id/dashboard', to: 'coin_casting#cc_dashboard', as: :cc_dashboard
+  get 'coin_casting/:id/acounts', to: 'coin_casting#accounts', as: :cc_accounts
+  get 'coin_casting/:id/dashboard', to: 'coin_casting#dashboard', as: :cc_dashboard
 
   resources :referrals, only: [:index, :show]
   get 'referrals/:id/:type', to: 'referrals#tree'

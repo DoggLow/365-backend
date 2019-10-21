@@ -1,0 +1,9 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "Balance"
+    .panel-body style = "display: flex; flex-wrap: wrap;"
+      - @accounts.each do |account|
+        .image style = "width:25%;padding:inherit"
+          = image_tag("coins/#{account.currency}.png", title: account.currency, size: "20")
+          = " #{account.currency.upcase} #{account.balance}"

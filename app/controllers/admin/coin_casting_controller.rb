@@ -18,11 +18,11 @@ module Admin
       @data = Kaminari.paginate_array(@data).page(params[:page]).per(20)
     end
 
-    def cc_balance
-      @accounts = current_user.accounts
+    def accounts
+      @accounts = current_user.accounts.select { |account| account.currency != 'pld' && account.currency_obj.coin? }
     end
 
-    def cc_dashboard
+    def dashboard
       currency = 'pld'
       pool = current_user.get_pool(currency)
       @wallet_balance = current_user.get_account(currency).balance
