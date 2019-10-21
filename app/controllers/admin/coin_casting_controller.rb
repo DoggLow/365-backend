@@ -34,7 +34,6 @@ module Admin
       current_user.accounts.each do |account|
         @accounts[account.currency.to_sym] = account.balance
       end
-      puts @accounts
     end
 
     def dashboard

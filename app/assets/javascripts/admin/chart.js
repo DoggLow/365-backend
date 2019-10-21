@@ -36,7 +36,7 @@ am4core.ready(function() {
 
         var chart = container.createChild(am4charts.PieChart);
         chart .fontSize = 8.5;
-        chart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
+        chart.hiddenState.properties.opacity = 0;
         chart.data = data;
         chart.radius = am4core.percent(70);
         chart.innerRadius = am4core.percent(40);
