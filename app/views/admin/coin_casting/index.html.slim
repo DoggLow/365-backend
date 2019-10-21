@@ -1,0 +1,21 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      span = "Coin Casting"
+    .panel-body
+      = table_for(@members, class: 'table table-condensed table-hover') do |t|
+        - t.column :id, class: 'col-xs-1'
+        - t.column :email, class: 'col-xs-2' do |x|
+          code.text-info = x.email
+        - t.column 'Name', class: 'col-xs-1' do |x|
+          code.text-info = x.name
+        - t.column 'Home', class: 'col-xs-1' do |x|
+          = link_to 'Home',admin_home_path(x), class: 'btn btn-green button'
+        - t.column 'Balance', class: 'col-xs-1' do |x|
+          = link_to 'Balance', admin_account_path(x), class: 'btn btn-green button'
+        - t.column 'Pool History', class: 'col-xs-1' do |x|
+          = link_to 'Pool History',admin_pool_history_path(x), class: 'btn btn-green button'
+        - t.column 'CC PLD History', class: 'col-xs-1' do |x|
+          = link_to 'CC PLD History', admin_cc_history_path(x), class: 'btn btn-green button'
+          /{ :controller => 'pld_history', :action => 'show', :id => x }
+      = paginate @members

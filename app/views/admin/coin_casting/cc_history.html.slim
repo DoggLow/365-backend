@@ -1,0 +1,15 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "CC History"
+    .panel-body
+      = table_for(@data, class: 'table table-condensed table-hover') do |t|
+        - t.column 'Date', class: 'col-xs-2' do |x|
+          code.text-info = x.created_at
+        - t.column :currency, class: 'col-xs-1' do |x|
+          = x.currency.upcase
+        - t.column :balance, class: 'col-xs-1' do |x|
+          code.text-info = x.balance.abs
+        - t.column :fee, class: 'col-xs-1' do |x|
+          code.text-info = x.fee
+      = paginate @data

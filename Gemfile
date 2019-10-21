@@ -73,6 +73,7 @@ gem 'peatio-passgen', '~> 1.0'
 gem 'digest-sha3', '~> 1.1'
 gem 'rack-cors', require: 'rack/cors'
 gem 'binance', github: 'Apollo-IT/binance'
+gem 'chartkick'
 
 group :development, :test do
   gem 'factory_girl_rails'

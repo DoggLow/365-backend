@@ -1,0 +1,32 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "Pool History"
+    .panel-body
+      = table_for(@data, class: 'table table-condensed table-hover') do |t|
+        - t.column 'Date', class: 'col-xs-2' do |x|
+          code.text-info = x.created_at
+        - t.column 'Details', class: 'col-xs-2' do |x|
+          = x.class.name
+        - t.column 'Asset Coin', class: 'col-xs-2' do |x|
+          = x.currency.upcase
+        - t.column 'Amount', class: 'col-xs-2' do |x|
+          - if x.class.name == 'Casting'
+            = x.paid_amount
+          - else
+            = x.org_total + x.fee
+        - t.column 'Fee', class: 'col-xs-2' do |x|
+          - if x.class.name == 'Casting'
+            = x.paid_fee
+          - else
+            = x.fee
+        - t.column 'PLD', class: 'col-xs-2' do |x|
+          - if x.class.name == 'Casting'
+            = x.distribution
+          - else
+            = x.remained
+        - t.column 'Last Day', class: 'col-xs-2' do |x|
+          =''
+        - t.column 'Withdrawal', class: 'col-xs-2' do |x|
+          = button_to 'Withdrawal', class: 'btn btn-green button'
+      = paginate @data

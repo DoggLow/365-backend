@@ -2,7 +2,7 @@ namespace :admin do
   get '/', to: 'dashboard#index', as: :dashboard
 
   resources :documents
-  resources :id_documents,     only: [:index, :show, :update]
+  resources :id_documents, only: [:index, :show, :update]
   resources :settings
   resources :markets, only: [:index]
   resources :tickets, only: [:index, :show] do
@@ -20,6 +20,12 @@ namespace :admin do
 
     resources :two_factors, only: [:destroy]
   end
+
+  resources :coin_casting, :controller => 'coin_casting', as: 'coin_casting', :only => [:index, :show, :cc_history, :pool_history, :account, :home]
+  get 'coin_casting/:id/cc_history', to: 'coin_casting#cc_history', as: :cc_history
+  get 'coin_casting/:id/pool_history', to: 'coin_casting#pool_history', as: :pool_history
+  get 'coin_casting/:id/account', to: 'coin_casting#balance', as: :account
+  get 'coin_casting/:id/home', to: 'coin_casting#dashboard', as: :home
 
   resources :referrals, only: [:index, :show]
   get 'referrals/:id/:type', to: 'referrals#tree'
