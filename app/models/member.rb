@@ -473,7 +473,7 @@ class Member < ActiveRecord::Base
   end
 
   def ref_downlines(is_admin = false)
-    downlines = is_admin ? [{parent: nil, name: email, attributes: nil}] : []
+    downlines = is_admin ? [{parent: nil, child: email, attributes: nil}] : []
 
     all_referees.each do |referee|
       # tier = referee.get_tier(self.id)
@@ -563,9 +563,9 @@ class Member < ActiveRecord::Base
 
   def ref_uplines_admin
     if referrer.blank?
-      uplines = [{parent:'', name: email, attributes: nil}]
+      uplines = [{parent:'', child: email, attributes: nil}]
     else
-      uplines = [{parent: referrer.email, name: email, attributes: nil}]
+      uplines = [{parent: referrer.email, child: email, attributes: nil}]
     end
 
     referrers.each do |member|
@@ -590,7 +590,7 @@ class Member < ActiveRecord::Base
       end
 
       parent = member.referrer.blank? ? nil : member.referrer.email
-      uplines << {parent: parent, name: member.email, attributes: rewards}
+      uplines << {parent: parent, child: member.email, attributes: rewards}
     end
     uplines
   end

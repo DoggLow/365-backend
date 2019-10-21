@@ -16,7 +16,7 @@ flatData = JSON.parse(treeData);
 
 // convert the flat data into a hierarchy
 var treeData = d3.stratify()
-    .id(function(d) { return d.name; })
+    .id(function(d) { return d.child; })
     .parentId(function(d) { return d.parent; })
     (flatData);
 
@@ -107,7 +107,7 @@ function update(source) {
         .attr("x", 0)
         .attr("y", 20)
         .attr("text-anchor", "middle")
-        .text(function(d) { return d.data.data.name; });
+        .text(function(d) { return d.data.data.child; });
 
     // UPDATE
     var nodeUpdate = nodeEnter.merge(node);
