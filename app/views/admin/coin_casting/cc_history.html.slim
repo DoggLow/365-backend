@@ -11,9 +11,9 @@
         - t.column :currency, class: 'col-xs-1' do |x|
           = x.currency.upcase
         - t.column :balance, class: 'col-xs-1' do |x|
-          -if (x.reason == 'cc_charge' || x.reason == 'cc_move_pool') && x.balance.abs > 0
+          - if (x.reason == 'cc_charge' || x.reason == 'cc_move_pool') && x.balance.abs > 0
             = "-#{x.balance.abs}"
-          -else
+          - else
             = x.balance.abs
         - t.column :fee, class: 'col-xs-1' do |x|
           - if (x.reason == 'cc_charge' || x.reason == 'cc_move_pool') && x.balance.abs > 0
