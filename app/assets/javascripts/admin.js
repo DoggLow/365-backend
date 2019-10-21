@@ -6,3 +6,5 @@
 //= require clipboard.min
 //= require admin/app
 //= require d3.min
+//= require core
+//= require charts

@@ -75,6 +75,9 @@ html lang="en"
             li class = check_active('members')
               = link_to t(".menus.sections.members"), admin_members_path
 
+          li class = check_active('coin_casting')
+            = link_to "Coin Casting", admin_coin_casting_index_path
+
           li.dropdown class = check_active('tsf_pld')
             = link_to 'javascript:;', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
               span = 'TSF&PLD'

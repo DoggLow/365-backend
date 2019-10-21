@@ -1,0 +1,55 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "Dashboard"
+    .panel-body
+      .row style = "text-align: center;"
+        .col-lg-4
+          h6 style="color:#eb7f2c;height:25px" = "Coin Casting"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#eb7f2c;color:white'
+        .col-lg-4
+          h6 style="color:#fadb14;height:25px" = "PLD Total Balance"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#fadb14;color:white'
+        .col-lg-4.border
+          h6 style="color:#722ed1;height:25px" = "CC Pool PLD Balance"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#722ed1;color:white'
+        .col-lg-4
+          h6 style="color:#10239e;height:25px" = "Current Level"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#10239e;color:white'
+        .col-lg-4
+          h6 style="color:#666;height:25px" = "EXP required for the next level up"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#666;color:white'
+        .col-lg-4
+          h6 style="color:#13c2c2;height:25px" = "Current EXP"
+          = "#{@wallet_balance} #{'USD'}"
+          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#13c2c2;color:white'
+      .row style = "padding-top: 50px;"
+        .col-sm-12
+          h1 style = "text-align: center;" = 'Company Total PLD'
+          #chart_div data-tree='#{@info.to_json}' style="width: 100%;height: 500px;"
+        .col-xs-12
+          .row
+            .col-sm-12
+              h3 style = "text-align: center;" = 'Pool 1'
+              h4 style = "text-align: center;" = 'Share'
+              #chart_div_pool_1 data-tree='#{@info.to_json}' style = "width:100%;height;500px"
+            .col-xs-12
+              h3 style = "text-align: center;" = 'Pool 2'
+              h4 style = "text-align: center;" = 'Share'
+              #chart_div_pool_2 data-tree='#{@info.to_json}'
+          .row
+            .col-sm-12
+              h3 style = "text-align: center;" = 'Pool 3'
+              h4 style = "text-align: center;" = 'Share'
+              #chart_div_pool_3 data-tree='#{@info.to_json}'
+            .col-xs-12
+              h3 style = "text-align: center;" = 'Pool 4'
+              h4 style = "text-align: center;" = 'Share'
+              #chart_div_pool_4 data-tree='#{@info.to_json}'
+
+= javascript_include_tag 'admin/chart'
