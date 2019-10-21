@@ -33,9 +33,9 @@ html lang="en"
               li class = check_active(AssetTransaction)
                 = link_to 'Asset Transactions', admin_assets_asset_transactions_path
 
-          - if can? :manage, Setting
-            li class = check_active('settings')
-              = link_to 'Settings', admin_settings_path
+          / - if can? :manage, Setting
+          /   li class = check_active('settings')
+          /     = link_to 'Settings', admin_settings_path
 
           - if can? :menu, Deposit
             li.dropdown class = check_active('deposits')
@@ -57,15 +57,15 @@ html lang="en"
                   - if can? :manage, c
                     li = link_to c.name, admin_withdraw_index_path(c)
 
-          li.dropdown class = check_active('lending')
-            = link_to 'javascript:;', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
-              span = t('admin_header.lending')
-              span.caret
-            ul.dropdown-menu
-              li class = check_active('manage')
-                = link_to t(".menus.sections.loans"), admin_lending_loans_path
-              li class = check_active('history')
-                = link_to t(".menus.sections.history"), admin_lending_history_path
+          / li.dropdown class = check_active('lending')
+          /   = link_to 'javascript:;', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+          /     span = t('admin_header.lending')
+          /     span.caret
+          /   ul.dropdown-menu
+          /     li class = check_active('manage')
+          /       = link_to t(".menus.sections.loans"), admin_lending_loans_path
+          /     li class = check_active('history')
+          /       = link_to t(".menus.sections.history"), admin_lending_history_path
 
           - if can? :manage, Member
             li class = check_active('referral')
