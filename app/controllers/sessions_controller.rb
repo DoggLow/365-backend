@@ -106,6 +106,7 @@ class SessionsController < ApplicationController
 
   def login_success(member)
     save_signup_history member.id
+    member.increase_exp(ExpLog::LOGIN)
     MemberMailer.notify_signin(member.id).deliver if member.activated?
     render_json(SignInSuccess.new)
   end

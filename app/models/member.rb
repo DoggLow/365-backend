@@ -28,6 +28,7 @@ class Member < ActiveRecord::Base
   has_many :pools
   has_many :pool_deposits
   has_many :pool_withdraws
+  has_many :exp_logs
 
   has_one :id_document
   enumerize :level, in: Level.enumerize
@@ -282,6 +283,29 @@ class Member < ActiveRecord::Base
 
   def level_obj
     Level.find level
+  end
+
+  def increase_exp(reason, ref: nil)
+    daily_action_done = false
+    if ExpLog::DAILY_ACTIONS.include?(reason)
+      daily_actions = exp_logs.today.pluck(:reason)
+      return if daily_actions.include?(reason)
+      daily_action_done = daily_actions.length >= 4
+    end
+    amount = case reason
+             when ExpLog::CC
+               3
+             when ExpLog::REFEREE_KYC
+               10
+             when ExpLog::CC_30
+               10
+             when ExpLog::BUY_PLD
+               2
+             else # others
+               1
+             end
+    plus_exp(amount, reason: reason, ref: ref)
+    plus_exp(5, reason: ExpLog::DAILY_ALL) if daily_action_done
   end
 
   def get_trade_fee(currency, amount, is_maker)
@@ -653,6 +677,23 @@ class Member < ActiveRecord::Base
   end
 
   private
+
+  def plus_exp(amount, reason: ExpLog::UNKNOWN, ref: nil)
+    # TODO: special conditions for exp up
+
+    self.exp += amount
+    self.save!
+
+    attributes = {reason: reason,
+                  amount: amount}
+    if ref and ref.respond_to?(:id)
+      ref_klass = ref.class
+      attributes.merge! \
+          modifiable_id: ref.id,
+          modifiable_type: ref_klass.respond_to?(:base_class) ? ref_klass.base_class.name : ref_klass.name
+    end
+    exp_logs.create!(attributes)
+  end
 
   def sanitize
     self.email.try(:downcase!)

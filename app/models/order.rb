@@ -21,6 +21,8 @@ class Order < ActiveRecord::Base
                             if: "ord_type == 'limit'"
   validate :market_order_validations, if: "ord_type == 'market'"
 
+  after_create :increase_exp
+
   WAIT = 'wait'
   DONE = 'done'
   CANCEL = 'cancel'
@@ -96,7 +98,7 @@ class Order < ActiveRecord::Base
 
     self.save!
 
-    if member.referrer_ids.present?
+    if false # member.referrer_ids.present?
       if real_fee_estimation != 0
         ref_amount = real_fee_estimation
         ref_currency = member.fee_account.currency
@@ -104,11 +106,18 @@ class Order < ActiveRecord::Base
         ref_amount = real_fee
         ref_currency = expect_account.currency
       end
-      # create_or_update_referral(ref_amount, ref_currency, trade.id)
+      create_or_update_referral(ref_amount, ref_currency, trade.id)
     end
 
+    member.increase_exp(ExpLog::TRADE, ref: trade)
+    member.increase_exp(ExpLog::BUY_PLD, ref: trade) if expect_account.currency == 'pld'
 
     create_or_update_position(trade) if trigger_order || source == 'Position'
+  end
+
+  def increase_exp
+    reason = type == 'OrderBid' ? ExpLog::BUY : ExpLog::SELL
+    member.increase_exp(reason, ref: self)
   end
 
   def kind

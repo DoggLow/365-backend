@@ -54,6 +54,10 @@ class Casting < ActiveRecord::Base
     bid_account.lock!.plus_locked self.bid_org_locked, reason: Account::CC_LOCK, ref: self
 
     check!
+
+    member.increase_exp(ExpLog::CC, ref: self)
+    member.increase_exp(ExpLog::CC_30, ref: self) if (unit * amount) >= 30.0
+    member.referrer.increase_exp(ExpLog::REFEREE_CC, ref: self) unless member.referrer.blank?
   end
 
   def distribute

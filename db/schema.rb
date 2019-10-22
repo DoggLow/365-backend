@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190608062140) do
+ActiveRecord::Schema.define(version: 20190616114220) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20190608062140) do
     t.integer  "default_withdraw_fund_source_id"
     t.decimal  "real_balance",                    precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "rewards",                         precision: 32, scale: 16, default: 0.0, null: false
-    t.datetime "rewarded_at",                                                             null: false
+    t.datetime "rewarded_at"
   end
 
   add_index "accounts", ["member_id", "currency"], name: "index_accounts_on_member_id_and_currency", using: :btree
@@ -216,6 +216,20 @@ ActiveRecord::Schema.define(version: 20190608062140) do
     t.text     "keywords"
   end
 
+  create_table "exp_logs", force: true do |t|
+    t.integer  "member_id",                   null: false
+    t.integer  "reason"
+    t.integer  "amount",          default: 0, null: false
+    t.integer  "value",           default: 0, null: false
+    t.integer  "modifiable_id"
+    t.string   "modifiable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exp_logs", ["member_id"], name: "index_exp_logs_on_member_id", using: :btree
+  add_index "exp_logs", ["modifiable_id", "modifiable_type"], name: "index_exp_logs_on_modifiable_id_and_modifiable_type", using: :btree
+
   create_table "fund_sources", force: true do |t|
     t.integer  "member_id"
     t.integer  "currency"
@@ -327,6 +341,8 @@ ActiveRecord::Schema.define(version: 20190608062140) do
     t.string   "ref_id"
     t.integer  "level",             limit: 1, default: 0,     null: false
     t.boolean  "commission_status",           default: false, null: false
+    t.integer  "exp",                         default: 0,     null: false
+    t.integer  "cc_level",                    default: 1,     null: false
   end
 
   create_table "oauth_access_grants", force: true do |t|

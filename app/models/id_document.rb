@@ -29,7 +29,7 @@ class IdDocument < ActiveRecord::Base
   aasm do
     state :unverified, initial: true
     state :verifying
-    state :verified
+    state :verified, after_commit: :increase_exp
 
     event :submit do
       transitions from: :unverified, to: :verifying
@@ -42,5 +42,9 @@ class IdDocument < ActiveRecord::Base
     event :reject do
       transitions from: [:verifying, :verified],  to: :unverified
     end
+  end
+
+  def increase_exp
+    member.referrer.increase_exp(ExpLog::REFEREE_KYC) unless member.referrer.blank?
   end
 end

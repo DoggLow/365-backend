@@ -158,9 +158,11 @@ Exchange::Application.routes.draw do
       end
     end
 
-    resources :castings, only: [:index, :create, :history] do
+    resources :castings, only: [:info, :create, :history, :exp_history] do
       collection do
+        get  :info
         get  :history
+        get  :exp_history
       end
     end
 
