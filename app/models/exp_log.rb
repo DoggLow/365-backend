@@ -1,8 +1,6 @@
 class ExpLog < ActiveRecord::Base
   extend Enumerize
 
-  DAILY_ACTIONS = [ExpLog::LOGIN, ExpLog::CC, ExpLog::BUY, ExpLog::SELL, ExpLog::TRADE]
-
   UNKNOWN = :unknown
   DAILY_ALL = :daily_all
   LOGIN = :login
@@ -34,12 +32,14 @@ class ExpLog < ActiveRecord::Base
       CC_TOTAL_30K => 420,
       CC_TOTAL_100K => 430
   }
+  DAILY_ACTIONS = [ExpLog::LOGIN, ExpLog::CC, ExpLog::BUY, ExpLog::SELL, ExpLog::TRADE]
+
   enumerize :reason, in: REASON_CODES, scope: true
 
   belongs_to :member
   belongs_to :modifiable, polymorphic: true
 
-  scope :today, lambda { WHERE('DATE(created_at) = ?', Date.today)}
+  scope :today, lambda { where('DATE(created_at) = ?', Date.today)}
 
   def for_api
     {

@@ -289,7 +289,7 @@ class Member < ActiveRecord::Base
     daily_action_done = false
     if ExpLog::DAILY_ACTIONS.include?(reason)
       daily_actions = exp_logs.today.pluck(:reason)
-      return if daily_actions.include?(reason)
+      return if daily_actions.include?(ExpLog::REASON_CODES[reason])
       daily_action_done = daily_actions.length >= 4
     end
     amount = case reason
