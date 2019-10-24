@@ -291,6 +291,8 @@ class Member < ActiveRecord::Base
       daily_actions = exp_logs.today.pluck(:reason)
       return if daily_actions.include?(ExpLog::REASON_CODES[reason])
       daily_action_done = daily_actions.length >= 4
+    elsif ExpLog::TOTAL_ACTIONS.include?(reason)
+      return if exp_logs.pluck(:reason).include?(ExpLog::REASON_CODES[reason])
     end
     amount = case reason
              when ExpLog::CC
@@ -301,6 +303,12 @@ class Member < ActiveRecord::Base
                10
              when ExpLog::BUY_PLD
                2
+             when ExpLog::CC_TOTAL_100K
+               36_500
+             when ExpLog::CC_TOTAL_30K
+               10_950
+             when ExpLog::CC_TOTAL_10K
+               3_650
              else # others
                1
              end
@@ -679,13 +687,17 @@ class Member < ActiveRecord::Base
   private
 
   def plus_exp(amount, reason: ExpLog::UNKNOWN, ref: nil)
-    # TODO: special conditions for exp up
+    # Special conditions for exp up
+    if get_account('tsf').balance >= 200_000
+      amount *= 1.5
+    end
+    # TODO: 3 other special conditions
 
     self.exp += amount
+    self.cc_level = CcLevel.get_level(exp)
     self.save!
 
-    attributes = {reason: reason,
-                  amount: amount}
+    attributes = {reason: reason, amount: amount, value: exp}
     if ref and ref.respond_to?(:id)
       ref_klass = ref.class
       attributes.merge! \

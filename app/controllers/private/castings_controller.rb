@@ -20,7 +20,7 @@ module Private
             other_balance: other_balance,
             exp: current_user.exp,
             level: current_user.cc_level,
-            exp_to_up: current_user.exp# TODO
+            exp_to_up: CcLevel.to_up(current_user.exp)
         }
         render json: info, status: :ok
       end

@@ -33,6 +33,7 @@ class ExpLog < ActiveRecord::Base
       CC_TOTAL_100K => 430
   }
   DAILY_ACTIONS = [ExpLog::LOGIN, ExpLog::CC, ExpLog::BUY, ExpLog::SELL, ExpLog::TRADE]
+  TOTAL_ACTIONS = [ExpLog::CC_TOTAL_10K, ExpLog::CC_TOTAL_30K, ExpLog::CC_TOTAL_100K]
 
   enumerize :reason, in: REASON_CODES, scope: true
 

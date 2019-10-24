@@ -36,6 +36,7 @@ class Casting < ActiveRecord::Base
   scope :not_done, -> { where.not(aasm_state: :done) }
   scope :done, -> { where(aasm_state: :done) }
   scope :h24, -> { where("created_at > ?", 24.hours.ago) }
+  scope :amount_sum, -> {sum('unit*amount')}
 
   aasm :whiny_transitions => false do
     state :pending, initial: true
@@ -55,9 +56,18 @@ class Casting < ActiveRecord::Base
 
     check!
 
+    # Increase EXP
     member.increase_exp(ExpLog::CC, ref: self)
     member.increase_exp(ExpLog::CC_30, ref: self) if (unit * amount) >= 30.0
     member.referrer.increase_exp(ExpLog::REFEREE_CC, ref: self) unless member.referrer.blank?
+    casting_sum = member.castings.amount_sum
+    if casting_sum > 100_000
+      member.increase_exp(ExpLog::CC_TOTAL_100K)
+    elsif casting_sum > 30_000
+      member.increase_exp(ExpLog::CC_TOTAL_30K)
+    elsif casting_sum > 10_000
+      member.increase_exp(ExpLog::CC_TOTAL_10K)
+    end
   end
 
   def distribute

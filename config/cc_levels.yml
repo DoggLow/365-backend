@@ -1,0 +1,199 @@
+- id: 1
+  key: 'Level 1'
+  exp: 0
+
+- id: 2
+  key: 'Level 2'
+  exp: 80
+
+- id: 3
+  key: 'Level 3'
+  exp: 170
+
+- id: 4
+  key: 'Level 4'
+  exp: 270
+
+- id: 5
+  key: 'Level 5'
+  exp: 380
+
+- id: 6
+  key: 'Level 6'
+  exp: 500
+
+- id: 7
+  key: 'Level 7'
+  exp: 630
+
+- id: 8
+  key: 'Level 8'
+  exp: 770
+
+- id: 9
+  key: 'Level 9'
+  exp: 920
+
+- id: 10
+  key: 'Level 10'
+  exp: 1080
+
+- id: 11
+  key: 'Level 11'
+  exp: 1250
+
+- id: 12
+  key: 'Level 12'
+  exp: 1430
+
+- id: 13
+  key: 'Level 13'
+  exp: 1620
+
+- id: 14
+  key: 'Level 14'
+  exp: 1820
+
+- id: 15
+  key: 'Level 15'
+  exp: 2040
+
+- id: 16
+  key: 'Level 16'
+  exp: 2280
+
+- id: 17
+  key: 'Level 17'
+  exp: 2550
+
+- id: 18
+  key: 'Level 18'
+  exp: 2850
+
+- id: 19
+  key: 'Level 19'
+  exp: 3190
+
+- id: 20
+  key: 'Level 20'
+  exp: 3580
+
+- id: 21
+  key: 'Level 21'
+  exp: 4020
+
+- id: 22
+  key: 'Level 22'
+  exp: 4510
+
+- id: 23
+  key: 'Level 23'
+  exp: 5050
+
+- id: 24
+  key: 'Level 24'
+  exp: 5640
+
+- id: 25
+  key: 'Level 25'
+  exp: 6281
+
+- id: 26
+  key: 'Level 26'
+  exp: 6973
+
+- id: 27
+  key: 'Level 27'
+  exp: 7716
+
+- id: 28
+  key: 'Level 28'
+  exp: 8510
+
+- id: 29
+  key: 'Level 29'
+  exp: 9355
+
+- id: 30
+  key: 'Level 30'
+  exp: 10252
+
+- id: 31
+  key: 'Level 31'
+  exp: 11201
+
+- id: 32
+  key: 'Level 32'
+  exp: 12210
+
+- id: 33
+  key: 'Level 33'
+  exp: 13289
+
+- id: 34
+  key: 'Level 34'
+  exp: 14448
+
+- id: 35
+  key: 'Level 35'
+  exp: 15697
+
+- id: 36
+  key: 'Level 36'
+  exp: 17046
+
+- id: 37
+  key: 'Level 37'
+  exp: 18505
+
+- id: 38
+  key: 'Level 38'
+  exp: 20084
+
+- id: 39
+  key: 'Level 39'
+  exp: 21793
+
+- id: 40
+  key: 'Level 40'
+  exp: 23642
+
+- id: 41
+  key: 'Level 41'
+  exp: 25641
+
+- id: 42
+  key: 'Level 42'
+  exp: 27800
+
+- id: 43
+  key: 'Level 43'
+  exp: 30129
+
+- id: 44
+  key: 'Level 44'
+  exp: 32638
+
+- id: 45
+  key: 'Level 45'
+  exp: 35337
+
+- id: 46
+  key: 'Level 46'
+  exp: 38236
+
+- id: 47
+  key: 'Level 47'
+  exp: 41345
+
+- id: 48
+  key: 'Level 48'
+  exp: 44674
+
+- id: 49
+  key: 'Level 49'
+  exp: 48233
+
+- id: 50
+  key: 'Level 50'
+  exp: 52032
