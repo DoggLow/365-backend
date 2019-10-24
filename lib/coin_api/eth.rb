@@ -1,5 +1,9 @@
 module CoinAPI
   class ETH < BaseAPI
+    class TransactionError < CoinAPI::Error; end
+
+    EARLIEST_BLOCK =  7_733_385 # start block number : 10th, May, 19
+
     def initialize(*)
       super
       @json_rpc_call_id  = 0
@@ -40,20 +44,20 @@ module CoinAPI
     end
 
     def create_withdrawal!(issuer, recipient, amount, options = {})
-      permit_transaction(issuer, recipient)
-
-      txid = json_rpc(
-          :eth_sendTransaction,
-          [{
-               from:  normalize_address(issuer.fetch(:address)),
-               to:    normalize_address(recipient.fetch(:address)),
-               value: '0x' + convert_to_base_unit!(amount).to_s(16),
-               gas:   options.key?(:gas_limit) ? '0x' + options[:gas_limit].to_s(16) : nil
-           }.reject { |_, v| v.nil? }]
-      ).fetch('result')
-      unless valid_txid?(normalize_txid(txid))
-        raise CoinAPI::Error, \
+      retry_count = 3
+      begin
+        permit_transaction(issuer, recipient)
+        txid = send_transaction(issuer, recipient, amount, options)
+      rescue TransactionError
+        if retry_count > 0
+          sleep 0.5
+          retry_count -= 1
+          Rails.logger.info "Retry #{currency.code.upcase} withdrawal! (#{retry_count} retry left) .."
+          retry
+        else
+          raise CoinAPI::Error, \
               "#{currency.code.upcase} withdrawal from #{normalize_address(issuer[:address])} to #{normalize_address(recipient[:address])} failed."
+        end
       end
       normalize_txid(txid)
     end
@@ -131,7 +135,7 @@ module CoinAPI
           'Content-Type' => 'application/json' }
       response.assert_success!
       response = JSON.parse(response.body)
-      response['error'].tap { |error| raise Error, error.inspect if error }
+      response['error'].tap { |error| raise Error, error.inspect if error.present? && (method != :eth_sendTransaction) }
       response
     end
 
@@ -147,7 +151,7 @@ module CoinAPI
       current_block_number = if last_checked
                                last_checked
                              else
-                               earliest_block
+                               EARLIEST_BLOCK
                              end
 
       # current_block_number = 8_612_776 if currency.code == 'usdt'
@@ -198,6 +202,24 @@ module CoinAPI
       json_rpc(:eth_getBlockByNumber, [index, false]).fetch('result')
     end
 
+    def send_transaction(issuer, recipient, amount, options = {})
+      response = json_rpc(
+          :eth_sendTransaction,
+          [{
+               from:  normalize_address(issuer.fetch(:address)),
+               to:    normalize_address(recipient.fetch(:address)),
+               value: '0x' + convert_to_base_unit!(amount).to_s(16),
+               # gasPrice: '0x' + convert_to_base_unit!(gas_price).to_s(16),
+               gas:   options.key?(:gas_limit) ? '0x' + options[:gas_limit].to_s(16) : nil
+           }.reject { |_, v| v.nil? }]
+      )
+      if response['error'] # ERROR
+        raise TransactionError
+      else
+        response.fetch('result')
+      end
+    end
+
     def permit_transaction(issuer, recipient)
       json_rpc(:personal_unlockAccount, [normalize_address(issuer.fetch(:address)), issuer.fetch(:secret), '0x' + 5.to_s(16)]).tap do |response|
         unless response.fetch('result')
@@ -240,10 +262,6 @@ module CoinAPI
       end
     rescue StandardError => e
       0
-    end
-
-    def earliest_block
-      7_733_385 # start blocknumber : 10th, May, 19
     end
   end
 end

@@ -117,7 +117,7 @@ class SessionsController < ApplicationController
   end
 
   def check_member!
-    if current_user.blank? || params[:email].blank? || params[:email] != current_user.email
+    if current_user.blank? || params[:email].present? && (params[:email] != current_user.email)
       render_json(LogInRequired.new)
     end
   end

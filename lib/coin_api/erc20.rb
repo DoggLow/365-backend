@@ -43,32 +43,6 @@ module CoinAPI
       total
     end
 
-    def create_withdrawal!(issuer, recipient, amount, options = {})
-      permit_transaction(issuer, recipient)
-
-      data = abi_encode(
-        'transfer(address,uint256)',
-        normalize_address(recipient.fetch(:address)),
-        '0x' + convert_to_base_unit!(amount).to_s(16)
-      )
-
-      txid = json_rpc(
-        :eth_sendTransaction,
-        [{
-          from: normalize_address(issuer.fetch(:address)),
-          to:    contract_address,
-          data:  data
-        }.reject { |_, v| v.nil? }]
-      ).fetch('result')
-
-      unless valid_txid?(normalize_txid(txid))
-        raise CoinAPI::Error, \
-              "#{currency.code.upcase} withdrawal from #{issuer[:address]} to #{recipient[:address]} failed."
-      end
-
-      normalize_txid(txid)
-    end
-
     def load_deposit!(txid)
       tx = json_rpc(:eth_getTransactionReceipt, [txid]).fetch('result')
       return {} unless tx['status'] == '0x1'
@@ -92,6 +66,27 @@ module CoinAPI
 
     protected
 
+    def send_transaction(issuer, recipient, amount, options = {})
+      data = abi_encode(
+          'transfer(address,uint256)',
+          normalize_address(recipient.fetch(:address)),
+          '0x' + convert_to_base_unit!(amount).to_s(16)
+      )
+      response = json_rpc(
+          :eth_sendTransaction,
+          [{
+               from: normalize_address(issuer.fetch(:address)),
+               to:    contract_address,
+               data:  data
+           }.reject { |_, v| v.nil? }]
+      )
+      if response['error'] # ERROR
+        raise CoinAPI::ETH::TransactionError
+      else
+        response.fetch('result')
+      end
+    end
+
     def collect_deposits(current_block)
       txs = current_block.fetch('transactions')
       txs.map do |tx|
@@ -108,14 +103,13 @@ module CoinAPI
         arguments = input_data[:arguments]
         next if arguments[1].blank?
         {
-          id: normalize_txid(tx.fetch('hash')),
-          confirmations: calculate_confirmations(current_block.fetch('number').hex),
-          received_at:   Time.at(current_block.fetch('timestamp').hex),
-          entries: [{ amount:  convert_from_base_unit(arguments[1].hex),
-                      address: normalize_address('0x' + arguments[0][26..-1]) }]
+            id: normalize_txid(tx.fetch('hash')),
+            confirmations: calculate_confirmations(current_block.fetch('number').hex),
+            received_at:   Time.at(current_block.fetch('timestamp').hex),
+            entries: [{ amount:  convert_from_base_unit(arguments[1].hex),
+                        address: normalize_address('0x' + arguments[0][26..-1]) }]
         }
       end.compact
     end
-
   end
 end
