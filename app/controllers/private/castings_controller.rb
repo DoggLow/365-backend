@@ -10,9 +10,13 @@ module Private
       if currency.blank?
         render json: 'INVALID_PARAMS', status: :bad_request
       else
-        pool = current_user.get_pool(currency)
-        wallet_balance = current_user.get_account(currency).balance
-        cc_balance = pool.castings.sum(:distribution)
+        pool = current_user.fetch_pool(currency)
+        wallet_balance = 0
+        cc_balance = 0
+        if pool.present?
+          wallet_balance = current_user.get_account(currency).balance
+          cc_balance = pool.castings.sum(:distribution)
+        end
         other_balance = pool.balance - cc_balance
         info = {
             wallet_balance: wallet_balance,

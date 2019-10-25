@@ -30,9 +30,13 @@ module Private
       if currency.blank?
         render json: 'INVALID_PARAMS', status: :bad_request
       else
-        pool = current_user.get_pool(currency)
-        data = (pool.castings.done + pool.pool_deposits).sort_by {|t| -t.created_at.to_i }
-        render json: data.map(&:for_pool), status: :ok
+        pool = current_user.fetch_pool(currency)
+        if pool.blank?
+          render json: [], status: :ok
+        else
+          data = (pool.castings.done + pool.pool_deposits).sort_by {|t| -t.created_at.to_i }
+          render json: data.map(&:for_pool), status: :ok
+        end
       end
     end
 

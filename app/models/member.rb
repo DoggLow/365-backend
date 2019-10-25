@@ -332,14 +332,18 @@ class Member < ActiveRecord::Base
   end
 
   def get_pool(currency)
-    pool = pools.with_currency(currency.to_sym).first
+    pool = fetch_pool(currency)
 
     if pool.nil?
       touch_pool(currency)
-      pool = pools.with_currency(currency.to_sym).first
+      pool = fetch_pool(currency)
     end
 
     pool
+  end
+
+  def fetch_pool(currency)
+    pools.with_currency(currency.to_sym).first
   end
 
   def touch_pool(currency)
