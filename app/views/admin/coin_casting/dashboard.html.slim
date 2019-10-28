@@ -6,27 +6,27 @@
       .row style = "text-align: center;"
         .col-lg-4
           h6 style="color:#eb7f2c;height:25px" = "Coin Casting"
-          h5 = "#{@cc_balance} #{'PLD'}"
+          h5 = "#{@cc_balance} PLD"
           = link_to 'CC History', admin_cc_history_path,class:'btn',style: 'background-color:#eb7f2c;color:white;width:70%'
         .col-lg-4
           h6 style="color:#fadb14;height:25px" = "PLD Total Balance"
-          h5 = "#{@wallet_balance} #{'PLD'}"
+          h5 = "#{@wallet_balance} PLD"
           = link_to 'Pool Deposit', '',class:'btn',style: 'background-color:#fadb14;color:white;width:70%'
         .col-lg-4.border
           h6 style="color:#722ed1;height:25px" = "CC Pool PLD Balance"
-          h5 = "#{@other_balance + @cc_balance} #{'PLD'}"
+          h5 = "#{@other_balance + @cc_balance} PLD"
           = link_to 'Casting PLD', '',class:'btn',style: 'background-color:#722ed1;color:white;width:70%'
         .col-lg-4
           h6 style="color:#10239e;height:25px" = "Current Level"
-          h5 = "#{@level} #{'Level'}"
+          h5 = "#{@info[:level]} Level"
           = link_to 'Level', '',class:'btn',style: 'background-color:#10239e;color:white;width:70%'
         .col-lg-4
           h6 style="color:#666;height:25px" = "EXP required for the next level up"
-          h5 = "#{@exp_to_up} #{'EXP'}"
+          h5 = "#{@info[:exp_to_up]} EXP"
           = link_to 'CC Program', admin_cc_accounts_path,class:'btn',style: 'background-color:#666;color:white;width:70%'
         .col-lg-4
           h6 style="color:#13c2c2;height:25px" = "Current EXP"
-          h5 = "#{@exp} #{'EXP'}"
+          h5 = "#{@info[:exp]} EXP"
           = link_to 'EXP History', '',class:'btn',style: 'background-color:#13c2c2;color:white;width:70%'
       .row style = "padding-top: 50px;"
         .col-sm-12

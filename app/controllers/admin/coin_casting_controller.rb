@@ -37,9 +37,6 @@ module Admin
       @wallet_balance = 0
       @cc_balance = 0
       @other_balance = 0
-      @level = member.cc_level
-      @exp = member.exp
-      @exp_to_up = CcLevel.to_up(member.exp)
       if pool.present?
         @wallet_balance = member.get_account(currency).balance
         @cc_balance = pool.castings.sum(:distribution)
