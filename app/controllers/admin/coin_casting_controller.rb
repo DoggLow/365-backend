@@ -12,8 +12,7 @@ module Admin
     end
 
     def pool_history
-      member_id = params[:id]
-      member = Member.enabled.where(id: member_id).first
+      member = Member.enabled.where(id: params[:id]).first
       currency = 'pld'
       @data = []
       pool = member.fetch_pool(currency)
@@ -24,14 +23,12 @@ module Admin
     end
 
     def accounts
-      member_id = params[:id]
-      member = Member.enabled.where(id: member_id).first
+      member = Member.enabled.where(id: params[:id]).first
       @accounts = member.accounts.select { |account| account.currency != 'pld' && account.currency_obj.coin? }
     end
 
     def dashboard
-      member_id = params[:id]
-      member = Member.enabled.where(id: member_id).first
+      member = Member.enabled.where(id: params[:id]).first
       currency = 'pld'
       pool = member.fetch_pool(currency)
       @wallet_balance = 0

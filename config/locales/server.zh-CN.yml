@@ -1596,6 +1596,12 @@ zh-CN:
     documents:
       index:
         new: 新建文档
+    coin_casting:
+      cc_charge: CC charge
+      cc_distribution: CC Catch
+      cc_lock: CC Convert
+      cc_move_pool: CC Move To Pool
+      cc_unlock: CC Cast
     affiliations:
       index:
         submitted: 受理中联营
