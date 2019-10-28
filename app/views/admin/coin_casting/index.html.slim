@@ -5,10 +5,10 @@
     .panel-body
       = table_for(@members, class: 'table table-condensed table-hover') do |t|
         - t.column :id, class: 'col-xs-1'
-        - t.column :email, class: 'col-xs-1' do |x|
-          = link_to x.email ,admin_member_path(x)
+        - t.column :email, class: 'col-xs-2' do |x|
+          code.text-info = link_to x.email ,admin_member_path(x)
         - t.column 'Name', class: 'col-xs-1' do |x|
-          code.text-info = x.name
+          = x.name
         - t.column 'Home', class: 'col-xs-1' do |x|
           = link_to 'Home',admin_cc_dashboard_path(x)
         - t.column 'Balance', class: 'col-xs-1' do |x|
@@ -16,5 +16,5 @@
         - t.column 'Pool History', class: 'col-xs-1' do |x|
           = link_to 'Pool History',admin_pool_history_path(x)
         - t.column 'CC PLD History', class: 'col-xs-1' do |x|
-          = link_to 'CC PLD History', admin_cc_history_path(x)
+          = link_to 'CC History', admin_cc_history_path(x)
       = paginate @members

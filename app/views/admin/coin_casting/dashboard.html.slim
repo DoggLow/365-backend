@@ -6,28 +6,28 @@
       .row style = "text-align: center;"
         .col-lg-4
           h6 style="color:#eb7f2c;height:25px" = "Coin Casting"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#eb7f2c;color:white'
+          h5 = "#{@cc_balance} #{'PLD'}"
+          = link_to 'CC History', admin_cc_history_path,class:'btn',style: 'background-color:#eb7f2c;color:white;width:70%'
         .col-lg-4
           h6 style="color:#fadb14;height:25px" = "PLD Total Balance"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#fadb14;color:white'
+          h5 = "#{@wallet_balance} #{'PLD'}"
+          = link_to 'Pool Deposit', '',class:'btn',style: 'background-color:#fadb14;color:white;width:70%'
         .col-lg-4.border
           h6 style="color:#722ed1;height:25px" = "CC Pool PLD Balance"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#722ed1;color:white'
+          h5 = "#{@other_balance + @cc_balance} #{'PLD'}"
+          = link_to 'Casting PLD', '',class:'btn',style: 'background-color:#722ed1;color:white;width:70%'
         .col-lg-4
           h6 style="color:#10239e;height:25px" = "Current Level"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#10239e;color:white'
+          h5 = "#{@level} #{'Level'}"
+          = link_to 'Level', '',class:'btn',style: 'background-color:#10239e;color:white;width:70%'
         .col-lg-4
           h6 style="color:#666;height:25px" = "EXP required for the next level up"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#666;color:white'
+          h5 = "#{@exp_to_up} #{'EXP'}"
+          = link_to 'CC Program', admin_cc_accounts_path,class:'btn',style: 'background-color:#666;color:white;width:70%'
         .col-lg-4
           h6 style="color:#13c2c2;height:25px" = "Current EXP"
-          = "#{@wallet_balance} #{'USD'}"
-          = link_to 'Coin Casting', admin_cc_dashboard_path,class:'btn',style: 'background-color:#13c2c2;color:white'
+          h5 = "#{@exp} #{'EXP'}"
+          = link_to 'EXP History', '',class:'btn',style: 'background-color:#13c2c2;color:white;width:70%'
       .row style = "padding-top: 50px;"
         .col-sm-12
           h1 style = "text-align: center;" = 'Company Total PLD'
