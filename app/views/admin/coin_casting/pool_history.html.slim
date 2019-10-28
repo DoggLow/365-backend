@@ -7,7 +7,7 @@
         - t.column 'Date', class: 'col-xs-3' do |x|
           = x.created_at
         - t.column 'Details', class: 'col-xs-2' do |x|
-          = x.class.name
+          code.text-info = x.class.name
         - t.column 'Asset Coin', class: 'col-xs-2' do |x|
           = x.currency.upcase
         - t.column 'Amount', class: 'col-xs-2' do |x|
@@ -22,11 +22,11 @@
             = x.fee
         - t.column 'PLD', class: 'col-xs-2' do |x|
           - if x.class.name == 'Casting'
-            = x.distribution
+            code.text-info = x.distribution
           - else
-            = x.remained
+            code.text-info = x.remained
         - t.column 'Last Day', class: 'col-xs-3' do |x|
           = ''
         - t.column 'Withdrawal', class: 'col-xs-2' do |x|
-          = button_to 'Withdrawal', '', class: 'btn', style: 'background-color:#eb7f2c;color:white' , :method => :get
+          = button_to 'Withdrawal', '', class: 'btn', style: 'background-color:#eb7f2c;color:white', :method => :get
       = paginate @data
