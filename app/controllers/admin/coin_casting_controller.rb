@@ -13,10 +13,10 @@ module Admin
 
     def pool_history
       member_id = params[:id]
-      user ||= Member.current = Member.enabled.where(id: member_id).first
+      member = Member.enabled.where(id: member_id).first
       currency = 'pld'
       @data = []
-      pool = user.fetch_pool(currency)
+      pool = member.fetch_pool(currency)
       if pool.present?
         @data = (pool.castings.done + pool.pool_deposits).sort_by { |t| -t.created_at.to_i }
       end
@@ -25,37 +25,34 @@ module Admin
 
     def accounts
       member_id = params[:id]
-      user ||= Member.current = Member.enabled.where(id: member_id).first
-      @accounts = user.accounts.select { |account| account.currency != 'pld' && account.currency_obj.coin? }
+      member = Member.enabled.where(id: member_id).first
+      @accounts = member.accounts.select { |account| account.currency != 'pld' && account.currency_obj.coin? }
     end
 
     def dashboard
       member_id = params[:id]
-      user ||= Member.current = Member.enabled.where(id: member_id).first
+      member = Member.enabled.where(id: member_id).first
       currency = 'pld'
-      pool = user.fetch_pool(currency)
+      pool = member.fetch_pool(currency)
       @wallet_balance = 0
       @cc_balance = 0
       @other_balance = 0
-      @level = 0
-      @exp = 0
-      @exp_to_up = 0
+      @level = member.cc_level
+      @exp = member.exp
+      @exp_to_up = CcLevel.to_up(member.exp)
       if pool.present?
-        @wallet_balance = user.get_account(currency).balance
+        @wallet_balance = member.get_account(currency).balance
         @cc_balance = pool.castings.sum(:distribution)
         @other_balance = pool.balance - @cc_balance
-        @level = user.cc_level
-        @exp = user.exp
-        @exp_to_up = CcLevel.to_up(user.exp)
       end
 
       @info = {
           wallet_balance: @wallet_balance,
           cc_balance: @cc_balance,
           other_balance: @other_balance,
-          exp: user.exp,
-          level: user.cc_level,
-          exp_to_up: CcLevel.to_up(user.exp)
+          exp: member.exp,
+          level: member.cc_level,
+          exp_to_up: CcLevel.to_up(member.exp)
       }
     end
   end

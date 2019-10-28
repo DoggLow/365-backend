@@ -7,7 +7,7 @@
         - t.column 'Date', class: 'col-xs-2' do |x|
           = x.created_at
         - t.column 'Asset Coin', class: 'col-xs-2' do |x|
-          code.text-info = x.reason
+          code.text-info = t('admin.coin_casting.' + x.reason)
         - t.column :currency, class: 'col-xs-1' do |x|
           = x.currency.upcase
         - t.column :balance, class: 'col-xs-1' do |x|

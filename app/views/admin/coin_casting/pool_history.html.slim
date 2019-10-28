@@ -28,5 +28,5 @@
         - t.column 'Last Day', class: 'col-xs-3' do |x|
           = ''
         - t.column 'Withdrawal', class: 'col-xs-2' do |x|
-          = link_to 'Withdrawal', '', class: 'btn btn-green button'
+          = button_to 'Withdrawal', '', class: 'btn', style: 'background-color:#eb7f2c;color:white' , :method => :get
       = paginate @data
