@@ -1530,6 +1530,12 @@ en:
     documents:
       index:
         new: New Document
+    coin_casting:
+      cc_charge: CC charge
+      cc_distribution: CC Catch
+      cc_lock: CC Convert
+      cc_move_pool: CC Move To Pool
+      cc_unlock: CC Cast
     affiliations:
       index:
         submitted: Submitted affiliations

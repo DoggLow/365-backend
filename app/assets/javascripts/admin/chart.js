@@ -20,9 +20,11 @@ am4core.ready(function() {
         chartEl = document.getElementById(id);
         chartData = chartEl.getAttribute("data-tree");
         flatData = JSON.parse(chartData);
-        data[0].amount = flatData.wallet_balance
-        data[1].amount = flatData.cc_balance
-        data[2].amount = flatData.other_balance
+        if (flatData.wallet_balance !== 0 || flatData.cc_balance !== 0){
+            data[0].amount = flatData.wallet_balance
+            data[1].amount = flatData.cc_balance
+            data[2].amount = flatData.other_balance
+        }
 
         var container = am4core.create(id, am4core.Container);
         container.width = am4core.percent(100);
