@@ -16,7 +16,7 @@ module Private
         other_balance = 0
         if pool.present?
           wallet_balance = current_user.get_account(currency).balance
-          cc_balance = pool.castings.sum(:distribution)
+          cc_balance = pool.castings.done.sum(:distribution)
           other_balance = pool.balance - cc_balance
         end
         info = {

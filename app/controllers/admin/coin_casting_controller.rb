@@ -36,7 +36,7 @@ module Admin
       @other_balance = 0
       if pool.present?
         @wallet_balance = member.get_account(currency).balance
-        @cc_balance = pool.castings.sum(:distribution)
+        @cc_balance = pool.castings.done.sum(:distribution)
         @other_balance = pool.balance - @cc_balance
       end
 
