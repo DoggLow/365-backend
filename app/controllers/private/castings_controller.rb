@@ -42,7 +42,7 @@ module Private
     end
 
     def history
-      history = AccountVersion.where(modifiable_type: Casting.name, member_id: current_user.id).map(&:for_cc)
+      history = AccountVersion.where(modifiable_type: Casting.name, member_id: current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
       render json: history, status: :ok
     end
 

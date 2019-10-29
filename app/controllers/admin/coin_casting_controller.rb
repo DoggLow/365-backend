@@ -7,7 +7,7 @@ module Admin
     end
 
     def cc_history
-      @data = AccountVersion.where(modifiable_type: Casting.name, member_id: params[:id])
+      @data = AccountVersion.where(modifiable_type: Casting.name, member_id: params[:id]).sort_by {|t| -t.created_at.to_i }
       @data = Kaminari.paginate_array(@data).page(params[:page]).per(20)
     end
 
