@@ -331,7 +331,7 @@ class Member < ActiveRecord::Base
     [fee, 0]
   end
 
-  def get_pool(currency)
+  def get_pool(currency = 'pld')
     pool = fetch_pool(currency)
 
     if pool.nil?
@@ -342,7 +342,7 @@ class Member < ActiveRecord::Base
     pool
   end
 
-  def fetch_pool(currency)
+  def fetch_pool(currency = 'pld')
     pools.with_currency(currency.to_sym).first
   end
 

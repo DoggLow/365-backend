@@ -11,6 +11,7 @@ class Pool < ActiveRecord::Base
   has_many :castings
   has_many :pool_deposits
 
+  scope :active, -> {where("balance > ?", 0)}
   scope :balance_sum, -> (currency) {with_currency(currency).sum(:balance)}
 
   before_validation :set_account

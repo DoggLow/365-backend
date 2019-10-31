@@ -35,8 +35,11 @@ class Casting < ActiveRecord::Base
   scope :pending_or_processing, -> { where('aasm_state = ? OR aasm_state = ?', :processing, :pending) }
   scope :not_done, -> { where.not(aasm_state: :done) }
   scope :done, -> { where(aasm_state: :done) }
+  scope :active, -> { done.where("distribution > ?", 0) }
   scope :h24, -> { where("created_at > ?", 24.hours.ago) }
+  scope :on, -> (date){ where("created_at between ? and ?", date.beginning_of_day, date.end_of_day) }
   scope :amount_sum, -> {sum('unit*amount')}
+  scope :distribution_sum, -> {sum(:org_distribution)}
 
   aasm :whiny_transitions => false do
     state :pending, initial: true

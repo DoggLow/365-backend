@@ -53,7 +53,9 @@ class PoolDeposit < ActiveRecord::Base
   end
 
   def validate_data
-    if hold_account.blank?
+    if member.castings.blank? || member.castings.active.present?
+      errors.add 'castings', 'empty'
+    elsif hold_account.blank?
       errors.add 'account', 'invalid'
     else
       balance = hold_account.balance
