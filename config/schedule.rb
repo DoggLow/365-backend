@@ -40,6 +40,7 @@ end
 
 every 2.hours do
   rake 'coin:cache_txs'
+  command 'cd /home/deploy/exchange && /home/deploy/exchange/restart.sh'
 end
 
 every '0 2 1 * *' do
