@@ -86,6 +86,20 @@ class Global
       end
       price
     end
+
+    def pool_sum(pool_type, coin = 'pld')
+      Rails.cache.fetch("exchange:pool:#{pool_type}:sum", expires_in: 30.seconds) do
+        pools = Pool.active.includes(:member)
+        if pool_type == 1
+          pools.balance_sum(coin)
+        else
+          l_limit = pool_type * 10
+          u_limit = (pool_type + 1) * 10
+          pools = pools.select { |pool| (pool.member.cc_level >= l_limit) && (pool.member.cc_level < u_limit) }
+          pools.blank? ? ZERO : pools.inject(0){|sum, p| sum + p.balance }
+        end
+      end
+    end
   end
 
   def initialize(currency)

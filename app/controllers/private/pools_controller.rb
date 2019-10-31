@@ -3,6 +3,11 @@ module Private
     layout false
 
     def info
+      info = {
+          total: Global.pool_sum(1),
+          pools: current_user.all_pool_share
+      }
+      render json: info, status: :ok
     end
 
     def deposit

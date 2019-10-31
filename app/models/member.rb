@@ -350,6 +350,25 @@ class Member < ActiveRecord::Base
     self.pools.create(currency: currency, balance: 0.0)
   end
 
+  def pool_share(pool_type)
+    return 0.0 unless castings.active.present?
+
+    pool = fetch_pool
+    if (cc_level / 10 >= pool_type) && pool.present?
+      pool_sum = Global.pool_sum(pool_type)
+      return pool.balance / pool_sum unless pool_sum == Global::ZERO
+    end
+    Global::ZERO
+  end
+
+  def all_pool_share
+    pool_info = []
+    (1..4).each do |pool_type|
+      pool_info << {sum: Global.pool_sum(pool_type), share: pool_share(pool_type) }
+    end
+    pool_info
+  end
+
   def fee_account
     get_account(level_obj.holding['currency'])
   end
