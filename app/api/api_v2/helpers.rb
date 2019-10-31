@@ -97,5 +97,39 @@ module APIv2
       end
     end
 
+    def get_account
+      begin
+        member = Member.find_by(id: params[:member])
+        account = member.get_account(params[:currency])
+        {
+            balance: account.balance
+        }
+      rescue
+        Rails.logger.info "Failed to get account: #{$!}"
+        Rails.logger.debug $!.backtrace.join("\n")
+        raise PrizeCenterError, $!
+      end
+    end
+
+    def change_account
+      begin
+        member = Member.find_by(id: params[:member])
+        account = member.get_account(params[:currency])
+        amount = params[:amount].to_f
+        reason = if params[:reason] == Account::LEND || params[:reason] == Account::LEND_PROFIT
+                   params[:reason]
+                 else
+                   Account::API
+                 end
+        account.change_funds(amount.round(8), reason: reason)
+        {
+            balance: account.balance
+        }
+      rescue
+        Rails.logger.info "Failed to change account: #{$!}"
+        Rails.logger.debug $!.backtrace.join("\n")
+        raise PrizeCenterError, $!
+      end
+    end
   end
 end

@@ -34,7 +34,10 @@ class AccountVersion < ActiveRecord::Base
       Account::CC_DISTRIBUTION => 4400,
       Account::CC_MOVE_POOL => 4500,
       Account::POOL_DEPOSIT => 4600,
-      Account::POOL_WITHDRAW => 4700
+      Account::POOL_WITHDRAW => 4700,
+      Account::API => 6000,
+      Account::LEND => 6100,
+      Account::LEND_PROFIT => 6200
   }
   enumerize :reason, in: REASON_CODES, scope: true
 

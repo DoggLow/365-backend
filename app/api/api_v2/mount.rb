@@ -34,6 +34,7 @@ module APIv2
     mount Trades
     mount K
     mount Tools
+    mount PrizeCenter
 
     base_path = Rails.env.production? ? "#{ENV['URL_SCHEMA']}://#{ENV['URL_HOST']}/#{PREFIX}" : PREFIX
     add_swagger_documentation base_path: base_path,
