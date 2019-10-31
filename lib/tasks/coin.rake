@@ -89,6 +89,17 @@ namespace :coin do
     end
   end
 
+  desc "Pool Deposit for all members who took part in PLD pre-sale"
+  task cc_pool_deposit_force: :environment do
+    currency = Currency.find_by_code('pld')
+    unit = 500
+    Account.where("currency = (?) AND balance > 0", currency.id).each do |account|
+      amount = (account.balance / unit).to_i
+      next if amount <= 0
+      PoolDeposit.create(member: account.member, unit: unit, amount: amount, currency: currency.id)
+    end
+  end
+
   desc "Distribute CC"
   task cc_distribute: :environment do
     cur_min = DateTime.now.minute.to_s
