@@ -109,4 +109,15 @@ class AccountVersion < ActiveRecord::Base
         fee: fee
     }
   end
+
+  def for_commissions
+    {
+        id: id,
+        at: created_at.to_i,
+        reason: reason,
+        currency: currency,
+        amount: balance,
+        fee: fee
+    }
+  end
 end

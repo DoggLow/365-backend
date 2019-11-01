@@ -50,6 +50,11 @@ module Private
       render json: current_user.exp_logs.map(&:for_api), status: :ok
     end
 
+    def commissions
+      commissions = AccountVersion.where(reason: 4800, member_id: current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_commissions)
+      render json: commissions, status: :ok
+    end
+
     private
 
     def casting_params
