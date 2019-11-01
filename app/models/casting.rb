@@ -18,6 +18,7 @@ class Casting < ActiveRecord::Base
   DONE = 'done'
   POOL_SYMBOL = 'pld'
   CC_FEE = 0.05
+  REFERRAL_RATE = 0.01
 
   validates_presence_of :unit, :amount, :currency, :paid_amount, :market_id
   validates_numericality_of :unit, :amount, :paid_amount, :paid_fee, :ask_org_locked, :bid_org_locked, :org_distribution, greater_than: 0.0
@@ -99,6 +100,9 @@ class Casting < ActiveRecord::Base
     bid_allocation = Global.estimate('usdt', bid, org_allocation / 2.0).round(8)
     ask_account.lock!.plus_funds ask_allocation, reason: Account::CC_ALLOCATION, ref: self
     bid_account.lock!.plus_funds bid_allocation, reason: Account::CC_ALLOCATION, ref: self
+
+    create_and_calculate_referral(ask, ask_allocation)
+    create_and_calculate_referral(bid, bid_allocation)
   end
 
   def move_from_pool(amount, ref)
@@ -174,6 +178,18 @@ class Casting < ActiveRecord::Base
         errors.add 'balance', 'insufficient'
       end
     end
+  end
+
+  def create_and_calculate_referral(coin, value)
+    referral = Referral.create(
+        member: member,
+        currency: coin,
+        amount: value,
+        modifiable_id: self.id,
+        modifiable_type: Casting.name,
+        state: Referral::PENDING
+    )
+    referral.calculate_from_cc_allocation(value * REFERRAL_RATE, self)
   end
 
   def expect_account

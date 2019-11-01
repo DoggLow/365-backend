@@ -513,6 +513,9 @@ class Member < ActiveRecord::Base
           next unless currency.code == 'tsfp' || currency.code == 'pldp'
           reward += referrals.paid_sum(currency.code, Purchase.name)
 
+          # Casting allocation referrals
+          reward += referrals.paid_sum(currency.code, Casting.name)
+
           rewards[currency.code.upcase] = reward
         end
       end
@@ -578,6 +581,9 @@ class Member < ActiveRecord::Base
         next unless tier == 1
         next unless currency.code == 'tsfp' || currency.code == 'pldp'
         rewards += referee.referrals.paid_sum(currency.code, Purchase.name)
+
+        # Casting allocation referrals
+        rewards += referee.referrals.paid_sum(currency.code, Casting.name)
       end
 
       next unless rewards > 0
@@ -639,6 +645,9 @@ class Member < ActiveRecord::Base
           next unless tier == 1
           next unless currency.code == 'tsfp' || currency.code == 'pldp'
           reward += referrals.paid_sum(currency.code, Purchase.name)
+
+          # Casting allocation referrals
+          reward += referrals.paid_sum(currency.code, Casting.name)
 
           rewards[currency.code.upcase] = reward
         end

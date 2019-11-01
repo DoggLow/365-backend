@@ -49,6 +49,25 @@ class Referral < ActiveRecord::Base
     PurchaseMailer.affiliate(self, ref).deliver
   end
 
+  def calculate_from_cc_allocation(commission, ref)
+    return unless state == Referral::PENDING
+    return unless modifiable_type == Casting.name
+
+    total = 0.0
+    member.referrer_ids.each do |referrer_id|
+      begin
+        referrer_account = Account.find_by(currency: currency_obj.id, member_id: referrer_id)
+        referrer_account.lock!.plus_funds commission, reason: Account::REFERRAL, ref: ref
+        total += commission
+      rescue => e
+        Rails.logger.fatal e.inspect
+        next
+      end
+    end
+
+    self.update!(total: total, state: Referral::PAID)
+  end
+
   def as_json
     {
         id: id,
