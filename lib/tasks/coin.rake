@@ -131,6 +131,7 @@ namespace :coin do
         sum += share_obj[:share] * sales_pools[share_obj[:pool] - 1]
       end
       # puts "Member: #{pool.member}, #{Casting::POOL_SYMBOL} allocation: #{sum}"
+      next unless sum > 0.0
 
       # TODO: Need to update when add new casting bot
       casting = pool.castings.active.first
