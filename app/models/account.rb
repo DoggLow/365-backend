@@ -31,6 +31,7 @@ class Account < ActiveRecord::Base
   CC_MOVE_POOL = :cc_move_pool
   POOL_DEPOSIT = :pool_deposit
   POOL_WITHDRAW = :pool_withdraw
+  CC_ALLOCATION = :cc_allocation
   ZERO = 0.to_d
 
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5, :plus_locked => 10}

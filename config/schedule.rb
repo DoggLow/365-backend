@@ -32,6 +32,7 @@ end
 
 every 1.day, :at => '0:00 am' do
   rake 'member:cal_level'
+  rake 'coin:cc_allocate'
 end
 
 every 20.minutes do

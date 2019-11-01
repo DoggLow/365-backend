@@ -109,6 +109,35 @@ namespace :coin do
     end
   end
 
+  desc "Allocate CC"
+  task cc_allocate: :environment do
+    # Calculate daily sales
+    sales_sum = 0.0
+    (6.days.ago.to_date .. Date.today).each do |date|
+      castings = Casting.done.on(date)
+      if castings.present?
+        sales_sum += castings.distribution_sum / castings.length
+      end
+    end
+    next unless sales_sum > 0.0
+
+    sales_sum = sales_sum * 0.3 / 5 # 30%, 5 days
+    sales_pools = [sales_sum * 0.3, sales_sum * 0.18, sales_sum * 0.09, sales_sum * 0.03]
+
+    # Calculate allocations
+    Pool.active.includes(:member).each do |pool|
+      sum = 0
+      pool.member.all_pool_share.each do |share_obj|
+        sum += share_obj[:share] * sales_pools[share_obj[:pool] - 1]
+      end
+      # puts "Member: #{pool.member}, #{Casting::POOL_SYMBOL} allocation: #{sum}"
+
+      # TODO: Need to update when add new casting bot
+      casting = pool.castings.active.first
+      casting.allocate(sum)
+    end
+  end
+
   desc "Claim neo gas and divide into per member."
   task claim_neo_gas: :environment do
     total = Account.locked_sum('neo') + Account.balance_sum('neo')

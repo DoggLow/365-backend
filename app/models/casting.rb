@@ -93,6 +93,14 @@ class Casting < ActiveRecord::Base
     check!
   end
 
+  def allocate(alloc_amount)
+    org_allocation = (alloc_amount * Price.get_rate(POOL_SYMBOL, 'USD')).round(8) # USD amount
+    ask_allocation = Global.estimate('usdt', ask, org_allocation / 2.0).round(8)
+    bid_allocation = Global.estimate('usdt', bid, org_allocation / 2.0).round(8)
+    ask_account.lock!.plus_funds ask_allocation, reason: Account::CC_ALLOCATION, ref: self
+    bid_account.lock!.plus_funds bid_allocation, reason: Account::CC_ALLOCATION, ref: self
+  end
+
   def move_from_pool(amount, ref)
     self.distribution -= amount
     self.save!
