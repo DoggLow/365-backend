@@ -364,7 +364,7 @@ class Member < ActiveRecord::Base
   def all_pool_share
     pool_info = []
     (1..4).each do |pool_type|
-      pool_info << {sum: Global.pool_sum(pool_type), share: pool_share(pool_type) }
+      pool_info << {pool: pool_type, sum: Global.pool_sum(pool_type), share: pool_share(pool_type) }
     end
     pool_info
   end
