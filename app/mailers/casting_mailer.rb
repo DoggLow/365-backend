@@ -1,0 +1,30 @@
+class CastingMailer < BaseMailer
+
+  def bet_accepted(bet)
+    @bet = bet
+    @date = @bet.date
+    mail to: @bet.member.email
+  end
+
+  def bet_succeed(bet)
+    @bet = bet
+    @date = @bet.date
+    mail to: @bet.member.email
+  end
+
+  def bet_failed(bet)
+    @bet = bet
+    @date = @bet.date
+    mail to: @bet.member.email
+  end
+
+  def coin_casting_submitted(casting)
+    mail to: casting.member.email
+  end
+
+  def pool_deposit_completed(pool_deposit)
+    @date = pool_deposit.created_at.to_i
+    @amount = pool_deposit.org_total + pool_deposit.fee
+    mail to: pool_deposit.member.email
+  end
+end
