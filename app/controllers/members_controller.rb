@@ -1,11 +1,12 @@
 class MembersController < ApplicationController
   layout false
 
-    skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
   before_filter :auth_member!
 
   def show
     data = {
+        id: current_user.id,
         email: current_user.email,
         activation_status: current_user.activated?,
         verification_status: current_user.id_document_verified?,
