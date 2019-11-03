@@ -235,6 +235,7 @@ module CoinAPI
     end
 
     def abi_explode(data)
+      return nil if data[8..-1].blank?
       data = data.gsub(/\A0x/, '')
       { method:    '0x' + data[0...8],
         arguments: data[8..-1].chars.in_groups_of(64, false).map { |group| '0x' + group.join } }

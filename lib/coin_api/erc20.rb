@@ -98,6 +98,7 @@ module CoinAPI
         next if tx['input'].blank? || tx['input'].hex <= 0
 
         input_data = abi_explode(tx['input'])
+        next if input_data.nil?
         next unless input_data[:method] == '0xa9059cbb' # ERC20 transfer
 
         arguments = input_data[:arguments]
