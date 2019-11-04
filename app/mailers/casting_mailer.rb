@@ -23,8 +23,9 @@ class CastingMailer < BaseMailer
   end
 
   def pool_deposit_completed(pool_deposit)
-    @date = pool_deposit.created_at.to_i
-    @amount = pool_deposit.org_total + pool_deposit.fee
+    @time = pool_deposit.created_at
+    @amount = pool_deposit.org_total
+    @fee = pool_deposit.fee
     mail to: pool_deposit.member.email
   end
 end

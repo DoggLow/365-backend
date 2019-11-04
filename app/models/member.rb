@@ -737,6 +737,8 @@ class Member < ActiveRecord::Base
           modifiable_type: ref_klass.respond_to?(:base_class) ? ref_klass.base_class.name : ref_klass.name
     end
     exp_logs.create!(attributes)
+
+    ExpMailer.increase(self, reason, amount).deliver
   end
 
   def sanitize

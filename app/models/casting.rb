@@ -60,6 +60,9 @@ class Casting < ActiveRecord::Base
 
     check!
 
+    # Mailer
+    CastingMailer.coin_casting_submitted(self).deliver
+
     # Increase EXP
     member.increase_exp(ExpLog::CC, ref: self)
     member.increase_exp(ExpLog::CC_30, ref: self) if (unit * amount) >= 30.0

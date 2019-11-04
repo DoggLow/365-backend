@@ -21,6 +21,8 @@ class PoolDeposit < ActiveRecord::Base
   def strike
     hold_account.lock!.sub_funds self.org_total + self.fee, fee: self.fee, reason: Account::POOL_DEPOSIT, ref: self
     pool.lock!.deposit_funds(org_total)
+
+    CastingMailer.pool_deposit_completed(self).deliver
   end
 
   def move_from_pool(amount, ref)

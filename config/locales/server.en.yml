@@ -1756,7 +1756,7 @@ en:
   casting_mailer:
     bet_accepted:
       subject: "[365 Exchange] Even Odd Bit your challenge"
-      desc1: 'We are accepted your challenge.'
+      desc1: 'We accepted your challenge.'
       desc2: 'You can see the result every day at 1:00 am (GMT ± 0).'
       desc3: 'Glory for your challenge for the future.'
       desc4: 'We are playing.'
@@ -1781,40 +1781,41 @@ en:
       desc5: 'We wish you good luck.'
       date: 'Date and time of occurrence: %{date}'
     coin_casting_submitted:
-      subject: "[365 Exchange] Notice of participation in coin casting"
-      desc1: 'Thank you for participating in Coin Casting.'
-      desc2: 'Your Coin Casting has started.'
-      desc3: 'PLD is caught every hour.'
-      desc4: 'After 24 hours, you will be automatically moved to the Coin Casting pool.'
-      desc5: 'Casting machine catches Coin according to the number of PLDs in the pool.'
-      desc6: 'Catched coins are sent to your account once a day.'
-      desc7: 'Casting is repeated for 180 days.'
-      desc8: 'You should increase the number of PLDs'
-      desc9: 'Four pools are prepared.'
-      desc10: 'You can participate in other pools by accumulating EXP and leveling up.'
-      desc11: 'You can get EXP by various actions prepared by 365 exchange.'
-      desc12: 'Please read the instructions for details.'
-      desc13: 'Please enjoy coin casting from 24 hours onwards.'
-      luck: 'Good luck to you！'
+      subject: "[365 Exchange] You have taken part in Coin Casting"
+      desc1: Thank you for taking part in Coin Casting.
+      desc2: Your coin casting has started.
+      desc3: PLD is caught every hour.
+      desc4: After 24 hours, your coins will be moved to the Coin Casting pool.
+      desc5: Casting machine catches coins according to the number of PLD in the pool.
+      desc6: Caught coins are sent to your account once a day.
+      desc7: Casting is repeated for 180 days.
+      desc8: You should increase the number of PLD in the pools.
+      desc9: Four pools are prepared.
+      desc10: You can take part in other pools by accumulating EXP and leveling up.
+      desc11: You can get EXP by various actions prepared by 365 exchange.
+      desc12: Please read the instructions for details.
+      desc13: Please enjoy coin casting from 24 hours onwards.
+      luck: Good luck to you!
     pool_deposit_completed:
-      subject: "[365 Exchange] Pool Deposition complete"
-      desc1: 'Deposit your PLD into the pool.'
-      desc2: 'Please log in for details'
-      amount: 'PLD Deposit: %{amount} PLD'
-      date: 'Date and time of occurrence: %{date}'
+      subject: "[365 Exchange] Pool Deposit completed"
+      desc1: Deposit your PLD into the pool.
+      desc2: Please log in for details.
+      amount: 'Pool Deposit Amount: %{amount} PLD'
+      fee: 'Pool Deposit fee: %{fee} PLD'
+      time: "Time: %{time}"
   deposit_mailer:
     accepted:
       subject: "[365 Exchange] Your deposit has been credited into your account"
       content: Your %{currency} deposit has been credited into your account.
   exp_mailer:
     increase:
-      subject: "[365 Exchange] CC　You got experience points"
-      desc1: 'Congratulations'
-      desc2: 'You got experience points.'
-      desc3: 'Aim to level up by earning more EXP!!'
-      desc4: 'Check your level after you log into the site.'
-      time: 'Date and time of occurrence: %{date}'
-      amount: 'Get EXP: %{amount} PLD'
+      subject: "[365 Exchange] You have gotten experience points"
+      desc1: Congratulations!
+      desc2: You have gotten experience points.
+      desc3: Aim to level up by earning more EXP!!
+      desc4: Check your level after logging in the exchange.
+      time: "Time: %{time}"
+      amount: "Get EXP: %{amount} EXP"
   member_mailer:
     notify_signin:
       subject: "[365 Exchange] You have just signed in"
