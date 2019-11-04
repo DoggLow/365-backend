@@ -102,6 +102,7 @@ module APIv2
         member = Member.find_by(id: params[:member])
         account = member.get_account(params[:currency])
         {
+            member: member.email,
             balance: account.balance
         }
       rescue
