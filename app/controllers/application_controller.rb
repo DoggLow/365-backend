@@ -122,6 +122,26 @@ class ApplicationController < ActionController::Base
     Rails.cache.delete failed_two_factor_auth_key
   end
 
+  def login_2fa_failed_locked?
+    failed_login_2fa > 10
+  end
+
+  def failed_login_2fa
+    Rails.cache.read(failed_login_2fa_key) || 0
+  end
+
+  def failed_login_2fa_key
+    "exchange:session:#{request.ip}:failed_login_2fa"
+  end
+
+  def increase_login_2fa_failed
+    Rails.cache.write(failed_login_2fa_key, failed_login_2fa + 1, expires_in: 1.month)
+  end
+
+  def clear_login_2fa_failed
+    Rails.cache.delete failed_login_2fa_key
+  end
+
   def set_timezone
     Time.zone = ENV['TIMEZONE'] if ENV['TIMEZONE']
   end

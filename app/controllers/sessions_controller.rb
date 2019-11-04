@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
 
   def index
     if current_user
-      if current_user.app_two_factor.activated? && two_factor_locked?
+      if current_user.app_two_factor.activated? && login_2fa_locked?
         render_json(TFARequired.new)
       else
         render_json(SignInSuccess.new)
@@ -66,10 +66,10 @@ class SessionsController < ApplicationController
   def google_auth_verify
     if two_factor_failed_locked?
       clear_current_user_session
-      clear_two_factor_auth_failed
+      clear_login_2fa_failed
       render_json(LogInRequired.new)
-    elsif google_auth_verified?
-      unlock_two_factor!
+    elsif login_2fa_verified?
+      unlock_login_2fa!
       login_success(current_user)
     else
       render_json(TFAError.new(t('two_factors.update.alert')))
@@ -122,14 +122,14 @@ class SessionsController < ApplicationController
     end
   end
 
-  def google_auth_verified?
+  def login_2fa_verified?
     google_auth = current_user.app_two_factor
     google_auth.assign_attributes params.require(:google_auth).permit(:otp)
     if google_auth.verify?
-      clear_two_factor_auth_failed
+      clear_login_2fa_failed
       true
     else
-      increase_two_factor_auth_failed
+      increase_login_2fa_failed
       false
     end
   end

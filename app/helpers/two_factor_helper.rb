@@ -24,4 +24,19 @@ module TwoFactorHelper
     locked or expired
   end
 
+  def unlock_login_2fa!
+    session[:login_2fa_unlock] = true
+    session[:login_2fa_unlock_at] = Time.now
+  end
+
+  def login_2fa_locked?
+    locked  = !session[:login_2fa_unlock]
+    expired = session[:login_2fa_unlock_at].nil? ? true : session[:login_2fa_unlock_at] < ENV['SESSION_EXPIRE'].to_i.minutes.ago
+
+    if !locked and !expired
+      session[:login_2fa_unlock_at] = Time.now
+    end
+
+    locked or expired
+  end
 end
