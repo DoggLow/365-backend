@@ -32,6 +32,9 @@ class Account < ActiveRecord::Base
   POOL_DEPOSIT = :pool_deposit
   POOL_WITHDRAW = :pool_withdraw
   CC_ALLOCATION = :cc_allocation
+  LEND = :lend
+  LEND_PROFIT = :lend_profit
+  API = :api
   ZERO = 0.to_d
 
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5, :plus_locked => 10}
@@ -82,6 +85,14 @@ class Account < ActiveRecord::Base
         yield(self, name.to_sym, *args)
         self
       end
+    end
+  end
+
+  def change_funds(amount, fee: ZERO, reason: nil, ref: nil)
+    if amount >= ZERO
+      plus_funds(amount, fee: fee, reason: reason, ref: ref)
+    else
+      sub_funds(amount.abs, fee: fee, reason: reason, ref: ref)
     end
   end
 

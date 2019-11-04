@@ -104,4 +104,17 @@ module APIv2
       super code: 2012, text: "Deposit##txid=#{txid} doesn't exist.", status: 404
     end
   end
+
+  class AdminRoleRequired < Error
+    def initialize
+      super code: 2100, text: 'You have no admin role.', status: :unauthorized
+    end
+  end
+
+  class PrizeCenterError < Error
+    def initialize(e)
+      super code: 2101, text: "Failed. Reason: #{e}", status: 400
+    end
+  end
+
 end
