@@ -24,7 +24,7 @@ module Admin
 
     def accounts
       member = Member.find_by(id: params[:id])
-      @accounts = member.accounts.select { |account| account.currency != 'pld' && account.currency_obj.coin? }
+      @accounts = member.accounts.select { |account| account.currency != 'pld' && account.currency != 'tsf' && account.currency_obj.coin? }
     end
 
     def dashboard
@@ -46,7 +46,9 @@ module Admin
           other_balance: @other_balance,
           exp: member.exp,
           level: member.cc_level,
-          exp_to_up: CcLevel.to_up(member.exp)
+          exp_to_up: CcLevel.to_up(member.exp),
+          total: Global.pool_sum(1),
+          pools: member.all_pool_share
       }
     end
   end
