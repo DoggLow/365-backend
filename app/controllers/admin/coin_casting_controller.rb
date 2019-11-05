@@ -46,7 +46,9 @@ module Admin
           other_balance: @other_balance,
           exp: member.exp,
           level: member.cc_level,
-          exp_to_up: CcLevel.to_up(member.exp)
+          exp_to_up: CcLevel.to_up(member.exp),
+          total: Global.pool_sum(1),
+          pools: current_user.all_pool_share
       }
     end
   end

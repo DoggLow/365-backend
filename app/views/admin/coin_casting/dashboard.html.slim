@@ -14,7 +14,7 @@
           = link_to 'Pool Deposit', '',class:'btn',style: 'background-color:#fadb14;color:white;width:70%'
         .col-lg-4.border
           h6 style="color:#722ed1;height:25px" = "CC Pool PLD Balance"
-          h5 = "#{@other_balance + @cc_balance} PLD"
+          h5 = "#{@cc_balance + @other_balance} PLD"
           = link_to 'Casting PLD', '',class:'btn',style: 'background-color:#722ed1;color:white;width:70%'
         .col-lg-4
           h6 style="color:#10239e;height:25px" = "Current Level"
@@ -31,25 +31,26 @@
       .row style = "padding-top: 50px;"
         .col-sm-12
           h1 style = "text-align: center;" = 'Company Total PLD'
+          h4 style = "text-align: center;" = "Share #{((@cc_balance + @other_balance)/ Global.pool_sum(1) * 100).round(2)} %"
           #chart_div data-tree='#{@info.to_json}' style="width: 100%;height: 500px;"
         .col-xs-12
           .row
             .col-sm-12
               h3 style = "text-align: center;" = 'Pool 1'
-              h4 style = "text-align: center;" = 'Share'
+              h4 style = "text-align: center;" = "Share #{(@info[:pools][0][:share] * 100).round(2)} %"
               #chart_div_pool_1 data-tree='#{@info.to_json}' style = "width:100%;height;500px"
             .col-xs-12
               h3 style = "text-align: center;" = 'Pool 2'
-              h4 style = "text-align: center;" = 'Share'
+              h4 style = "text-align: center;" = "Share #{(@info[:pools][1][:share] * 100).round(2)} %"
               #chart_div_pool_2 data-tree='#{@info.to_json}'
           .row
             .col-sm-12
               h3 style = "text-align: center;" = 'Pool 3'
-              h4 style = "text-align: center;" = 'Share'
+              h4 style = "text-align: center;" = "Share #{(@info[:pools][2][:share] * 100).round(2)} %"
               #chart_div_pool_3 data-tree='#{@info.to_json}'
             .col-xs-12
               h3 style = "text-align: center;" = 'Pool 4'
-              h4 style = "text-align: center;" = 'Share'
+              h4 style = "text-align: center;" = "Share #{(@info[:pools][3][:share] * 100).round(2)} %"
               #chart_div_pool_4 data-tree='#{@info.to_json}'
 
 = javascript_include_tag 'admin/chart'
