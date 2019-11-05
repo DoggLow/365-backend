@@ -1,10 +1,10 @@
 am4core.ready(function() {
     var total_data = [ {
         "pld": "Mine",
-        "amount": 1
+        "amount": 0
     }, {
         "pld": "Total",
-        "amount": 1
+        "amount": 0.0000001
     }];
 
     var pool_data = [
@@ -13,28 +13,28 @@ am4core.ready(function() {
             "amount": 0
         }, {
             "pld": "Total",
-            "amount": 1
+            "amount": 0.0000001
         }],
         [{
             "pld": "Mine",
             "amount": 0
         }, {
             "pld": "Total",
-            "amount": 1
+            "amount": 0.0000001
         }],
         [{
             "pld": "Mine",
             "amount": 0
         }, {
             "pld": "Total",
-            "amount": 1
+            "amount": 0.0000001
         }],
         [{
             "pld": "Mine",
             "amount": 0
         }, {
             "pld": "Total",
-            "amount": 1
+            "amount": 0.0000001
         }],
     ];
     
