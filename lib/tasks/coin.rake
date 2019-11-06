@@ -89,6 +89,14 @@ namespace :coin do
     end
   end
 
+  desc "Unlock PLD for failed PLD purchase"
+  task unlock_failed_purchase: :environment do
+    currency = Currency.find_by_code('pld')
+    Account.where("currency = (?) AND locked > 0", currency.id).each do |account|
+      account.lock!.unlock_funds account.locked, reason: Account::PURCHASE, ref: self
+    end
+  end
+
   desc "Pool Deposit for all members who took part in PLD pre-sale"
   task cc_pool_deposit_force: :environment do
     currency = Currency.find_by_code('pld')
