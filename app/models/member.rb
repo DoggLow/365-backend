@@ -343,6 +343,7 @@ class Member < ActiveRecord::Base
   end
 
   def fetch_pool(currency = 'pld')
+    return nil unless pools.present?
     pools.with_currency(currency.to_sym).first
   end
 
