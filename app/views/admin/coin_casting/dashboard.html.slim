@@ -31,7 +31,7 @@
       .row style = "padding-top: 50px;"
         .col-sm-12
           h1 style = "text-align: center;" = 'Company Total PLD'
-          h4 style = "text-align: center;" = "Share #{((@cc_balance + @other_balance)/ Global.pool_sum(1) * 100).round(2)} %"
+          h4 style = "text-align: center;" = "Share #{@share} %"
           #chart_div data-tree='#{@info.to_json}' style="width: 100%;height: 500px;"
         .col-xs-12
           .row

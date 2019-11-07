@@ -34,6 +34,7 @@ module Admin
       @wallet_balance = 0
       @cc_balance = 0
       @other_balance = 0
+      @share = 0.0
       if pool.present?
         @wallet_balance = member.get_account(currency).balance
         @cc_balance = pool.castings.done.sum(:distribution)
@@ -50,6 +51,10 @@ module Admin
           total: Global.pool_sum(1),
           pools: member.all_pool_share
       }
+
+      if Global.pool_sum(1) > 0
+        @share =((@cc_balance + @other_balance) / Global.pool_sum(1) * 100).round(2)
+      end
     end
   end
 end
