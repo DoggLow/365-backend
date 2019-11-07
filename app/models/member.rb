@@ -352,7 +352,7 @@ class Member < ActiveRecord::Base
   end
 
   def pool_share(pool_type)
-    return 0.0 unless castings.active.present?
+    return Global::ZERO unless castings.active.present?
 
     pool = fetch_pool
     if (cc_level / 10 >= pool_type) && pool.present?

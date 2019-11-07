@@ -20,7 +20,7 @@ module APIv2
       requires :member,  type: Integer, desc: "ID of a user."
       requires :currency,  type: String, values: Currency.coin_codes, desc: "Currency value contains  #{Currency.coin_codes.join(',')}"
       requires :amount,  type: String,  desc: "Amount to increase or decrease. Precision limit: 8, If you want to increase, please input positive number.If you want to decrease, please input negative number. "
-      optional :reason,  type: String,  values: %w(lend lend_profit), desc: "Available values are 'lend' or 'lend_profit'"
+      requires :reason,  type: String,  values: %w(lend lend_profit), desc: "Available values are 'lend' or 'lend_profit'"
     end
     post "/account/change" do
       authenticate!
