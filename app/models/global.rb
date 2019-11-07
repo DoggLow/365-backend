@@ -90,7 +90,9 @@ class Global
     def pool_sum(pool_type, coin = 'pld')
       Rails.cache.fetch("exchange:pool:#{pool_type}:sum", expires_in: 30.seconds) do
         pools = Pool.active.includes(:member)
-        if pool_type == 1
+        if pools.blank?
+          ZERO
+        elsif pool_type == 1
           pools.balance_sum(coin)
         else
           l_limit = pool_type * 10
