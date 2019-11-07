@@ -355,7 +355,7 @@ class Member < ActiveRecord::Base
     return Global::ZERO unless castings.active.present?
 
     pool = fetch_pool
-    if (cc_level / 10 >= pool_type) && pool.present?
+    if pool.present? && ((cc_level < 10) || (cc_level / 10 >= pool_type))
       pool_sum = Global.pool_sum(pool_type)
       return pool.balance / pool_sum unless pool_sum == Global::ZERO
     end

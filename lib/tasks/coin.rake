@@ -121,7 +121,10 @@ namespace :coin do
   task cc_allocate: :environment do
     # Calculate daily sales
     sales_sum = 0.0
-    (6.days.ago.to_date .. Date.today).each do |date|
+    cur_date = Date.today # Date.new(2019, 11, 2)
+    start_date = cur_date - 6
+    end_date = cur_date - 1
+    (start_date..end_date).each do |date|
       castings = Casting.done.on(date)
       if castings.present?
         sales_sum += castings.distribution_sum / castings.length
@@ -134,6 +137,7 @@ namespace :coin do
 
     # Calculate allocations
     Pool.active.includes(:member).each do |pool|
+      next if pool.created_at.to_date > end_date
       sum = 0
       pool.member.all_pool_share.each do |share_obj|
         sum += share_obj[:share] * sales_pools[share_obj[:pool] - 1]
