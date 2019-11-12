@@ -6,8 +6,8 @@ class PoolDeposit < ActiveRecord::Base
   enumerize :currency, in: Currency.enumerize
 
   validates_presence_of :unit, :amount, :currency, :org_total
-  validates_numericality_of :unit, :amount, :org_total, :fee, greater_than: 0.0
-  validates_numericality_of :remained, greater_than_or_equal_to: 0.0
+  validates_numericality_of :unit, :amount, :org_total, greater_than: 0.0
+  validates_numericality_of :remained, :fee, greater_than_or_equal_to: 0.0
 
   before_validation :fill_data, on: :create
   validate :validate_data, on: :create
@@ -45,6 +45,10 @@ class PoolDeposit < ActiveRecord::Base
     }
   end
 
+  def hold_account
+    member.get_account(currency)
+  end
+
   private
 
   def fill_data
@@ -65,10 +69,6 @@ class PoolDeposit < ActiveRecord::Base
         errors.add 'balance', 'insufficient'
       end
     end
-  end
-
-  def hold_account
-    member.get_account(currency)
   end
 
 end

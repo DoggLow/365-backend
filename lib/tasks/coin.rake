@@ -108,6 +108,18 @@ namespace :coin do
     end
   end
 
+  desc "Clear fees for forced Pool Deposit for all members who took part in PLD pre-sale"
+  task cc_clear_pool_deposit_fee_force: :environment do
+    date = Date.new(2019, 11, 2)
+    p_deposits = PoolDeposit.where("created_at between ? and ?", date.beginning_of_day, date.end_of_day)
+    p_deposits.each do |p_deposit|
+      next unless p_deposit.fee > 0.0
+      # puts "p_deposit: #{p_deposit.id}"
+      p_deposit.hold_account.lock!.plus_funds p_deposit.fee, reason: Account::UNKNOWN, ref: p_deposit
+      p_deposit.update!(fee: 0)
+    end
+  end
+
   desc "Distribute CC"
   task cc_distribute: :environment do
     cur_min = DateTime.now.minute.to_s
