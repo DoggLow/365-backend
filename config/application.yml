@@ -20,7 +20,7 @@ defaults: &defaults
   SMTP_DOMAIN: 365-exchange.com
   SMTP_ADDRESS: mail.365-exchange.com
   SMTP_USERNAME: crypto-smtp@365-exchange.com
-  SMTP_PASSWORD: bHF34#55jgExDpt
+  SMTP_PASSWORD: Q7Ce$dW#SAzj
   SMTP_AUTHENTICATION: plain # could be plain, login or cram_md5
 
   SUPPORT_MAIL: support@365-exchange.com
