@@ -118,7 +118,7 @@ module APIv2
         account = member.get_account(params[:currency])
         amount = params[:amount].to_f
         reason = if params[:reason].to_sym == Account::LEND || params[:reason].to_sym == Account::LEND_PROFIT
-                   params[:reason]
+                   params[:reason].to_sym
                  else
                    Account::API
                  end
