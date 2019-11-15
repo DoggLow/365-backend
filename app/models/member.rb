@@ -352,11 +352,11 @@ class Member < ActiveRecord::Base
   end
 
   def has_casting?
-    if castings.blank? || purchases.blank?
-      false
-    elsif castings.active.present?
+    if castings.present? && castings.active.present?
       true
-    elsif purchases.with_currency(Pool::POOL_SYMBOL.to_sym).present?
+    elsif purchases.blank?
+      false
+    elsif purchases.where.not(product_id: 1).present?
       true
     else
       false
