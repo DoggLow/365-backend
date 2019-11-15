@@ -129,6 +129,13 @@ namespace :coin do
     end
   end
 
+  desc "Rebase Referral"
+  task cc_rebase_referral: :environment do
+    Referral.where(modifiable_type: Casting.name).each do |referral|
+      referral.update!(modifiable: referral.modifiable.pool)
+    end
+  end
+
   desc "Allocate CC"
   task cc_allocate: :environment do
     # Calculate daily sales
@@ -154,12 +161,10 @@ namespace :coin do
       pool.member.all_pool_share.each do |share_obj|
         sum += share_obj[:share] * sales_pools[share_obj[:pool] - 1]
       end
-      # puts "Member: #{pool.member}, #{Casting::POOL_SYMBOL} allocation: #{sum}"
+      # puts "Member: #{pool.member}, #{Pool::POOL_SYMBOL} allocation: #{sum}"
       next unless sum > 0.0
 
-      # TODO: Need to update when add new casting bot
-      casting = pool.castings.active.first
-      casting.allocate(sum)
+      pool.allocate(sum)
     end
   end
 

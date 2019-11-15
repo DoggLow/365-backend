@@ -1,7 +1,9 @@
 class Pool < ActiveRecord::Base
   include Currencible
 
+  POOL_SYMBOL = 'pld'
   ZERO = 0.to_d
+  REFERRAL_RATE = 0.01
 
   belongs_to :member
   belongs_to :account
@@ -18,6 +20,21 @@ class Pool < ActiveRecord::Base
 
   def set_account
     self.account = member.get_account(currency)
+  end
+
+  def allocate(alloc_amount)
+    # TODO: Need to update when add new casting bot
+    ask_coin = 'btc'
+    bid_coin = 'usdt'
+    # casting = castings.active.first
+    org_allocation = (alloc_amount * Price.get_rate(POOL_SYMBOL, 'USD')).round(8) # USD amount
+    ask_allocation = Global.estimate('usdt', ask_coin, org_allocation / 2.0).round(8)
+    bid_allocation = Global.estimate('usdt', bid_coin, org_allocation / 2.0).round(8)
+    member.get_account(ask_coin).lock!.plus_funds ask_allocation, reason: Account::CC_ALLOCATION, ref: self
+    member.get_account(bid_coin).lock!.plus_funds bid_allocation, reason: Account::CC_ALLOCATION, ref: self
+
+    create_and_calculate_referral(ask_coin, ask_allocation)
+    create_and_calculate_referral(bid_coin, bid_allocation)
   end
 
   def deposit_funds(amount, fee: ZERO, reason: nil, ref: nil)
@@ -39,5 +56,17 @@ class Pool < ActiveRecord::Base
   end
 
   private
+
+  def create_and_calculate_referral(coin, value)
+    referral = Referral.create(
+        member: member,
+        currency: coin,
+        amount: value,
+        modifiable_id: self.id,
+        modifiable_type: Pool.name,
+        state: Referral::PENDING
+    )
+    referral.calculate_from_cc_allocation(value * REFERRAL_RATE, self)
+  end
 
 end

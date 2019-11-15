@@ -16,9 +16,7 @@ class Casting < ActiveRecord::Base
   serialize :bid_distributions, Array
 
   DONE = 'done'
-  POOL_SYMBOL = 'pld'
   CC_FEE = 0.05
-  REFERRAL_RATE = 0.01
 
   validates_presence_of :unit, :amount, :currency, :paid_amount, :market_id
   validates_numericality_of :unit, :amount, :paid_amount, :paid_fee, :ask_org_locked, :bid_org_locked, :org_distribution, greater_than: 0.0
@@ -97,17 +95,6 @@ class Casting < ActiveRecord::Base
     check!
   end
 
-  def allocate(alloc_amount)
-    org_allocation = (alloc_amount * Price.get_rate(POOL_SYMBOL, 'USD')).round(8) # USD amount
-    ask_allocation = Global.estimate('usdt', ask, org_allocation / 2.0).round(8)
-    bid_allocation = Global.estimate('usdt', bid, org_allocation / 2.0).round(8)
-    ask_account.lock!.plus_funds ask_allocation, reason: Account::CC_ALLOCATION, ref: self
-    bid_account.lock!.plus_funds bid_allocation, reason: Account::CC_ALLOCATION, ref: self
-
-    create_and_calculate_referral(ask, ask_allocation)
-    create_and_calculate_referral(bid, bid_allocation)
-  end
-
   def move_from_pool(amount, ref)
     self.distribution -= amount
     self.save!
@@ -153,10 +140,10 @@ class Casting < ActiveRecord::Base
     self.paid_fee = Global.estimate('usdt', currency, real_fee).round(8)
     self.ask_locked = self.ask_org_locked = Global.estimate('usdt', ask, real_fiat_amount / 2.0).round(8)
     self.bid_locked = self.bid_org_locked = Global.estimate('usdt', bid, real_fiat_amount / 2.0).round(8)
-    self.org_distribution = (real_fiat_amount / Price.get_rate(POOL_SYMBOL, 'USD')).round(8)
+    self.org_distribution = (real_fiat_amount / Price.get_rate(Pool::POOL_SYMBOL, 'USD')).round(8)
     self.ask_distributions = gen_distributions
     self.bid_distributions = gen_distributions
-    self.pool = member.get_pool(POOL_SYMBOL)
+    self.pool = member.get_pool(Pool::POOL_SYMBOL)
   end
 
   def gen_distributions
@@ -183,20 +170,8 @@ class Casting < ActiveRecord::Base
     end
   end
 
-  def create_and_calculate_referral(coin, value)
-    referral = Referral.create(
-        member: member,
-        currency: coin,
-        amount: value,
-        modifiable_id: self.id,
-        modifiable_type: Casting.name,
-        state: Referral::PENDING
-    )
-    referral.calculate_from_cc_allocation(value * REFERRAL_RATE, self)
-  end
-
   def expect_account
-    member.get_account(POOL_SYMBOL)
+    member.get_account(Pool::POOL_SYMBOL)
   end
 
   def hold_account

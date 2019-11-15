@@ -51,7 +51,7 @@ class Referral < ActiveRecord::Base
 
   def calculate_from_cc_allocation(commission, ref)
     return unless state == Referral::PENDING
-    return unless modifiable_type == Casting.name
+    return unless modifiable_type == Pool.name
 
     total = 0.0
     member.referrer_ids.each do |referrer_id|

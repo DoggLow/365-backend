@@ -351,8 +351,20 @@ class Member < ActiveRecord::Base
     self.pools.create(currency: currency, balance: 0.0)
   end
 
+  def has_casting?
+    if castings.blank? || purchases.blank?
+      false
+    elsif castings.active.present?
+      true
+    elsif purchases.with_currency(Pool::POOL_SYMBOL.to_sym).present?
+      true
+    else
+      false
+    end
+  end
+
   def pool_share(pool_type)
-    return Global::ZERO unless castings.active.present?
+    return Global::ZERO unless has_casting?
 
     pool = fetch_pool
     if pool.present? && ((cc_level < 10) || (cc_level / 10 >= pool_type))
@@ -515,7 +527,7 @@ class Member < ActiveRecord::Base
           reward += referrals.paid_sum(currency.code, Purchase.name)
 
           # Casting allocation referrals
-          reward += referrals.paid_sum(currency.code, Casting.name)
+          reward += referrals.paid_sum(currency.code, Pool.name)
 
           rewards[currency.code.upcase] = reward
         end
@@ -584,7 +596,7 @@ class Member < ActiveRecord::Base
         rewards += referee.referrals.paid_sum(currency.code, Purchase.name)
 
         # Casting allocation referrals
-        rewards += referee.referrals.paid_sum(currency.code, Casting.name)
+        rewards += referee.referrals.paid_sum(currency.code, Pool.name)
       end
 
       next unless rewards > 0
@@ -648,7 +660,7 @@ class Member < ActiveRecord::Base
           reward += referrals.paid_sum(currency.code, Purchase.name)
 
           # Casting allocation referrals
-          reward += referrals.paid_sum(currency.code, Casting.name)
+          reward += referrals.paid_sum(currency.code, Pool.name)
 
           rewards[currency.code.upcase] = reward
         end
