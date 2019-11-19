@@ -24,6 +24,7 @@ namespace :admin do
   resources :coin_casting, :controller => 'coin_casting', as: 'coin_casting', :only => [:index, :cc_history, :pool_history, :cc_accounts, :cc_dashboard]
   get 'coin_casting/:id/cc_history', to: 'coin_casting#cc_history', as: :cc_history
   get 'coin_casting/:id/pool_history', to: 'coin_casting#pool_history', as: :pool_history
+  get 'coin_casting/:id/commissions', to: 'coin_casting#commissions', as: :cc_commissions
   get 'coin_casting/:id/acounts', to: 'coin_casting#accounts', as: :cc_accounts
   get 'coin_casting/:id/dashboard', to: 'coin_casting#dashboard', as: :cc_dashboard
 

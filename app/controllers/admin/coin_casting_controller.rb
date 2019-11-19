@@ -22,6 +22,12 @@ module Admin
       @data = Kaminari.paginate_array(@data).page(params[:page]).per(20)
     end
 
+    def commissions
+      member = Member.find_by(id: params[:id])
+      @commissions = AccountVersion.where(reason: 4800, member_id: member.id).sort_by {|t| -t.created_at.to_i }
+      @commissions = Kaminari.paginate_array(@commissions).page(params[:page]).per(20)
+    end
+
     def accounts
       member = Member.find_by(id: params[:id])
       @accounts = member.accounts.select { |account| account.currency != 'pld' && account.currency != 'tsf' && account.currency_obj.coin? }

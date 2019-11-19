@@ -1,0 +1,14 @@
+.row
+  .panel.panel-primary
+    .panel-heading
+      = "CC Commissions"
+    .panel-body
+      = table_for(@commissions, class: 'table table-condensed table-hover') do |t|
+        - t.column 'Date', class: 'col-xs-4' do |x|
+          = x.created_at
+        - t.column :currency, class: 'col-xs-4' do |x|
+          = x.currency.upcase
+        - t.column :amount, class: 'col-xs-6' do |x|
+          = "#{x.balance} #{x.currency.upcase}"
+
+      = paginate @commissions
