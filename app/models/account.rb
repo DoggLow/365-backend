@@ -34,6 +34,11 @@ class Account < ActiveRecord::Base
   CC_ALLOCATION = :cc_allocation
   LEND = :lend
   LEND_PROFIT = :lend_profit
+  BET_SUB = :bet_sub
+  BET_RETURN = :bet_return
+  BET_BONUS = :bet_bonus
+  BET_FEE = :bet_fee
+
   API = :api
   ZERO = 0.to_d
 
