@@ -13,7 +13,9 @@ module Admin
       end
       @all_commission = commissions.join(', ')
 
-      @members = Member.all
+      @search_field = params[:search_field]
+      @search_term = params[:search_term]
+      @members = Member.search(field: @search_field, term: @search_term).page params[:page]
       @members = @members.includes(:pools)
       @members = @members.select {|member| member.pools.present?}
       @members = Kaminari.paginate_array(@members).page(params[:page]).per(20)
