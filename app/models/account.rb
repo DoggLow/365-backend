@@ -37,7 +37,6 @@ class Account < ActiveRecord::Base
   BET_SUB = :bet_sub
   BET_RETURN = :bet_return
   BET_BONUS = :bet_bonus
-  BET_FEE = :bet_fee
 
   API = :api
   ZERO = 0.to_d
