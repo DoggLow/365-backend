@@ -194,7 +194,6 @@ namespace :coin do
     else
       Bet.task_bet( 0, DateTime.now)
     end
-    end
   end
 
 end
