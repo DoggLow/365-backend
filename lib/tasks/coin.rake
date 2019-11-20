@@ -185,4 +185,16 @@ namespace :coin do
     end
   end
 
+  desc "Processing evenodd bits at 1:00 am everyday."
+  task cc_process_evenodd: :environment do
+    price = Global.get_latest_price('btc', 'usd')
+    price = price.floor
+    if price % 2 == 0
+      Bet.task_bet( 1, DateTime.now)
+    else
+      Bet.task_bet( 0, DateTime.now)
+    end
+    end
+  end
+
 end
