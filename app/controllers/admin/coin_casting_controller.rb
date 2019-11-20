@@ -3,7 +3,15 @@ module Admin
     # load_and_authorize_resource
 
     def index
-      @members = Member.page params[:page]
+      @pool_sum = Pool.balance_sum('pld')
+      @cc_sum = Casting.done.distribution_sum
+      @all_btc_commission = AccountVersion.where(reason: 4800, currency: 'btc').sum(:balance)
+      @all_usdt_commission = AccountVersion.where(reason: 4800, currency: 'usdt').sum(:balance)
+
+      @members = Member.all
+      @members = @members.includes(:pools)
+      @members = @members.select {|member| member.pools.present?}
+      @members = Kaminari.paginate_array(@members).page(params[:page]).per(20)
     end
 
     def cc_history

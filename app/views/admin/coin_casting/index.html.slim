@@ -1,6 +1,31 @@
 .row
   .panel.panel-primary
     .panel-heading
+      span = "Overview"
+    .panel-body
+      .row
+        .col-xs-6.text-right
+          label = 'Pool Sum:'
+        .col-xs-18
+          span = "#{@pool_sum} PLD"
+      .row
+        .col-xs-6.text-right
+          label = 'CC Sum:'
+        .col-xs-18
+          span = "#{@cc_sum} PLD"
+      .row
+        .col-xs-6.text-right
+          label = 'Pool Deposit Sum:'
+        .col-xs-18
+          span = "#{@pool_sum - @cc_sum} PLD"
+      .row
+        .col-xs-6.text-right
+          label = 'Total Commission:'
+        .col-xs-18
+          span = "#{@all_btc_commission} BTC, #{@all_usdt_commission} USDT"
+.row
+  .panel.panel-primary
+    .panel-heading
       span = "Coin Casting"
     .panel-body
       = table_for(@members, class: 'table table-condensed table-hover') do |t|
