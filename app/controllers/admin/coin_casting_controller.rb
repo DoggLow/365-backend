@@ -5,8 +5,13 @@ module Admin
     def index
       @pool_sum = Pool.balance_sum('pld')
       @cc_sum = Casting.done.distribution_sum
-      @all_btc_commission = AccountVersion.where(reason: 4800, currency: 'btc').sum(:balance)
-      @all_usdt_commission = AccountVersion.where(reason: 4800, currency: 'usdt').sum(:balance)
+
+      commissions = []
+      Currency.coins.each do |currency|
+        commission = AccountVersion.where(reason: 4800, currency: currency.id).sum(:balance)
+        commissions << "#{commission} #{currency.code.upcase}" if commission > 0.0
+      end
+      @all_commission = commissions.join(', ')
 
       @members = Member.all
       @members = @members.includes(:pools)
