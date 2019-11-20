@@ -15,7 +15,7 @@ module Admin
 
       @search_field = params[:search_field]
       @search_term = params[:search_term]
-      @members = Member.search(field: @search_field, term: @search_term).page params[:page]
+      @members = Member.search(field: @search_field, term: @search_term)
       @members = @members.includes(:pools)
       @members = @members.select {|member| member.pools.present?}
       @members = Kaminari.paginate_array(@members).page(params[:page]).per(20)
