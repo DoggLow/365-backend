@@ -103,6 +103,7 @@ module APIv2
         account = member.get_account(params[:currency])
         {
             member: member.email,
+            name: member.id_document.name,
             balance: account.balance
         }
       rescue
