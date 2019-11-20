@@ -67,7 +67,20 @@ class Bet < ActiveRecord::Base
 
     t_share = (t_lose_credit - t_lose_credit * company_profit)
 
-    sql = "UPDATE bets set bonus = (%f * credit / %f) WHERE even_odd = %d AND created_at > '%s' AND created_at <= '%s'" % [t_share, t_credit, even_odd, sdate, edate]
+    sql = 'UPDATE bets set '\
+          'bonus = '\
+            ' CASE '\
+            ' WHEN even_odd = %d THEN (%f * credit / %f)'\
+            ' ELSE 0 END, '\
+          'fee = '\
+            ' CASE '\
+            ' WHEN even_odd = %d THEN (credit + %f * credit / %f) * 0.05'\
+            ' ELSE 0 END, '\
+          'result = '\
+            ' CASE '\
+            ' WHEN even_odd = %d THEN 1 '\
+            ' ELSE 0 END'\
+          ' WHERE created_at > "%s" AND created_at <= "%s"' % [even_odd, t_share, t_credit, even_odd, t_share, t_credit, even_odd, sdate, edate]
     ActiveRecord::Base.connection.execute(sql)
 
     sql = "SELECT * FROM bets WHERE even_odd = %d AND created_at > '%s' AND created_at <= '%s';" % [even_odd, sdate, edate]
@@ -87,9 +100,9 @@ class Bet < ActiveRecord::Base
   end
 
   def update_win_accounts()
-    hold_account.plus_funds(credit, reason: Account::BET_RETURN)
+    hold_account.plus_funds(credit - credit * 0.05, reason: Account::BET_RETURN)
     if bonus > 0
-      hold_account.plus_funds(bonus, reason: Account::BET_BONUS)
+      hold_account.plus_funds(bonus - bonus * 0.05, reason: Account::BET_BONUS)
     end
   end
 
