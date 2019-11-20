@@ -94,7 +94,8 @@ Exchange::Application.routes.draw do
     get '/markets' => 'markets#index', as: :market_list
     get '/markets/prices' => 'markets#prices', as: :market_prices
 
-    resource :bet, :only => [:create]
+    get '/bets' => 'bets#index', as: :bet_list
+    resource :bets, :only => [:create]
 
     resources :markets, :only => :show, :constraints => MarketConstraint do
       resources :orders, :only => [:index, :destroy] do

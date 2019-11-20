@@ -41,8 +41,7 @@ class AccountVersion < ActiveRecord::Base
       Account::LEND_PROFIT => 6200,
       Account::BET_SUB => 6300,
       Account::BET_RETURN => 6400,
-      Account::BET_BONUS => 6500,
-      Account::BET_FEE => 6600,
+      Account::BET_BONUS => 6500
   }
   enumerize :reason, in: REASON_CODES, scope: true
 
