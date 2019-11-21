@@ -66,5 +66,5 @@ every 1.day, :at => '3:00 pm' do
 end
 
 every 1.day, :at => '1:00 am' do
-  rake 'coin:cc_process_evenodd'
+  rake 'coin:process_bets'
 end

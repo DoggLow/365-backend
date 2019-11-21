@@ -1,17 +1,34 @@
 class Bet < ActiveRecord::Base
-
-  COMPANY_PROFIT = 0.15
+  STATES = [:accepted, :win, :lose]
   BET_FEE = 0.05
+
+  extend Enumerize
+
+  include AASM
+  include AASM::Locking
+
+  enumerize :aasm_state, in: STATES, scope: true
 
   belongs_to :member
 
-  validates_presence_of :credit, :member
-  validates_numericality_of :credit, greater_than: 0
+  validates_presence_of :unit, :amount, :member, :expectancy
+  validates_numericality_of :unit, :amount, greater_than: 0
 
   validate :validate_data, on: :create
+  after_create :strike
 
-  def hold_account
-    member.get_account(:btc)#btc
+  scope :accepted, -> { where(aasm_state: :accepted) }
+  scope :amount_sum, -> {sum('unit*amount')}
+
+  aasm :whiny_transitions => false do
+    state :accepted, initial: true, after_commit: [:send_email]
+    state :win, after_commit: [:plus_funds, :send_email]
+    state :lose, after_commit: [:send_email]
+
+    event :check do |e|
+      transitions :from => :accepted, :to => :win, :guard => :win?
+      transitions :from => :accepted, :to => :lose, :guard => :lose?
+    end
   end
 
   def validate_data
@@ -19,101 +36,48 @@ class Bet < ActiveRecord::Base
       errors.add 'account', 'invalid'
     else
       balance = hold_account.balance
-      if balance < credit
+      if balance < unit * amount
         errors.add 'balance', 'insufficient'
       end
     end
   end
 
-  def make_payment()
-    hold_account.sub_funds(self.credit, reason: Account::BET_SUB)
-    CastingMailer.bet_accepted(self).deliver
+  def strike
+    hold_account.sub_funds(unit * amount, reason: Account::BET_SUB)
   end
 
-  def self.total_lose_credit(even_odd, sdate, edate)
-    sql = "SELECT SUM(credit) as t_credit FROM bets WHERE even_odd <> %d AND created_at > '%s' AND created_at <= '%s';" % [even_odd, sdate, edate]
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    if records_array.present?
-      if records_array.first[0].blank?
-        return 0
-      end
-      return records_array.first[0]
-    else
-      return 0
+  def complete(result, bonus)
+    self.update!(result: result, bonus: bonus, fee: unit * amount * BET_FEE)
+    check!
+  end
+
+  private
+
+  def plus_funds
+    hold_account.plus_funds(unit * amount * (1 - BET_FEE), reason: Account::BET_RETURN)
+    hold_account.plus_funds(bonus * (1 - BET_FEE), reason: Account::BET_BONUS)
+  end
+
+  def send_email
+    case aasm_state
+    when 'accepted'
+      CastingMailer.bet_accepted(self).deliver
+    when 'win'
+      CastingMailer.bet_win(self).deliver
+    when 'lose'
+      CastingMailer.bet_lose(self).deliver
     end
   end
 
-  def self.total_win_credit(even_odd, date)
-    sql = "SELECT SUM(credit) as t_credit FROM bets WHERE even_odd = %d AND created_at > '%s' AND created_at <= '%s';" % [even_odd, sdate, edate]
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    if records_array.present?
-      if records_array.first[0].blank?
-        return 0
-      end
-      return records_array.first[0]
-    else
-      return 0
-    end
+  def win?
+    expectancy == result
   end
 
-  def self.make_judgement(even_odd, sdate, edate)
-    t_lose_credit = total_lose_credit(even_odd, sdate, edate)
-    t_win_credit = total_lose_credit(even_odd, sdate, edate)
-    t_credit = t_lose_credit + t_win_credit
-
-    if t_lose_credit == 0 && t_win_credit == 0
-      return nil
-    end
-
-    t_share = (t_lose_credit - t_lose_credit * COMPANY_PROFIT)
-
-    sql = 'UPDATE bets set '\
-          'bonus = '\
-            ' CASE '\
-            ' WHEN even_odd = %d THEN (%f * credit / %f)'\
-            ' ELSE 0 END, '\
-          'fee = '\
-            ' CASE '\
-            ' WHEN even_odd = %d THEN (credit + %f * credit / %f) * %f'\
-            ' ELSE 0 END, '\
-          'result = '\
-            ' CASE '\
-            ' WHEN even_odd = %d THEN 1 '\
-            ' ELSE 0 END'\
-          ' WHERE created_at > "%s" AND created_at <= "%s"' % [even_odd, t_share, t_credit, even_odd, t_share, t_credit, BET_FEE, even_odd, sdate, edate]
-    ActiveRecord::Base.connection.execute(sql)
+  def lose?
+    expectancy != result
   end
 
-  def self.task_bet(even_odd, date)
-    edate = DateTime.new(date.year, date.month, date.day, 1, 0, 0, date.zone)
-    sdate = DateTime.new(date.year, date.month, date.day - 1, 1, 0, 0, date.zone)
-
-    make_judgement(even_odd, sdate, edate)
-
-    sql = "SELECT * FROM bets WHERE created_at > '%s' AND created_at <= '%s';" % [sdate, edate]
-    records_array = ActiveRecord::Base.connection.exec_query(sql)
-
-    if records_array.blank?
-      return 0
-    end
-
-    records_array.each do |row|
-      bet_item = find(row['id'])
-      bet_item.update_account()
-    end
-    return result.count
+  def hold_account
+    member.get_account(:btc)
   end
-
-  def update_account()
-    if result
-      hold_account.plus_funds(credit - credit * BET_FEE, reason: Account::BET_RETURN)
-      if bonus > 0
-        hold_account.plus_funds(bonus - bonus * BET_FEE, reason: Account::BET_BONUS)
-      end
-      CastingMailer.bet_succeed(self).deliver
-    else
-      CastingMailer.bet_failed(self).deliver
-    end
-  end
-
 end

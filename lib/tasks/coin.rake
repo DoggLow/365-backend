@@ -185,15 +185,21 @@ namespace :coin do
     end
   end
 
-  desc "Processing evenodd bits at 1:00 am everyday."
-  task cc_process_evenodd: :environment do
+  desc "Processing bets at 1:00 am everyday."
+  task process_bets: :environment do
+    company_profit = 0.15
+
     price = Global.get_latest_price('btc', 'usdt')
     price = price.floor
-    if price % 2 == 0
-      Bet.task_bet( 1, DateTime.now)
-    else
-      Bet.task_bet( 0, DateTime.now)
+    result = price % 2 == 0
+
+    failed_bet_sum = Bet.accepted.where.not(expectancy: result).amount_sum
+    next unless failed_bet_sum > 0.0
+
+    total_bonus = failed_bet_sum * (1 - company_profit)
+    Bet.accepted.each do |bet|
+      bonus = bet.expectancy == result ? (bet.unit * bet.amount * total_bonus / failed_bet_sum).round(8) : 0.0
+      bet.complete(result, bonus)
     end
   end
-
 end

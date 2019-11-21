@@ -1828,7 +1828,7 @@ zh-CN:
       desc4: 'We are playing.'
       desc5: 'Good luck!!'
       date: 'Date and time of occurrence: %{date}'
-    bet_succeed:
+    bet_win:
       subject: "[365 Exchange] Even Odd Bit your challenge"
       desc1: 'Congratulations.'
       desc2: 'Your guess is right.'
@@ -1838,7 +1838,7 @@ zh-CN:
       desc6: 'Please get another chance next time.'
       desc7: 'We wish you good luck.'
       date: 'Date and time of occurrence: %{date}'
-    bet_failed:
+    bet_lose:
       subject: "[365 Exchange] Even Odd Bit your challenge"
       desc1: 'Oops ... sorry..'
       desc2: 'Your guess is wrong.'

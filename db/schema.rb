@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191119161230) do
+ActiveRecord::Schema.define(version: 20191119161232) do
 
   create_table "account_versions", force: true do |t|
     t.integer  "member_id"
@@ -137,14 +137,18 @@ ActiveRecord::Schema.define(version: 20191119161230) do
 
   create_table "bets", force: true do |t|
     t.integer  "member_id"
-    t.decimal  "credit",     precision: 32, scale: 16, default: 0.0, null: false
-    t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
-    t.boolean  "even_odd"
+    t.integer  "unit",                                               null: false
+    t.integer  "amount",                                             null: false
+    t.boolean  "expectancy"
     t.boolean  "result"
+    t.decimal  "fee",        precision: 32, scale: 16, default: 0.0, null: false
     t.decimal  "bonus",      precision: 32, scale: 16, default: 0.0, null: false
+    t.string   "aasm_state"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "bets", ["member_id"], name: "index_bets_on_member_id", using: :btree
 
   create_table "castings", force: true do |t|
     t.integer  "member_id",                                                  null: false
