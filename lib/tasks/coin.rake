@@ -190,4 +190,22 @@ namespace :coin do
     end
   end
 
+  desc "Processing bets at 1:00 am everyday."
+  task process_bets: :environment do
+    company_profit = 0.15
+
+    price = Global.get_latest_price('btc', 'usdt')
+    price = price.floor
+    result = price % 2
+
+    lose_bet_sum = Bet.accepted.where.not(expectancy: result).amount_sum
+    win_bet_sum = Bet.accepted.where(expectancy: result).amount_sum
+    next unless win_bet_sum > 0.0
+
+    total_bonus = lose_bet_sum * (1 - company_profit)
+    Bet.accepted.each do |bet|
+      bonus = bet.expectancy == result ? (bet.unit * bet.amount * total_bonus / win_bet_sum).round(8) : 0.0
+      bet.complete(result, bonus)
+    end
+  end
 end

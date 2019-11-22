@@ -36,6 +36,9 @@ class AccountVersion < ActiveRecord::Base
       Account::POOL_DEPOSIT => 4600,
       Account::POOL_WITHDRAW => 4700,
       Account::CC_ALLOCATION => 4800,
+      Account::BET_SUB => 5100,
+      Account::BET_RETURN => 5200,
+      Account::BET_BONUS => 5300,
       Account::API => 6000,
       Account::LEND => 6100,
       Account::LEND_PROFIT => 6200

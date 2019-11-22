@@ -2,19 +2,19 @@ class CastingMailer < BaseMailer
 
   def bet_accepted(bet)
     @bet = bet
-    @date = @bet.date
+    @date = @bet.created_at
     mail to: @bet.member.email
   end
 
-  def bet_succeed(bet)
+  def bet_win(bet)
     @bet = bet
-    @date = @bet.date
+    @date = @bet.created_at
     mail to: @bet.member.email
   end
 
-  def bet_failed(bet)
+  def bet_lose(bet)
     @bet = bet
-    @date = @bet.date
+    @date = @bet.created_at
     mail to: @bet.member.email
   end
 

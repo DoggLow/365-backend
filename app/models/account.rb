@@ -32,6 +32,9 @@ class Account < ActiveRecord::Base
   POOL_DEPOSIT = :pool_deposit
   POOL_WITHDRAW = :pool_withdraw
   CC_ALLOCATION = :cc_allocation
+  BET_SUB = :bet_sub
+  BET_RETURN = :bet_return
+  BET_BONUS = :bet_bonus
   LEND = :lend
   LEND_PROFIT = :lend_profit
   API = :api
