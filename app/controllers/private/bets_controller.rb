@@ -11,7 +11,7 @@ module Private
     end
 
     def create
-      new_bet = current_user.bets.new unit: params[:unit], amount: params[:amount], fee: params[:fee], expectancy: params[:expectancy]
+      new_bet = current_user.bets.new unit: params[:unit], amount: params[:amount], expectancy: params[:expectancy]
       if new_bet.save
         render json: new_bet, status: :ok
       else

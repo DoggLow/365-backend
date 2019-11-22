@@ -1825,7 +1825,7 @@ zh-CN:
       desc1: 'We accepted your challenge.'
       desc2: 'You can see the result every day at 1:00 am (GMT ± 0).'
       desc3: 'Glory for your challenge for the future.'
-      desc4: 'We are playing.'
+      desc4: 'We are praying.'
       desc5: 'Good luck!!'
       date: 'Date and time of occurrence: %{date}'
     bet_win:

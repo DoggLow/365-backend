@@ -13,6 +13,7 @@ class Bet < ActiveRecord::Base
 
   validates_presence_of :unit, :amount, :member, :expectancy
   validates_numericality_of :unit, :amount, greater_than: 0
+  validates_numericality_of :expectancy, greater_than_or_equal_to: 0
 
   validate :validate_data, on: :create
   after_create :strike
@@ -21,7 +22,7 @@ class Bet < ActiveRecord::Base
   scope :amount_sum, -> {sum('unit*amount')}
 
   aasm :whiny_transitions => false do
-    state :accepted, initial: true, after_commit: [:send_email]
+    state :accepted, initial: true
     state :win, after_commit: [:plus_funds, :send_email]
     state :lose, after_commit: [:send_email]
 
@@ -43,7 +44,8 @@ class Bet < ActiveRecord::Base
   end
 
   def strike
-    hold_account.sub_funds(unit * amount, reason: Account::BET_SUB)
+    hold_account.sub_funds(unit * amount, reason: Account::BET_SUB, ref: self)
+    send_email
   end
 
   def complete(result, bonus)
@@ -54,8 +56,8 @@ class Bet < ActiveRecord::Base
   private
 
   def plus_funds
-    hold_account.plus_funds(unit * amount * (1 - BET_FEE), reason: Account::BET_RETURN)
-    hold_account.plus_funds(bonus * (1 - BET_FEE), reason: Account::BET_BONUS)
+    hold_account.plus_funds(unit * amount * (1 - BET_FEE), reason: Account::BET_RETURN, ref: self)
+    hold_account.plus_funds(bonus * (1 - BET_FEE), reason: Account::BET_BONUS, ref: self) if bonus > 0.0
   end
 
   def send_email
