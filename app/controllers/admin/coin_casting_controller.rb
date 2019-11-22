@@ -6,11 +6,15 @@ module Admin
       @pool_sum = Pool.balance_sum('pld')
       @cc_sum = Casting.done.distribution_sum
 
+      sales = []
       commissions = []
       Currency.coins.each do |currency|
+        sale = AccountVersion.where(reason: 4100, currency: currency.id).sum(:balance).abs
+        sales << "#{sale} #{currency.code.upcase}" if sale > 0.0
         commission = AccountVersion.where(reason: 4800, currency: currency.id).sum(:balance)
         commissions << "#{commission} #{currency.code.upcase}" if commission > 0.0
       end
+      @all_sales = sales.join(', ')
       @all_commission = commissions.join(', ')
 
       @search_field = params[:search_field]
