@@ -5,8 +5,8 @@ module Private
     def index
       @bets = current_user.bets
       render json: {
-          total_length: @bets.length,
-          bets: @bets.page(params[:page]).per(params[:perPage])
+          total: @bets.length,
+          data: @bets.page(params[:page]).per(params[:perPage]).map(&:for_notify)
       }
     end
 

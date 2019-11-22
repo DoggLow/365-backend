@@ -53,11 +53,23 @@ class Bet < ActiveRecord::Base
     check!
   end
 
+  def for_notify
+    {
+        id: id,
+        at: created_at.to_i,
+        amount: unit * amount,
+        fee: fee,
+        expectancy: expectancy,
+        bonus: bonus,
+        state: aasm_state
+    }
+  end
+
   private
 
   def plus_funds
     hold_account.plus_funds(unit * amount * (1 - BET_FEE), reason: Account::BET_RETURN, ref: self)
-    hold_account.plus_funds(bonus * (1 - BET_FEE), reason: Account::BET_BONUS, ref: self) if bonus > 0.0
+    hold_account.plus_funds(bonus, reason: Account::BET_BONUS, ref: self) if bonus > 0.0
   end
 
   def send_email
