@@ -289,7 +289,7 @@ class Member < ActiveRecord::Base
   def increase_exp(reason, ref: nil)
     daily_action_done = false
     if ExpLog::DAILY_ACTIONS.include?(reason)
-      daily_actions = exp_logs.today.pluck(:reason)
+      daily_actions = exp_logs.today.pluck(:reason).uniq
       return if daily_actions.include?(ExpLog::REASON_CODES[reason])
       daily_action_done = daily_actions.length >= 4
     elsif ExpLog::TOTAL_ACTIONS.include?(reason)
