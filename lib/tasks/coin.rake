@@ -122,8 +122,8 @@ namespace :coin do
 
   desc "Distribute CC"
   task cc_distribute: :environment do
-    cur_min = DateTime.now.minute.to_s
-    castings = Casting.pending_or_processing.select{|casting| casting.created_at.strftime("%M") == cur_min}
+    cur_min = DateTime.now.minute
+    castings = Casting.pending_or_processing.select{|casting| casting.created_at.strftime("%M").to_i == cur_min}
     castings.each do |casting|
       casting.distribute
     end
