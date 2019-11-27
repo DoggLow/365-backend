@@ -20,6 +20,7 @@ class Order < ActiveRecord::Base
   validates_numericality_of :price, greater_than: 0, allow_nil: false,
                             if: "ord_type == 'limit'"
   validate :market_order_validations, if: "ord_type == 'market'"
+  validate :config_validations
 
   after_create :increase_exp
 
@@ -175,6 +176,15 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def config_validations
+    if origin_volume < market_obj.ask['min']
+      errors.add(:origin_volume, 'should be lager than minimum limit')
+    end
+    if origin_volume * price < market_obj.bid['min']
+      errors.add(:total, 'should be lager than minimum limit')
+    end
+  end
 
   def market_order_validations
     errors.add(:price, 'must not be present') if price.present?

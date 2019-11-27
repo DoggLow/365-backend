@@ -13,17 +13,6 @@ html lang="en"
         .navbar-header
           a.navbar-brand href='#' API Document
         ul.nav.navbar-nav.pull-right
-          - if current_user
-            / = top_nav_link(current_user.email, settings_path, 'user', controllers: ['two_factors', 'identities', 'id_documents'])
-            - if is_admin?
-              = top_nav_link(t('header.dashboard'), admin_dashboard_path, 'dashboard')
-            li: a#sign_out href='#{main_app.signout_path}'
-              i.fa.fa-sign-out
-              span = t('header.signout')
-          - else
-            = top_nav_link(t('header.signin'), signin_path, '')
-            = top_nav_link(t('header.signup'), signup_path, '')
-
           li.dropdown
             a.dropdown-toggle href="#" data-toggle="dropdown"
               img src='#{language_path}'
