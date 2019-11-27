@@ -136,6 +136,16 @@ namespace :coin do
     end
   end
 
+  desc "Process missed CC"
+  task process_cc_missed: :environment do
+    castings = Casting.where(id: [13, 27, 28, 29, 30, 34, 35, 40, 49, 68, 69, 93, 94])
+    24.times do
+      castings.each do |casting|
+        casting.distribute
+      end
+    end
+  end
+
   desc "Allocate CC"
   task cc_allocate: :environment do
     # Calculate daily sales
