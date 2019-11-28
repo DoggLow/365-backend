@@ -372,7 +372,7 @@
   ask: {fee: 0, currency: tsf, fixed: 2, min: 0.0}
   margin: false
   sort_order: 1
-  visible: false     # default to true
+#  visible: false     # default to true
 
 - id: btcusdt
   code: 30
