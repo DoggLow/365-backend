@@ -72,7 +72,7 @@
 
 - id: 5
   name: Bitcoin Cash
-  code: bchabc
+  code: bch
   symbol: "₿"
   type: coin
   precision: 8

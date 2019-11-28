@@ -64,7 +64,7 @@ while($running) do
 
     coin_data = get_coin_data_3rd_party
     COINS_WITH_3RD_PARTY.each do |coin|
-      symbol = coin == 'BCH' ? 'bchabc' : coin.downcase
+      symbol = coin.downcase
       highest_block = coin_data[coin.to_sym] || 0
       local_height = CoinAPI[symbol].local_block_height
       nodes_status[symbol] = check_status([highest_block, local_height])
