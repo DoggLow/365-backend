@@ -8,6 +8,7 @@ class MembersController < ApplicationController
     data = {
         id: current_user.id,
         email: current_user.email,
+        name: current_user.id_document.name,
         activation_status: current_user.activated?,
         verification_status: current_user.id_document_verified?,
         sms_status: current_user.sms_two_factor.activated?,
