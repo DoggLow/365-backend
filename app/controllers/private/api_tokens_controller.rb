@@ -32,6 +32,7 @@ module Private
 
       if !two_factor_auth_verified?
         render_json(APITokenError.new(t('.alert_two_factor')))
+        return
       end
 
       if @token.update_attributes(api_token_params)
