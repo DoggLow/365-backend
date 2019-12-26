@@ -26,7 +26,10 @@ module Admin
     end
 
     def cc_history
-      @data = AccountVersion.where(modifiable_type: Casting.name, member_id: params[:id]).sort_by {|t| -t.created_at.to_i }
+      #@data = AccountVersion.where(modifiable_type: Casting.name, member_id: params[:id]).sort_by {|t| -t.created_at.to_i }
+      @data = AccountVersion.where('member_id = ? AND (modifiable_type = ? OR reason = 4800 OR (modifiable_type = ? AND reason = 700))', params[:id], Casting.name, Pool.name)
+                  .sort_by {|t| -t.created_at.to_i }
+      #@data = AccountVersion.where('member_id = ? AND (reason > 4000 AND reason < 4600)', params[:id]).sort_by {|t| -t.created_at.to_i }
       @data = Kaminari.paginate_array(@data).page(params[:page]).per(20)
     end
 
@@ -44,6 +47,8 @@ module Admin
     def commissions
       member = Member.find_by(id: params[:id])
       @commissions = AccountVersion.where(reason: 4800, member_id: member.id).sort_by {|t| -t.created_at.to_i }
+      #@commissions = AccountVersion.where('member_id = ? AND (reason = 4800 OR ((modifiable_type = ? OR modifiable_type = ?) AND reason = 700))', current_user.id, Casting.name, Pool.name)
+      #              .sort_by {|t| -t.created_at.to_i }
       @commissions = Kaminari.paginate_array(@commissions).page(params[:page]).per(20)
     end
 

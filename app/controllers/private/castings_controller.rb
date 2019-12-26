@@ -42,7 +42,10 @@ module Private
     end
 
     def history
-      history = AccountVersion.where(modifiable_type: Casting.name, member_id: current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
+      #history = AccountVersion.where(modifiable_type: Casting.name, member_id: current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
+      history = AccountVersion.where('member_id = ? AND (modifiable_type = ? OR reason = 4800 OR (modifiable_type = ? AND reason = 700))', current_user.id, Casting.name, Pool.name)
+                    .sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
+      #history = AccountVersion.where('member_id = ? AND (reason > 4000 AND reason < 4600)', current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
       render json: history, status: :ok
     end
 
@@ -52,6 +55,8 @@ module Private
 
     def commissions
       commissions = AccountVersion.where(reason: 4800, member_id: current_user.id).sort_by {|t| -t.created_at.to_i }.map(&:for_commissions)
+      #commissions = AccountVersion.where('member_id = ? AND (reason = 4800 OR ((modifiable_type = ? OR modifiable_type = ?) AND reason = 700))', current_user.id, Casting.name, Pool.name)
+      #              .sort_by {|t| -t.created_at.to_i }.map(&:for_cc)
       render json: commissions, status: :ok
     end
 
