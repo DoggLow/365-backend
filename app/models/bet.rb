@@ -1,6 +1,6 @@
 class Bet < ActiveRecord::Base
   STATES = [:accepted, :win, :lose]
-  BET_FEE = 0.05
+  BET_FEE = 0.0
 
   extend Enumerize
 
